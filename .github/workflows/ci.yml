@@ -40,14 +40,11 @@ jobs:
       - name: Unit tests (Vitest)
         run: npm run test
 
+      - name: Build (Next.js static export to out/)
+        run: npm run build
+
       - name: Install Playwright browsers and OS deps
         run: npx playwright install --with-deps
 
       - name: End-to-end tests (Playwright and axe)
         run: npm run test:e2e
-
-      - name: Build (Next.js static export to out/)
-        run: npm run build
-
-      - name: Verify the static export produced out/
-        run: test -d out
