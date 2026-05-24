@@ -1,0 +1,453 @@
+---
+title: Continuous EEG (cEEG)
+description: Cortical electrical activity recorded continuously at the bedside, the only non-invasive tool that detects non-convulsive seizures and the canonical reference for SE drug-titration endpoints.
+eyebrow: Modality 7 · Non-invasive
+short: cEEG
+domain: non-invasive
+labels:
+  usage: bedside
+  population: both
+  invasiveness: non-invasive
+  validation: validated
+evidenceGrade: A
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **EEG**: electroencephalography
+- **cEEG**: continuous EEG (≥ 24 h bedside recording)
+- **qEEG**: quantitative EEG (spectrogram, alpha-delta ratio, suppression ratio, asymmetry index)
+- **aEEG**: amplitude-integrated EEG (compressed bedside trend; NICU mainstay)
+- **NCSE**: non-convulsive status epilepticus
+- **SE / RSE / SRSE**: status epilepticus / refractory SE / super-refractory SE
+- **GPD / LPD / RDA / BIRDS**: generalised / lateralised periodic discharges; rhythmic delta activity; brief intermittent rhythmic discharges
+- **IIC**: ictal-interictal continuum
+- **ESETT**: Established Status Epilepticus Treatment Trial
+- **ACNS**: American Clinical Neurophysiology Society (terminology guidelines)
+- **HIE**: hypoxic-ischaemic encephalopathy · **SAH**: subarachnoid haemorrhage · **DCI**: delayed cerebral ischaemia
+- **NCS**: Neurocritical Care Society
+- **MMM / MNM**: multimodal monitoring / multimodal neuromonitoring
+</Callout>
+
+<TldrCard>
+**The 60-second version.** EEG is **cortical surface electrical activity**, recorded continuously at the bedside via scalp electrodes in the standard 10–20 system. cEEG is the **only non-invasive bedside tool that detects non-convulsive status epilepticus** (NCSE), which causes ~20% of comatose ICU patients' altered consciousness and is invisible without it. Three modern uses dominate: (1) **seizure detection** in encephalopathic ICU patients, (2) **SE drug-titration endpoint** (burst suppression for super-refractory SE; resolution of electrographic seizures for refractory SE), and (3) **prognosis after cardiac arrest and HIE**. The **ACNS 2021 terminology** standardises GPD, LPD, RDA, BIRDS, and the ictal-interictal continuum (IIC). qEEG (the alpha-delta ratio, suppression ratio, asymmetry index) compresses 24 hours into a single screen and flags DCI in SAH and decompensation in any encephalopathy. Read with reactivity (does the trace change with stimulus?) and continuity (is there persistent background?), not just frequency.
+</TldrCard>
+
+## 1. Bedside vignettes: why this matters in the PICU
+
+### Vignette A. Post-arrest day 1, IIC or seizure?
+
+A 6-year-old post out-of-hospital VF arrest, ROSC at 28 minutes, targeted temperature 33°C. Day 1: GCS 3 sedated; aEEG shows discontinuous pattern with intermittent bursts. cEEG (10–20 system) shows **lateralised periodic discharges at 1.5 Hz with sharp morphology over the right hemisphere**, lasting 30 seconds and recurring every 3 minutes. The bedside team asks: is this NCSE (treat) or the ictal-interictal continuum (less clear-cut)? Per ACNS 2021, frequency > 2.5 Hz with evolution is electrographic seizure; this is **IIC**. The team trials a midazolam bolus, the LPDs resolve, and the team interprets the resolution as **functional evidence the LPDs were ictal**: continue antiseizure therapy. <Cite id="hirsch2021acns" /> <Cite id="topjian2021aha_pediatric" /> <Cite id="naim2023_brain_injury_pccm" />
+
+### Vignette B. Refractory status epilepticus in a 5-year-old, the drug ladder
+
+A 5-year-old with prolonged febrile seizure that has continued for 30 minutes despite two doses of midazolam IM and IV lorazepam. cEEG confirms ongoing generalised electrographic seizure. Per ESETT, second-line is **levetiracetam 60 mg/kg IV**, **fosphenytoin 20 mg PE/kg IV**, or **valproate 40 mg/kg IV** (all three equivalent in efficacy). The team chooses levetiracetam (least sedating). The clinical seizure stops; cEEG shows resolution of the electrographic seizure 10 minutes later. The team continues cEEG for 24 hours and detects two further brief electrographic seizures without clinical correlate, which they treat. **Without cEEG, those NCSE episodes would be missed.** <Cite id="glauser2016esett" /> <Cite id="kapur2019eclipse_se" /> <Cite id="herman2015acns_ceeg" />
+
+### Vignette C. SAH day 6, qEEG alpha-delta ratio falls 6 hours before clinical signs of DCI
+
+A 16-year-old with aneurysmal SAH post-coiling, day 6. cEEG running since day 2. Quantitative trends show the **alpha-delta ratio (ADR) falling from 0.55 to 0.35 over 6 hours**, which is statistically significant per the centre's algorithm. TCD MFV is rising in parallel but Lindegaard ratio is only 2.8 (borderline). The team escalates haemodynamics, repeats angiography (which confirms moderate vasospasm in the right MCA), and the patient is treated successfully. The clinical examination remained unchanged during the 6-hour ADR decline; **qEEG was the earliest signal**. <Cite id="claassen2004" /> <Cite id="foreman2022" /> <Cite id="sandsmark2024_qeeg_dci" /> <Cite id="rass2021dci_review" />
+
+---
+
+## 2. What EEG is, and what it is not
+
+EEG records the **summated post-synaptic potentials of cortical pyramidal neurons**, measured at the scalp via differential amplification between electrode pairs. The signal amplitude at the scalp is **~10–100 μV**, attenuated by the skull and scalp by a factor of ~100 from the underlying cortical surface.
+
+**Five things follow.**
+
+**EEG samples cortex only.** Deep structures (basal ganglia, thalamus, brainstem) are not directly seen on scalp EEG. Subcortical seizures (e.g., from a deep mesial focus) may show only as secondary cortical propagation.
+
+**EEG is highly state-dependent.** Sedation, hypothermia, neuromuscular blockade, hypoglycaemia, and metabolic encephalopathy all change the baseline. Reading EEG requires knowing the clinical state.
+
+**EEG distinguishes NCSE from other altered-consciousness causes.** This is its most uniquely valuable contribution: NCSE causes ~20% of comatose ICU patients' altered consciousness and is invisible without continuous monitoring.
+
+**EEG-based SE management has trial evidence.** ESETT (second-line drugs) and ECLIPSE-SE (third-line) have established the modern drug ladder for SE. Endpoint definitions (electrographic seizure resolution, burst suppression) are EEG-based.
+
+**EEG is not seizure-detector only.** Background continuity, reactivity, and pattern (e.g., GPD, LPD) carry independent prognostic and diagnostic information.
+
+<Pearl>
+**Reactivity matters as much as the pattern itself.** A patient with sustained burst suppression who **reactivates** to a painful stimulus has a much better prognosis than one whose suppression is unchanged. Test reactivity before reading prognosis from the resting trace. <Cite id="topjian2021aha_pediatric" /> <Cite id="naim2023_brain_injury_pccm" />
+</Pearl>
+
+<Pediatric>
+**Pediatric EEG differs by age in three important ways.** (1) **Background frequencies** mature from delta (newborn) through theta (toddler) to alpha (school-age and adolescent); a "slow" trace in a 1-year-old is normal but pathological in a 14-year-old. (2) **Seizure semiology** in neonates is often subtle or invisible clinically; cEEG detects ~50% more seizures than clinical exam in neonates. (3) **NCSE prevalence** is higher in pediatric ICU than in adult ICU (some studies suggest 30–40% of comatose pediatric ICU patients). <Cite id="pressler2017neonatal" /> <Cite id="sansevere2023_neonatal_ceeg" /> <Cite id="abend2011" /> <Cite id="tsuchida2013neonatal" />
+</Pediatric>
+
+---
+
+## 3. Montage and electrode placement
+
+<Figure
+  caption="The 10-20 international system. Electrode positions are labelled by region (F, T, C, P, O for frontal, temporal, central, parietal, occipital) and side (odd numbers left, even numbers right, Z midline). Standard adult montage uses 19 electrodes plus a reference; pediatric and neonatal montages reduce to 9–11 electrodes for practicality. Bipolar (longitudinal 'Banana') montage shows differences between adjacent electrode pairs along anterior-posterior chains, useful for localising focal patterns. Referential (average reference) montage shows each electrode against an average of all others, useful for global pattern recognition."
+  attribution="MNM-Edu, original schematic."
+  label="Fig. 1"
+>
+  <EEGMontage />
+</Figure>
+
+**Electrode placement.** The 10-20 international system places electrodes at proportional distances (10% or 20%) along the head circumference. Standard adult ICU montage uses 19 electrodes plus a reference. Pediatric NICU/PICU montages often reduce to 9 or 11 electrodes (less coverage but faster placement, less coverage but better fit on small heads).
+
+**Montages.** Two principal display modes:
+
+- **Bipolar (longitudinal "Banana")**: each channel shows the difference between two adjacent electrodes. Useful for localising focal patterns; "phase reversal" in bipolar identifies the seizure focus.
+- **Referential (average reference)**: each channel shows one electrode against an average of all others. Useful for global pattern recognition (burst suppression, generalised discharges).
+
+Bedside teams often run both simultaneously and switch view depending on the question.
+
+**Pediatric considerations.** Neonatal EEG uses a reduced montage (typically Fp1, Fp2, C3, C4, T3, T4, O1, O2, Cz; 9 electrodes) per ACNS 2013 neonatal guidelines. Head size, scalp thinness, and the need to balance coverage against placement time guide the choice. <Cite id="tsuchida2013neonatal" /> <Cite id="pressler2017neonatal" />
+
+---
+
+## 4. The signal: bands, rhythms, reactivity, continuity
+
+A bedside EEG reading covers four dimensions:
+
+**Frequency bands** (the basic vocabulary):
+
+| Band | Frequency | Where it appears normally |
+|---|---|---|
+| Delta | 0.5–3 Hz | Deep sleep, newborns awake |
+| Theta | 4–7 Hz | Toddlers awake; drowsiness in older children |
+| Alpha | 8–12 Hz | Awake adult posterior dominant rhythm (PDR) |
+| Beta | 13–30 Hz | Frontal in awake adult; often pharmacological |
+| Gamma | > 30 Hz | High cognition; mostly outside ICU concern |
+
+**Rhythms**: posterior dominant rhythm (PDR) is the canonical awake-resting alpha over occipital cortex; loss of PDR is a non-specific marker of encephalopathy.
+
+**Reactivity**: does the background change when the patient is stimulated (loud noise, painful stimulus)? Reactive background is favourable; unreactive is concerning regardless of the resting frequency.
+
+**Continuity**: is the background continuous (always present) or discontinuous (bursts separated by silence)? Severely discontinuous patterns (suppression, burst-suppression) reflect deep encephalopathy or anaesthesia.
+
+<Callout type="clinical-pearl">
+**Continuity + reactivity + dominant frequency** is the three-axis snapshot every bedside team should chart. A discontinuous, unreactive, low-amplitude trace in an unsedated patient is severe; a continuous, reactive, alpha-dominant trace is essentially normal.
+</Callout>
+
+---
+
+## 5. ACNS 2021 terminology: GPD, LPD, RDA, BIRDS, IIC
+
+The **ACNS 2021 standardised terminology** is the modern reference for ICU EEG reading. The key categories:
+
+| Category | Acronym | What it is |
+|---|---|---|
+| Generalised periodic discharges | GPD | Sharp waves recurring at regular intervals across both hemispheres |
+| Lateralised periodic discharges | LPD | Same but over one hemisphere |
+| Rhythmic delta activity | RDA | Continuous 0.5–4 Hz waves, lateralised or generalised |
+| Brief intermittent rhythmic discharges | BIRDS | Short (< 10 s) rhythmic bursts |
+| Ictal-interictal continuum | IIC | Pattern that does not meet seizure criteria but is concerning |
+
+**Seizure criteria (ACNS 2021)**: rhythmic activity > 2.5 Hz with evolution in frequency, location, or morphology lasting ≥ 10 seconds; OR rhythmic activity ≤ 2.5 Hz with clinical correlate; OR repeated rhythmic activity meeting threshold. <Cite id="hirsch2021acns" /> <Cite id="herman2015acns_ceeg" />
+
+**The IIC dilemma**: many patterns (LPDs at 1–2 Hz, GPDs at 1.5 Hz, rhythmic delta) are below the seizure cutoff but may still drive metabolic distress. The bedside approach: **trial of antiseizure medication**; resolution of the pattern and clinical/electrographic improvement supports an ictal interpretation. Non-resolution suggests interictal or post-ictal pattern.
+
+---
+
+## 6. Pattern library: what to recognise on cEEG
+
+<Figure
+  src="/images/eeg/pattern-library.svg"
+  alt="Eight-panel EEG pattern library: normal awake, drowsy, asleep, generalised SE, focal SE, LPD, GPD, burst suppression"
+  caption="Eight canonical ICU EEG patterns. (a) Normal awake adult: posterior alpha rhythm 9–10 Hz, normal frontal beta. (b) Drowsy: alpha attenuates, theta appears. (c) Asleep stage 2: K-complexes and sleep spindles. (d) Generalised electrographic SE: continuous spike-wave at 3 Hz, generalised. (e) Focal electrographic SE: 4 Hz sharp waves over left temporal, evolving. (f) LPD: lateralised periodic discharges at 1.5 Hz over right hemisphere. (g) GPD: generalised periodic discharges at 1 Hz, low amplitude. (h) Burst suppression: alternating bursts and isoelectric periods, characteristic of barbiturate coma or severe HIE."
+  attribution="MNM-Edu, drawn from ACNS 2021 standardised terminology reference images. SVG placeholder."
+  label="Fig. 2"
+/>
+
+| Pattern | Meaning | Action |
+|---|---|---|
+| Continuous alpha-dominant | Normal awake adult | None |
+| Continuous theta-dominant | Mild encephalopathy or drowsy | Investigate; usually metabolic / mild |
+| Continuous delta-dominant | Moderate encephalopathy | Investigate; metabolic, structural, or post-ictal |
+| Discontinuous | Severe encephalopathy or deep anaesthesia | Investigate cause; consider sedation withdrawal trial |
+| Burst suppression | Deep anaesthesia, severe HIE, barbiturate coma | Context-dependent; SE endpoint if therapeutic |
+| Isoelectric (flat) | Cerebral electrical silence | Severe HIE, brain death (with ancillary testing), drug overdose |
+| GPD (generalised periodic discharges) | IIC, post-anoxic, sepsis-associated encephalopathy | Consider antiseizure trial; pair with clinical |
+| LPD (lateralised periodic discharges) | Focal cortical injury, focal SE | Consider antiseizure trial; investigate structural cause |
+| Electrographic seizure | Rhythmic > 2.5 Hz with evolution | Treat per SE protocol |
+| RDA (rhythmic delta) | IIC; less ictal than LPD/GPD | Trial antiseizure if encephalopathic |
+| BIRDS | Brief (< 10 s) rhythmic discharges | Often pre-ictal; monitor closely |
+
+---
+
+## 7. Try it: interactive widgets
+
+<WidgetEmbed name="EEGPatternLibrary" />
+
+<WidgetEmbed name="aEEGGenerator" />
+
+<WidgetEmbed name="qEEGSpectrogram" />
+
+<WidgetEmbed name="BISDemo" />
+
+---
+
+## 8. Status epilepticus management section
+
+The modern SE ladder is based on trial evidence (ESETT, ECLIPSE-SE, RAMPART). EEG is used at three points: (1) confirming initial diagnosis (especially NCSE), (2) titrating second- and third-line therapy, (3) defining endpoints (electrographic seizure resolution; burst suppression for super-refractory).
+
+### 8.1 First-line: benzodiazepines
+
+- **Midazolam 0.2 mg/kg IM** (max 10 mg) per RAMPART, or **lorazepam 0.1 mg/kg IV** (max 4 mg).
+- Repeat once if seizure continues at 5 minutes.
+
+### 8.2 Second-line: ESETT-equivalent
+
+ESETT (Kapur 2019) compared **levetiracetam 60 mg/kg, fosphenytoin 20 mg PE/kg, valproate 40 mg/kg**. All three were equivalent at 60 minutes. Choose by patient context:
+
+- **Levetiracetam**: least sedating, no hepatic interactions; often first choice.
+- **Fosphenytoin**: established, but cardiac monitoring required.
+- **Valproate**: avoid in hepatic disease, suspected metabolic disease, age < 2 years.
+
+### 8.3 Third-line (refractory SE)
+
+Continuous IV anaesthetic infusion:
+
+- **Midazolam 0.2 mg/kg bolus, then 0.05–2 mg/kg/h infusion**.
+- **Propofol 1–2 mg/kg bolus, then 1–4 mg/kg/h** (caution in children, risk of PRIS).
+- **Pentobarbital 5–15 mg/kg load, then 1–5 mg/kg/h** (super-refractory; reserved when above fails).
+
+**EEG endpoint**: resolution of electrographic seizures for refractory; **burst suppression** (typically 60% suppression ratio for 24 hours) for super-refractory.
+
+### 8.4 ECLIPSE-SE (third-line trial)
+
+ECLIPSE-SE (Kapur 2019) is the ongoing trial comparing midazolam vs propofol vs pentobarbital for RSE in adults; pediatric extension data are accumulating. Until results are definitive, choice is centre- and clinician-dependent. <Cite id="kapur2019eclipse_se" /> <Cite id="kapur2019_eclipse" /> <Cite id="glauser2016esett" /> <Cite id="trinka2015_status_definition" />
+
+<Callout type="caveat">
+**Decision support, not a clinical protocol.** Every drug, dose, and endpoint above is age-, centre-, and patient-dependent. Defer to your unit's protocols and senior clinical team.
+</Callout>
+
+<AlgorithmDisclaimer />
+
+---
+
+## 9. Clinical contexts: cEEG across acute brain injuries
+
+### 9.1 Convulsive and non-convulsive status epilepticus
+
+The canonical indication. NCSE causes ~20% of comatose ICU patients' altered consciousness. cEEG is the only way to detect it. ESETT and ECLIPSE-SE define the modern drug ladder. <Cite id="glauser2016esett" /> <Cite id="kapur2019eclipse_se" /> <Cite id="kapur2019_eclipse" /> <Cite id="trinka2015_status_definition" /> <Cite id="claassen2013" /> <Cite id="claassen2004" />
+
+### 9.2 HIE and post-cardiac arrest neuroprognosis
+
+Post-arrest cEEG patterns carry strong prognostic information:
+
+- **Continuous, reactive background within 24–48 h**: favourable.
+- **Discontinuous, unreactive, low-amplitude**: unfavourable.
+- **Burst suppression with identical bursts**: highly unfavourable.
+- **Status epilepticus, especially myoclonic SE**: unfavourable but not invariably fatal.
+- **Isoelectric at > 72 h**: very poor.
+
+The **AHA 2020 pediatric post-arrest guidelines** and **Topjian 2021 pediatric** statement endorse cEEG as part of routine post-arrest neuroprognostication. <Cite id="topjian2021aha_pediatric" /> <Cite id="topjian2020aha" /> <Cite id="naim2023_brain_injury_pccm" /> <Cite id="moler2015thapca_oh" />
+
+### 9.3 SAH and DCI (qEEG)
+
+Quantitative EEG trends, particularly the **alpha-delta ratio (ADR)**, detect DCI hours before clinical signs in adult SAH cohorts. Pediatric SAH data are sparse but the principle applies. The Sandsmark 2024 review and Foreman 2022 cohort summarise modern qEEG-for-DCI evidence. <Cite id="claassen2004" /> <Cite id="foreman2022" /> <Cite id="sandsmark2024_qeeg_dci" /> <Cite id="williams2024qeeg" /> <Cite id="foreman2012" />
+
+### 9.4 Bacterial meningitis with seizures
+
+cEEG is recommended when seizures are suspected (subtle motor signs, fluctuating consciousness) or in severely encephalopathic patients per European meningitis and IDSA encephalitis guidelines. <Cite id="vandebeek2016eu_meningitis" /> <Cite id="tunkel2017idsa_encephalitis" />
+
+### 9.5 Sepsis-associated encephalopathy
+
+Sepsis-associated encephalopathy presents with delirium, altered consciousness, and a spectrum of EEG findings from diffuse slowing to GPD and NCSE. cEEG detects NCSE in 10–20% of comatose septic patients. <Cite id="hirsch2021acns" /> <Cite id="claassen2013" />
+
+### 9.6 Severe TBI: subclinical seizures
+
+cEEG detects subclinical / non-convulsive seizures in 15–25% of severe TBI patients in the first 7 days, particularly in those with intra-axial haemorrhage or cortical contusion. PBTF 4 pediatric guidelines recommend cEEG for severe TBI with GCS ≤ 8 or for refractory ICP suggestive of seizure-driven elevation. <Cite id="kochanek2019_pbtf4" /> <Cite id="vespa2010" /> <Cite id="herman2015acns_ceeg" />
+
+### 9.7 Neonatal seizures
+
+Neonatal seizures are often subtle or invisible clinically. The 2017 ILAE neonatal seizure classification (Pressler 2017) uses cEEG as the diagnostic standard. **Sansevere 2023** Pediatric Neurology cEEG review summarises modern neonatal cEEG practice. aEEG remains the bedside trend tool, but cEEG (10–20 system, ideally video) is the diagnostic standard. <Cite id="pressler2017neonatal" /> <Cite id="sansevere2023_neonatal_ceeg" /> <Cite id="tsuchida2013neonatal" />
+
+### 9.8 ECMO
+
+cEEG on ECMO detects seizures (~20% of pediatric ECMO patients) and provides background continuity / reactivity for ongoing prognostication. Movement artefact from circuit and ventilator is a recurrent challenge. **Cho 2024 pediatric ECMO outcomes** endorses cEEG as standard monitoring on neuro-ECMO indications. <Cite id="lorusso2017_elso_neuro" /> <Cite id="cho2024_ecmo_outcomes" />
+
+---
+
+## 10. Multimodal integration: EEG in the MMM/MNM stack
+
+<Figure
+  src="/images/eeg/aDR-trend.svg"
+  alt="qEEG alpha-delta ratio trend over 24 hours showing a declining ADR 6 hours before clinical DCI in SAH"
+  caption="qEEG alpha-delta ratio (ADR) trend in a SAH patient on cEEG. Stable at 0.55 for days 2–6 post-bleed; on day 6 morning the ADR begins declining (0.55 → 0.35 over 6 hours). TCD MFV is rising in parallel but Lindegaard ratio is only borderline. Clinical examination remained unchanged during the decline. The ADR trend was the earliest objective signal of evolving DCI. Treatment escalation (induced hypertension, angiography) confirmed moderate right MCA vasospasm. Recovery of the ADR mirrored vasospasm resolution."
+  attribution="MNM-Edu, schematic adapted from Claassen 2004 and Foreman 2022. SVG placeholder."
+  label="Fig. 3"
+/>
+
+| Pair with… | What you gain | Worked scenario |
+|---|---|---|
+| **TCD** | NCSE drives flow changes (high MFV during seizure); seizure-vs-spasm discrimination | [TCD page](/modalities/tcd/) |
+| **NIRS** | rSO2 reactivity loss + isoelectric EEG = worst-case post-arrest signature | [NIRS page](/modalities/nirs/) |
+| **ICP** | Seizure-driven ICP spikes; NCSE causes metabolic stress and ICP rise | [ICP page](/modalities/icp/) |
+| **aEEG** | Compressed bedside trend (NICU mainstay) | [aEEG page](/modalities/aeeg/) |
+| **qEEG** | Spectrogram, ADR, suppression ratio for shift-level trends | [qEEG page](/modalities/qeeg/) |
+| **BIS** | Operating-room sedation depth surrogate (not for SE titration) | [BIS page](/modalities/bis/) |
+| **Evoked potentials** | Subcortical and brainstem function alongside cortical | [EP page](/modalities/evoked-potentials/) |
+| **Clinical exam** | Always; EEG without clinical context can mislead | Always |
+
+<Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="helbok2024_pediatric_mmm" /> <Cite id="leroux2014_neurocrit_consensus" />
+
+---
+
+<DeepDive>
+
+## 11. Setup and technique: a step-by-step
+
+### 11.1 Electrode placement (10-20 system)
+
+Measure scalp landmarks (nasion, inion, preauricular points). Place electrodes at proportional 10% / 20% distances. Standard adult ICU montage uses 19 electrodes (Fp1, Fp2, F3, F4, C3, C4, P3, P4, O1, O2, F7, F8, T3, T4, T5, T6, Fz, Cz, Pz) plus reference and ground.
+
+Pediatric reduction (9 electrodes): Fp1, Fp2, C3, C4, T3, T4, O1, O2, Cz. Trades coverage for placement time and fit on small heads.
+
+### 11.2 Skin preparation
+
+- Mark the position, abrade lightly with prep gel.
+- Apply conductive paste or gel.
+- Place the electrode, secure with collodion or adhesive disk.
+- Verify impedance < 5 kΩ ideally (< 10 kΩ acceptable).
+
+### 11.3 Filters and sampling
+
+- **Sample rate**: 200–512 Hz typical for ICU cEEG; > 256 Hz for high-frequency oscillation work.
+- **Low-frequency filter (HFF)**: 0.5–1 Hz (preserve delta).
+- **High-frequency filter (LFF)**: 70 Hz (reject muscle/EMG).
+- **Notch filter**: 50 or 60 Hz mains.
+
+### 11.4 Artefact reduction
+
+- Common artefacts: EMG (muscle), ECG (cardiac), eye movement, electrode pop, ventilator, sweat.
+- **EMG**: paralyse only when essential; otherwise filter and accept some contamination.
+- **Eye movement**: dominant in frontal channels; usually obvious morphology.
+- **Electrode pop**: sudden high-amplitude spike on a single channel; re-secure the electrode.
+- **Ventilator**: rhythmic at ~12–20/min; isolated by frequency.
+
+### 11.5 Video EEG
+
+Continuous video alongside EEG is the standard for SE management and seizure semiology characterisation. The video stream captures eye deviation, automatisms, head turn, and post-ictal state, all of which add diagnostic information.
+
+### 11.6 qEEG trend display
+
+Modern ICU EEG systems compress 24-hour traces into:
+
+- **Spectrogram**: colour map of frequency power over time (per electrode).
+- **Alpha-delta ratio**: ratio of 8–12 Hz to 1–4 Hz power; falls in DCI.
+- **Suppression ratio**: percentage of time with EEG below an amplitude threshold; rises in deep anaesthesia.
+- **Asymmetry index**: left-vs-right power; flags unilateral pathology.
+
+</DeepDive>
+
+---
+
+## 12. Pitfalls and artefacts
+
+- **Under-reading**: missing GPD or NCSE under deep sedation; the encephalopathy can mask the pattern.
+- **Over-reading**: calling RDA or GPD an electrographic seizure without meeting ACNS criteria.
+- **Inter-rater variability**: even among trained epileptologists, agreement on IIC patterns is moderate.
+- **Sedation-induced patterns**: propofol-induced burst suppression looks like post-anoxic burst suppression; clinical context is essential.
+- **Movement artefact**: ventilator, ECMO circuit, CRRT.
+- **Montage choice obscuring focal patterns**: bipolar may miss a true generalised pattern; always verify with referential.
+- **Electrode dislodgement**: long ICU recordings; verify impedance every shift.
+- **Salt-bridges**: conductive paste connecting adjacent electrodes; falsely suggests synchrony.
+- **Pseudo-seizure artefact**: chewing, shivering, eye flutter; verify with video.
+- **Pediatric montage limits**: 9-electrode neonatal montage will miss some focal patterns; accept the trade-off for placement feasibility.
+
+---
+
+## 13. Combine with…
+
+- [qEEG](/modalities/qeeg/): for the alpha-delta ratio, spectrogram, suppression ratio.
+- [aEEG](/modalities/aeeg/): for the compressed bedside trend (NICU).
+- [BIS](/modalities/bis/): for operating-room sedation depth.
+- [Evoked potentials](/modalities/evoked-potentials/): for subcortical and brainstem function.
+- [TCD](/modalities/tcd/): for the NCSE-vs-spasm discrimination in SAH.
+- [NIRS](/modalities/nirs/): for the rSO2 reactivity pair in HIE.
+- [ICP](/modalities/icp/): for the seizure-driven ICP spike pair.
+
+---
+
+<DeepDive>
+
+## 14. Evidence summary and recent literature
+
+### 14.1 Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Original EEG description | <Cite id="berger1929eeg" /> | foundational |
+| ACNS 2021 standardised terminology | <Cite id="hirsch2021acns" /> <Cite id="hirsch2021" /> | expert |
+| ACNS cEEG indications | <Cite id="herman2015acns_ceeg" /> <Cite id="herman2015acns" /> | expert |
+| Neonatal EEG (ACNS 2013) | <Cite id="tsuchida2013neonatal" /> | expert |
+| Pediatric cEEG (Tasker 2018) | <Cite id="tasker2018ceeg" /> <Cite id="tasker2018" /> | review |
+| NCSE prevalence (Claassen 2004, 2013) | <Cite id="claassen2004" /> <Cite id="claassen2013" /> | B |
+| Subclinical seizures in TBI (Vespa 2010) | <Cite id="vespa2010" /> | B |
+| ESETT (second-line SE) | <Cite id="glauser2016esett" /> | A |
+| ECLIPSE-SE (third-line SE) | <Cite id="kapur2019eclipse_se" /> <Cite id="kapur2019_eclipse" /> | A |
+| Status epilepticus definition (Trinka 2015) | <Cite id="trinka2015_status_definition" /> | expert |
+| Neonatal seizure classification (Pressler 2017) | <Cite id="pressler2017neonatal" /> | expert |
+| Sansevere 2023 neonatal cEEG | <Cite id="sansevere2023_neonatal_ceeg" /> | review |
+| Topjian 2021 AHA pediatric post-arrest | <Cite id="topjian2021aha_pediatric" /> <Cite id="topjian2020aha" /> | expert |
+| Foreman 2022 qEEG and DCI | <Cite id="foreman2022" /> <Cite id="foreman2012" /> | B |
+| Sandsmark 2024 qEEG DCI review | <Cite id="sandsmark2024_qeeg_dci" /> | review |
+| Naim 2023 brain injury in pediatric CHD | <Cite id="naim2023_brain_injury_pccm" /> | expert |
+| Abend 2011 pediatric cEEG | <Cite id="abend2011" /> | B |
+| Pediatric MNM consensus 2025 | <Cite id="figaji2025_mmm_pediatric_consensus" /> | expert |
+| NCS MMM consensus | <Cite id="leroux2014_neurocrit_consensus" /> | expert |
+| Williams 2024 qEEG | <Cite id="williams2024qeeg" /> | review |
+
+### 14.2 Recent literature (2022–2025)
+
+- **ACNS 2021 standardised terminology** (Hirsch): the modern reference for ICU EEG reading; GPD, LPD, RDA, BIRDS, IIC defined. <Cite id="hirsch2021acns" />
+- **Topjian 2021 AHA pediatric post-arrest**: cEEG endorsed as routine post-arrest neuroprognostication tool. <Cite id="topjian2021aha_pediatric" />
+- **Naim 2023 PCCM brain injury in pediatric CHD**: integrates cEEG into multimodal CHD neurosurveillance. <Cite id="naim2023_brain_injury_pccm" />
+- **Sansevere 2023 neonatal cEEG**: practical review of modern neonatal cEEG; reduced montages, aEEG-cEEG combination, video integration. <Cite id="sansevere2023_neonatal_ceeg" />
+- **Sandsmark 2024 qEEG DCI review**: contemporary synthesis of qEEG-for-DCI evidence base; ADR as the workhorse trend. <Cite id="sandsmark2024_qeeg_dci" />
+- **Williams 2024 qEEG**: review of contemporary qEEG metrics in ICU. <Cite id="williams2024qeeg" />
+- **Figaji 2025 Pediatric MNM consensus**: cEEG endorsed as essential pediatric neurocritical-care monitoring. <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+</DeepDive>
+
+---
+
+## 15. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 6-year-old post-arrest day 1 on targeted temperature. cEEG shows LPDs at 1.5 Hz with sharp morphology over the right hemisphere, lasting 30 seconds, recurring every 3 minutes. Per ACNS 2021, what is this pattern, and what should be done?',
+      options: [
+        { id: 'a', label: 'Definite electrographic SE; load anaesthetic infusion to burst suppression' },
+        { id: 'b', label: 'Ictal-interictal continuum (IIC); trial benzodiazepine and assess response' },
+        { id: 'c', label: 'Normal post-arrest pattern; observe' },
+        { id: 'd', label: 'Brain death; arrange ancillary testing' },
+      ],
+      answer: 'b',
+      explanation: 'ACNS 2021 seizure criteria require rhythmic activity > 2.5 Hz with evolution. LPDs at 1.5 Hz do not meet this cutoff but sit on the ictal-interictal continuum (IIC). The bedside approach is a trial of antiseizure medication; resolution of the pattern supports an ictal interpretation. Jumping to deep anaesthesia is premature; ignoring is dangerous because IIC may drive metabolic injury. Brain death is a different determination requiring isoelectric EEG and clinical criteria.',
+    },
+    {
+      id: 'q2',
+      prompt: 'A 5-year-old with convulsive status epilepticus continues to seize after benzodiazepines. Per ESETT, which second-line drug should be administered?',
+      options: [
+        { id: 'a', label: 'Levetiracetam 60 mg/kg, fosphenytoin 20 mg PE/kg, or valproate 40 mg/kg (all equivalent)' },
+        { id: 'b', label: 'Propofol 2 mg/kg bolus' },
+        { id: 'c', label: 'Pentobarbital 10 mg/kg load' },
+        { id: 'd', label: 'A second dose of midazolam' },
+      ],
+      answer: 'a',
+      explanation: 'ESETT (Kapur 2019) showed levetiracetam 60 mg/kg, fosphenytoin 20 mg PE/kg, and valproate 40 mg/kg are equivalent at 60 minutes for second-line therapy. Choice is by patient context: levetiracetam is least sedating; fosphenytoin requires cardiac monitoring; valproate is avoided in hepatic disease, metabolic disease suspicion, and age < 2 years. Propofol and pentobarbital are third-line (continuous IV anaesthetics for refractory SE). A second benzodiazepine dose is not advised after initial benzodiazepines fail.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A 16-year-old with aneurysmal SAH post-coiling, day 6. cEEG running since day 2. The alpha-delta ratio (ADR) has fallen from 0.55 to 0.35 over 6 hours. TCD MFV is rising, Lindegaard ratio 2.8 (borderline). Clinical examination is unchanged. Best interpretation?',
+      options: [
+        { id: 'a', label: 'Normal post-SAH variability; observe' },
+        { id: 'b', label: 'qEEG signal of evolving DCI before clinical signs; escalate haemodynamics and consider angiography' },
+        { id: 'c', label: 'EEG artefact; reposition electrodes' },
+        { id: 'd', label: 'Trial benzodiazepine for NCSE' },
+      ],
+      answer: 'b',
+      explanation: 'The alpha-delta ratio is a validated qEEG marker for evolving DCI in SAH (Claassen 2004; Foreman 2022; Sandsmark 2024 review). A statistically-significant decline over hours predates clinical signs by 4–24 hours. With borderline Lindegaard and rising MFV, the qEEG decline is the earliest objective signal. The correct response is escalation of haemodynamics and angiography. Observing risks missing the DCI window. The pattern is not artefact and is not seizure.',
+    },
+  ]}
+/>

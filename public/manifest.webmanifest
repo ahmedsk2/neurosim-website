@@ -1,0 +1,19 @@
+{
+  "name": "MNM-Edu — Pediatric Multimodal Neuromonitoring",
+  "short_name": "MNM-Edu",
+  "description": "Interactive, evidence-anchored educational resource for pediatric multimodal neuromonitoring.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#081224",
+  "theme_color": "#081224",
+  "orientation": "any",
+  "categories": ["education", "medical"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

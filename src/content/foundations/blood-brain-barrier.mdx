@@ -1,0 +1,204 @@
+---
+title: Blood-brain barrier physiology
+description: Tight junctions, transporters, and selective permeability, and why a disrupted BBB changes how drugs and fluids behave.
+eyebrow: Foundation 8
+prereqs: []
+relatedModalities: [microdialysis, nirs]
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **BBB**: blood-brain barrier
+- **NVU**: neurovascular unit (endothelium + astrocyte end-feet + pericyte)
+- **HTS**: hypertonic saline (osmotherapy)
+- **CSF**: cerebrospinal fluid
+- **ICP**: intracranial pressure
+- **GLUT1 / MCT1 / LAT1**: glucose / monocarboxylate / large neutral amino acid transporters
+- **P-gp**: P-glycoprotein efflux pump
+- **CRASH**: Corticosteroid Randomisation After Significant Head injury trial (showed harm)
+- **TBI / SAH**: traumatic brain injury / subarachnoid haemorrhage
+</Callout>
+
+<TldrCard>
+**The 60-second version.** The blood-brain barrier is a continuous endothelial-astrocyte-pericyte complex with tight junctions that exclude most polar molecules. **What gets through** matters for every drug and fluid you give in PICU: CO₂, O₂, and lipid-soluble agents diffuse freely; glucose, amino acids, and lactate go through selective transporters; most antibiotics, chemotherapy, and protein-bound drugs are excluded unless inflammation opens the barrier. **Reflection coefficient** (σ; 1.0 for Na⁺, ~0.9 for mannitol) determines whether an osmolar agent draws water across a disrupted BBB: HTS keeps working with a leaky barrier, mannitol redistributes and produces rebound oedema. **Dexamethasone reduces death in bacterial meningitis** in adult cohorts by sealing the inflammatory leak; steroids are harmful in TBI (CRASH). Pediatric BBB is functionally mature by ~40 weeks PMA; preterms have higher passive permeability. <Cite id="brouwer2010_dexamethasone_meta" /> <Cite id="cottenceau2011" /> <Cite id="vandebeek2016eu_meningitis" />
+</TldrCard>
+
+## 1. Bedside vignette: bacterial meningitis, raised ICP, why dexamethasone
+
+A 4-year-old with **pneumococcal meningitis** is admitted septic, irritable, with photophobia and neck stiffness. CSF shows 8000 WBC/µL (90% neutrophils), glucose 1.2, protein 5.4 g/L. Imaging shows obliteration of basal cisterns and a small hydrocephalus. Antibiotics (ceftriaxone + vancomycin) are started immediately; **dexamethasone 0.15 mg/kg every 6 h** is started **before or with the first dose** of antibiotic.
+
+Why dexamethasone? Bacterial lysis from antibiotic action releases cell-wall fragments that drive a brisk inflammatory response across the inflamed BBB, raising ICP and causing the hearing loss and neurological injury that complicate pneumococcal meningitis. Dexamethasone seals the inflammatory leak before the antibiotic-triggered cytokine surge. The adult European Dexamethasone trial and a Cochrane meta-analysis showed reduced death and hearing loss in adult pneumococcal meningitis; pediatric Hib data are clearer, pediatric pneumococcal data more mixed but supportive. <Cite id="brouwer2010_dexamethasone_meta" /> <Cite id="vandebeek2016eu_meningitis" /> <Cite id="tunkel2017idsa_encephalitis" />
+
+The bedside take is mechanistic: this is a BBB intervention timed against a BBB event. Steroids work here for the same reason they harm in TBI (CRASH): they alter a permeability response that is helpful in some contexts and not others.
+
+---
+
+## 2. The structure
+
+The barrier is built by **continuous endothelium with tight junctions** (claudin-5 and occludin), wrapped in **astrocyte end-feet** abluminally, with **pericytes** sitting in pockets along the basement membrane. The unit is collectively called the **neurovascular unit**, and the barrier function depends on all three cell types staying healthy.
+
+<Figure
+  caption="The neurovascular unit. Tight junctions between endothelial cells (yellow bands) seal the paracellular route. Astrocyte end-feet ensheath the abluminal surface; pericytes regulate tone and barrier integrity. Free diffusion (CO₂, O₂), facilitated transport (glucose via GLUT1), and the wholesale exclusion of most drugs all happen across the same membrane. The barrier function depends on all three cell types; injury to any of them leaks the barrier."
+  attribution="MNM-Edu, original schematic."
+  label="Fig. 1"
+>
+  <NeurovascularUnit />
+</Figure>
+
+---
+
+## 3. What gets through
+
+- **Free diffusion**: O₂, CO₂, water, small lipid-soluble molecules (general anaesthetics, opioids, alcohol). This is why a CO₂ change reaches the cerebral interstitium in seconds, and why an arterial blood-gas drives intracranial chemistry.
+- **Active transport**: glucose (GLUT1), large neutral amino acids (LAT1, the carrier shared by L-DOPA and methyldopa), monocarboxylates (lactate; MCT1, the carrier the ketogenic diet uses to feed the brain when GLUT1 is defective).
+- **Barrier-active efflux**: P-glycoprotein, MRPs, BCRP; pumps that take certain drugs out of the brain capillaries back to the blood. The reason loperamide does not sedate.
+- **Excluded**: most antibiotics, most chemotherapy, large ions in solution, plasma proteins.
+
+---
+
+## 4. Why it matters at the bedside
+
+The BBB changes every prescribing decision in neurocritical care.
+
+- **Mannitol** works because its osmotic gradient is preserved across an *intact* BBB. With BBB disruption, mannitol redistributes, producing rebound oedema. <Cite id="mortazavi2012" />
+- **Hypertonic saline** has a **higher reflection coefficient** (~1.0 for Na⁺ vs ~0.9 for mannitol): it works even with mild BBB disruption, with less rebound. <Cite id="cottenceau2011" />
+- **Glucocorticoids** seal the BBB in vasogenic tumour oedema and in inflammatory leak of bacterial meningitis; they harm in TBI (CRASH), where the oedema is mixed cytotoxic + vasogenic. <Cite id="brouwer2010_dexamethasone_meta" />
+- **Antibiotic penetration** drops dramatically without inflammation, rises with meningeal inflammation. Part of why empiric meningitis dosing is high. <Cite id="vandebeek2016eu_meningitis" /> <Cite id="tunkel2017idsa_encephalitis" />
+- **CO₂ and O₂ pass freely**, which is why ventilator settings move CBF and intracranial chemistry within seconds (see CO₂ reactivity page).
+
+### Reflection coefficient: why HTS often beats mannitol after leak
+
+The reflection coefficient σ describes the fraction of an osmolar agent reflected by the BBB:
+
+- σ = 1.0 (Na⁺): fully reflected; full osmotic gradient preserved.
+- σ ≈ 0.9 (mannitol): mostly reflected, but some leak.
+- σ ≈ 0.0 (urea, water): not reflected; no osmotic gradient.
+
+After BBB disruption, mannitol's effective σ falls further; the osmotic gradient is short-lived; water can equilibrate into oedematous tissue ("rebound"). HTS retains a near-1.0 σ even in modest disruption; the gradient is preserved longer.
+
+<Pearl>
+**Reflection coefficient matters more than osmolality.** Equiosmolar mannitol and HTS produce different effects across a leaky BBB because Na⁺ stays out longer than mannitol does. <Cite id="cottenceau2011" /> The pediatric-dosing implication is that HTS is often the first-choice osmolar in pediatric severe TBI when BBB status is uncertain.
+</Pearl>
+
+<Pediatric>
+**Pediatric BBB and the preterm infant.** The infant BBB is functionally similar to adult by ~40 weeks postmenstrual age; before that, premature infants have higher passive permeability, relevant for bilirubin (kernicterus risk) and some antibiotics. Pediatric pneumococcal meningitis dexamethasone evidence is supportive but less definitive than adult or Hib data; current pediatric guidance is to give dexamethasone with or before the first antibiotic dose in suspected pneumococcal meningitis, weighing the meta-analytic adult signal and the strong Hib evidence. <Cite id="vandebeek2016eu_meningitis" /> <Cite id="tunkel2017idsa_encephalitis" />
+</Pediatric>
+
+---
+
+## 5. In injury
+
+- **TBI**: BBB disruption is biphasic, early (minutes) and delayed (days), peaking at 24–72 h.
+- **SAH**: diffuse disruption from blood breakdown products.
+- **Stroke**: within minutes in core, hours in penumbra; predicts haemorrhagic transformation risk.
+- **Sepsis**: neuroinflammation opens the BBB diffusely; relevant for septic encephalopathy.
+- **Meningitis / encephalitis**: localised disruption tracks the inflammatory front; the same disruption that lets pathogen breach the barrier lets antibiotic in.
+
+---
+
+## 6. Pitfalls
+
+- **Treating all oedema with osmotherapy**: vasogenic tumour oedema responds best to steroids; cytotoxic oedema to perfusion restoration; mixed TBI oedema to osmotherapy. Match the mechanism.
+- **Steroids in TBI**: CRASH showed harm. Do not give methylprednisolone in TBI.
+- **Antibiotic dose reduction in meningitis "because the patient is improving"**: meningeal inflammation falls as the patient improves; antibiotic penetration falls with it. Maintain CSF-penetrating doses for the full course.
+- **Forgetting the BBB**: most chemotherapy and many antibiotics that work systemically do not work in the brain. Choose agents that cross.
+- **Hypotonic IV fluids in the at-risk brain**: free water crosses the BBB regardless; hyponatraemia worsens oedema. Maintain serum Na in the upper-normal range.
+
+---
+
+## 7. Combine with…
+
+- [Modality: microdialysis](/modalities/microdialysis/): tissue chemistry on the brain side of the BBB.
+- [Modality: NIRS](/modalities/nirs/): regional tissue oximetry; affected by BBB-mediated water shifts.
+- [Foundation: cerebral metabolism](/foundations/cerebral-metabolism/): the substrate transport the BBB regulates.
+- [Foundation: CO₂ and O₂ reactivity](/foundations/co2-o2-reactivity/): the gas exchange that crosses the BBB in seconds.
+- [Clinical: meningitis and encephalitis](/clinical/meningitis-encephalitis/): the BBB-as-target disease.
+
+---
+
+<DeepDive>
+
+## 8. Anatomy of the BBB
+
+The endothelial cells are tightly joined by claudin-5 and occludin tight-junction proteins. Astrocyte end-feet ensheath the abluminal surface, and pericytes regulate vessel diameter and barrier integrity. The neurovascular unit is the integrated cell ensemble.
+
+## 9. Transport mechanisms
+
+- **GLUT1** carries glucose down its concentration gradient. Defective GLUT1 (De Vivo syndrome) causes infantile epilepsy treated with the ketogenic diet (which provides ketone bodies that use MCT1).
+- **LAT1** transports L-DOPA, methyldopa, and large neutral amino acids; competition between these explains some classic Parkinson's drug interactions.
+- **P-glycoprotein** pumps many drugs back out of brain capillaries; the reason loperamide does not make you sleepy.
+
+## 10. Imaging the BBB
+
+- **Contrast-enhanced MRI**: gadolinium leakage indicates BBB disruption.
+- **MR DCE perfusion**: permeability mapping.
+- **PET / CT-perfusion**: indirect via tracer kinetics.
+
+## 11. Oedema types
+
+| Type | Mechanism | BBB status | Treatment |
+|---|---|---|---|
+| Vasogenic | BBB leak; protein-rich fluid | Disrupted | Steroids (tumour); osmotic agents |
+| Cytotoxic | Cell swelling (Na⁺/K⁺ failure) | Often intact early | Restore perfusion |
+| Osmotic | Plasma hyponatraemia | Intact | Correct sodium |
+| Hydrostatic | Raised CVP / venous obstruction | Intact | Reduce CVP |
+
+## 12. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| HTS vs mannitol in TBI | <Cite id="cottenceau2011" /> | B |
+| Mannitol rebound and disruption | <Cite id="mortazavi2012" /> | C |
+| Dexamethasone in adult meningitis (meta) | <Cite id="brouwer2010_dexamethasone_meta" /> | A |
+| European meningitis guideline | <Cite id="vandebeek2016eu_meningitis" /> | expert |
+| IDSA encephalitis guideline | <Cite id="tunkel2017idsa_encephalitis" /> | expert |
+
+</DeepDive>
+
+---
+
+## 13. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'Why does hypertonic saline often produce less rebound oedema than mannitol after BBB disruption?',
+      options: [
+        { id: 'a', label: 'HTS has lower osmolality' },
+        { id: 'b', label: 'Na⁺ has a higher reflection coefficient than mannitol, so it crosses the leaky BBB more slowly' },
+        { id: 'c', label: 'HTS is excreted faster' },
+        { id: 'd', label: 'HTS reduces CMRO₂' },
+      ],
+      answer: 'b',
+      explanation: 'Reflection coefficient ~1.0 for Na⁺ vs ~0.9 for mannitol means HTS\'s osmotic gradient is preserved longer across a disrupted BBB. In pediatric severe TBI this is part of why HTS is often the first-choice osmolar when BBB status is uncertain.',
+    },
+    {
+      id: 'q2',
+      prompt: 'A 4-year-old with suspected bacterial meningitis. The team plans empiric ceftriaxone and vancomycin. When should dexamethasone be given?',
+      options: [
+        { id: 'a', label: 'After 24 hours, once the patient stabilises' },
+        { id: 'b', label: 'With or just before the first antibiotic dose' },
+        { id: 'c', label: 'Only if CSF Gram stain shows pneumococcus' },
+        { id: 'd', label: 'Avoid dexamethasone in children' },
+      ],
+      answer: 'b',
+      explanation: 'Dexamethasone reduces death and hearing loss in adult pneumococcal meningitis and reduces hearing loss in pediatric Hib meningitis. The mechanism is sealing the inflammatory BBB leak before the antibiotic-induced cytokine surge from bacterial lysis. Standard guidance is to give it with or just before the first antibiotic dose in suspected bacterial meningitis.',
+    },
+    {
+      id: 'q3',
+      prompt: 'Why are corticosteroids effective in tumour-related vasogenic oedema but largely ineffective in cytotoxic TBI oedema?',
+      options: [
+        { id: 'a', label: 'They reseal a disrupted BBB but cannot restore failed Na⁺/K⁺ pumps' },
+        { id: 'b', label: 'They penetrate brain better in tumour' },
+        { id: 'c', label: 'They reduce CMRO₂ only in tumour' },
+        { id: 'd', label: 'They are cleared faster in TBI' },
+      ],
+      answer: 'a',
+      explanation: 'Steroids seal vasogenic leaks but do nothing for cell swelling caused by ATP failure. CRASH and other trials showed harm from steroids in TBI.',
+    },
+  ]}
+/>

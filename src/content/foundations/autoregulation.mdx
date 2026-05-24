@@ -1,0 +1,301 @@
+---
+title: Cerebral autoregulation
+description: How the brain holds blood flow approximately constant across a range of perfusion pressures, and what happens when it can't.
+eyebrow: Foundation 1
+prereqs: []
+relatedModalities: [prx, mx, orx, cppopt, cpp]
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **CBF**: cerebral blood flow (mL/100g/min)
+- **CPP**: cerebral perfusion pressure = MAP − ICP
+- **MAP / ICP**: mean arterial pressure / intracranial pressure
+- **LLA / ULA**: lower / upper limit of autoregulation
+- **PRx**: pressure reactivity index (ICP ↔ MAP slow-wave correlation)
+- **Mx**: mean-flow index (TCD MFV ↔ CPP correlation)
+- **ORx**: oxygen reactivity index (NIRS rSO₂ ↔ CPP correlation)
+- **COx**: cerebral oximetry index (NIRS rSO₂ ↔ MAP correlation; cardiac-surgery synonym for ORx)
+- **CPPopt**: data-derived CPP at which autoregulation is most efficient
+- **CMRO₂**: cerebral metabolic rate of oxygen
+- **TBI / SAH / HIE**: traumatic brain injury / subarachnoid haemorrhage / hypoxic-ischaemic encephalopathy
+- **PICU / NICU**: paediatric / neonatal intensive care unit
+- **PBTF**: Brain Trauma Foundation pediatric severe-TBI guideline
+- **COGiTATE**: Cerebral Perfusion Pressure Optimisation Targeting trial
+</Callout>
+
+<TldrCard>
+**The 60-second version.** Healthy cerebral arterioles dilate when perfusion pressure falls and constrict when it rises, keeping CBF roughly constant across the **Lassen plateau** (adult MAP ~60–150 mmHg; narrower and lower in children, sometimes only 10–20 mmHg wide in infants). When autoregulation is intact, the brain buffers blood-pressure swings; when it fails, CBF tracks pressure passively: too low gives ischaemia, too high gives oedema and haemorrhagic transformation. Four indices operationalise "intact / impaired" at the bedside: **PRx** (ICP ↔ MAP), **Mx** (TCD MFV ↔ CPP), **ORx** (NIRS rSO₂ ↔ CPP), and **COx** (NIRS rSO₂ ↔ MAP, the cardiac-surgery variant). The CPP at which the patient's own U-curve bottoms out is **CPPopt**. Use it as a moving target, not a single number, and remember that PRx takes 3–7 minutes to settle.
+</TldrCard>
+
+## 1. Bedside vignette: where is CPPopt for this child?
+
+A 9-year-old fell from a balcony. Severe TBI; ICP monitor placed on arrival. On day 3 the bedside chart shows **PRx sustained at +0.4** for the past 90 minutes, with MAP 65 and ICP 15, so CPP 50. The team's instinct is to push CPP up with noradrenaline. The data tell a slightly different story.
+
+When you scroll back through the past 4 hours of (CPP, PRx) pairs and bin them in 5-mmHg windows, the PRx-vs-CPP U-curve has its minimum at **CPP 62**. The child has been sitting **12 mmHg below CPPopt** all morning, which is exactly the territory in which the PRx alarm fires. You titrate MAP up so CPP reaches 62, repeat the U-curve fit at the next hour, and watch PRx drift back to +0.1. The number you targeted was not "60", it was *this child's* CPPopt today. <Cite id="aries2012cppopt" /> <Cite id="beqiri2024_cogitate" />
+
+This is what individualised autoregulation-guided management looks like at the bedside. The rest of the page is the physiology behind it.
+
+---
+
+## 2. How a single arteriole holds the line
+
+The brain has a roughly fixed metabolic appetite, about **3.5 mL O₂ per 100 g per minute** in an adult, even more per gram in a school-age child. To feed it stably across a constantly moving systemic blood pressure, the cerebrovasculature changes its own diameter: arterioles **constrict** when pressure rises and **dilate** when pressure falls. The result is the familiar Lassen plateau: CBF approximately constant across a range of MAP, bounded by the lower and upper limits of autoregulation. <Cite id="lassen1959" />
+
+<Figure
+  caption="Three Lassen curves overlaid. (1) Healthy adult: flat plateau between MAP ~60 and ~150 mmHg, CBF ~50 mL/100g/min. (2) Neonate: narrower plateau (often only 10–20 mmHg wide), shifted leftward, with the lower limit sometimes near baseline MAP. (3) Severe TBI: plateau narrows and the curve approaches pressure-passive linearity. The clinical implication is that no single CPP target works for every patient, even within an age band."
+  attribution="MNM-Edu, original schematic."
+  label="Fig. 1"
+>
+  <AutoregLayered />
+</Figure>
+
+Three mechanisms work in parallel to keep CBF constant against a swinging MAP. They have different time constants and different drugs that affect them.
+
+1. **Myogenic**, smooth-muscle response to **transmural pressure**. As pressure inside the vessel rises, smooth muscle in the arteriolar wall depolarises via TRPM4 / Piezo1 mechanosensitive channels, Ca²⁺ enters via voltage-gated channels, and the vessel **constricts**. Time constant ~5–15 seconds. The dominant short-latency mechanism, originally described as the Bayliss effect in 1902.
+2. **Metabolic**, local accumulation of CO₂, lactate, adenosine, and changes in interstitial pH **dilate** vessels in regions of high demand. This is the mechanism behind functional hyperaemia (when neurons fire, local CBF rises) and the bulk of CO₂ reactivity.
+3. **Neurogenic**, sympathetic activation **shifts both LLA and ULA rightward**, narrowing the window. Parasympathetic input is small in cerebrovasculature.
+
+<Figure
+  src="/images/foundations/autoregulation/myogenic-metabolic-neurogenic.svg"
+  alt="Three rows showing time scales of myogenic, metabolic, and neurogenic autoregulation"
+  caption="Three time-scale rows for the autoregulation mechanisms. Myogenic responses act within ~5–15 s and dominate the bedside slow-wave correlation indices. Metabolic responses act over tens of seconds. Neurogenic shifts unfold over minutes. PRx and Mx capture the combined myogenic and metabolic response in the 0.04–0.07 Hz band."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 2"
+/>
+
+<Pearl>
+**Three mechanisms, three time scales.** Myogenic is seconds. Metabolic is tens of seconds. Neurogenic is the longest. Most bedside indices (PRx, Mx) use slow waves at ~0.04–0.07 Hz to capture the myogenic + metabolic response together; faster transients are dominated by myogenic alone.
+</Pearl>
+
+---
+
+## 3. Why it matters at the bedside
+
+The Lassen plateau has three operating zones, and the consequences of being in each one are different.
+
+- **Below LLA (hypotensive zone).** CBF falls with MAP; even modest hypotension causes ischaemia. In severe TBI this is the territory of secondary injury, in the neonatal HIE this is the territory of watershed infarction, in the operating room this is what causes postoperative cognitive dysfunction after deep induction.
+- **On the plateau.** CBF is approximately constant. Routine BP swings are buffered. The arterioles do the work; you do not have to.
+- **Above ULA (hypertensive zone).** CBF rises with MAP; hypertensive surges drive vasogenic oedema, BBB breakdown, and haemorrhagic transformation of infarcts. In post-recanalisation stroke, in the post-cardiotomy hypertensive patient, in eclampsia, in malignant hypertension, this is the bedside enemy.
+- **Off the plateau entirely (pressure-passive).** CBF tracks MAP linearly. There is no buffer; every BP swing is a CBF swing. In severe TBI the plateau **narrows or disappears**. <Cite id="czosnyka1997" /> A "normal" MAP can be too low or too high for *this* patient *today*.
+
+### A small management ladder
+
+When PRx is sustained above 0.30 for 30+ minutes:
+
+1. **Check the obvious**: is the patient hypoxaemic, hypercarbic, febrile, seizing, agitated, or under-sedated? Each fixes PRx faster than haemodynamic manoeuvres.
+2. **Plot the U-curve**: rolling 4-hour (CPP, PRx) U-curve. Is there a clear minimum?
+3. **Move toward CPPopt**: if CPPopt is identified, titrate MAP so CPP sits within ±5 mmHg of that minimum.
+4. **If the curve is non-parabolic**, the autoregulation system is too damaged for a U-curve fit. Default to the PBTF age-band CPP floor and watch for response in PRx over the next hour.
+5. **Reassess in 30–60 minutes**, not 5. PRx settles slowly.
+
+<Pediatric>
+The neonatal and infant brain has a **very narrow autoregulatory range**, often only 10–20 mmHg wide, and its lower limit can be alarmingly close to baseline MAP. <Cite id="brady2009" /> Brady's piglet model, the cleanest experimental demonstration of this, showed that within-individual LLA varied by tens of mmHg between animals, with no demographic predictor strong enough to bypass measurement. <Cite id="brady2007piglet" /> This is why even brief hypotension during induction or in the cath lab matters disproportionately in infants, and why CPPopt-style individualisation is most attractive (and least validated) in the youngest patients.
+</Pediatric>
+
+<WidgetEmbed name="LassenCurve" />
+
+---
+
+## 4. Setting individualised BP targets: the four available indices
+
+When the management question is "what is the right CPP or MAP for this child right now?", four indices give you data-driven answers. They differ in the probe they need, the slow-wave physiology they sample, and the noise profile.
+
+| Index | Signals correlated | Probe needed | Time constant | When to use |
+|---|---|---|---|---|
+| **PRx** | ICP ↔ MAP slow waves | Invasive ICP + arterial line | 3–7 min | Gold standard when ICP is in. Severe TBI, SAH, post-craniectomy. <Cite id="czosnyka1997prx" /> |
+| **Mx** | TCD MFV ↔ CPP slow waves | Continuous TCD + arterial line | ~5 min | When ICP is not yet placed, or as a second opinion against PRx. <Cite id="czosnyka1996mx" /> <Cite id="aaslid1989_autoreg" /> |
+| **ORx** | NIRS rSO₂ ↔ CPP slow waves | NIRS + ICP + arterial line | 5–10 min | TBI / SAH where NIRS is in for a separate reason; can substitute when TCD windows are poor. <Cite id="brady2010" /> |
+| **COx** | NIRS rSO₂ ↔ MAP slow waves | NIRS + arterial line | 5–10 min | Cardiac surgery, neonatal HIE, pre-ICP placement. Non-invasive end-to-end. <Cite id="brady2007" /> <Cite id="lee2009ndnirs" /> <Cite id="davies2017nirs" /> |
+
+**Pearson correlation thresholds** are similar across indices, with conventions of **< 0.0** for intact, **+0.3** as the operational impairment threshold, and the CPP at which the U-curve bottoms out as CPPopt. <Cite id="aries2012cppopt" /> <Cite id="donnelly2017mapopt" />
+
+<Pitfall>
+**The four indices are not interchangeable.** PRx samples macrovascular tone via the ICP pulse, Mx samples large-vessel flow, ORx and COx sample tissue oxygenation. Where the three sources disagree (e.g., PRx good, ORx bad), the discordance is itself the finding: microvascular shunting, anaemia, or extracerebral contamination of the NIRS. <Cite id="rivera-lara2017autoreg" /> Do not silently swap one index for another to "agree" with the clinical impression.
+</Pitfall>
+
+<WidgetEmbed name="PRxCalculator" />
+
+---
+
+## 5. Pattern library and pitfalls
+
+### Pattern: passive correlation
+
+PRx is +0.4 for the past hour. MAP swings of 20 mmHg are accompanied by ICP swings of 8 mmHg in the same direction. The plateau is gone; the patient is on the linear segment of the Lassen curve. **Action**: target CPP toward CPPopt; minimise BP variability.
+
+### Pattern: U-curve well defined
+
+The rolling (CPP, PRx) plot shows a clean parabola with vertex at CPP 62. **Action**: titrate to ±5 mmHg of vertex.
+
+### Pattern: U-curve absent
+
+PRx is high across all sampled CPP values; the parabola fit returns `a ≤ 0` or vertex outside the sampled range. **Action**: fall back to PBTF age-band floor; reassess in 1 hour; do not invent a CPPopt the data do not support.
+
+### Pattern: PRx-Mx-ORx discordance
+
+PRx intact, ORx impaired. **Possible mechanisms**: microvascular shunting (sepsis, post-arrest), anaemia (rSO₂ falls because of low Hb, not low flow), extracerebral contamination (scalp blood flow loading the NIRS optodes). **Action**: investigate the discordance, do not pick the "nicer" number.
+
+### Pattern: paradoxical PRx drop at very high ICP
+
+ICP is 35; PRx falls toward zero. **Mechanism**: the ICP pulse can no longer be transmitted (RAP collapse). PRx is no longer meaningful. **Action**: focus on ICP and pupils, not the index.
+
+### Pattern: rapidly oscillating PRx
+
+PRx swings between −0.4 and +0.5 every 10 minutes. **Mechanism**: cardiac-cycle arrhythmia, ventilator dyssynchrony, suction events, or genuine vasomotor instability. **Action**: confirm signal quality before chasing the swings.
+
+---
+
+## 6. Combine with…
+
+- [PRx](/modalities/prx/): the invasive gold-standard autoregulation index.
+- [Mx](/modalities/mx/): the TCD-based non-invasive substitute.
+- [ORx](/modalities/orx/): the NIRS-based autoregulation index for the ICP-monitor-less patient.
+- [CPPopt](/modalities/cppopt/): the data-driven moving target.
+- [CPP](/modalities/cpp/): the perfusion pressure the autoregulation curve is plotted against.
+- [Foundations: CO₂ and O₂ reactivity](/foundations/co2-o2-reactivity/): how PaCO₂ shifts the curve.
+- [Foundations: pediatric physiology](/foundations/pediatric-physiology/): age-band CPP and CMRO₂ values.
+
+---
+
+<DeepDive>
+
+## 7. Mechanism in detail
+
+**Myogenic.** Vascular smooth muscle (VSM) in cerebral arterioles depolarises in response to stretch via mechanosensitive ion channels (notably TRPM4 and Piezo1), opening voltage-gated Ca²⁺ channels and constricting the vessel. This response is rapid (~5–15 s) and survives denervation.
+
+**Metabolic.** Local accumulation of CO₂, lactate, adenosine, and changes in interstitial pH dilate vessels in regions of high metabolic demand. This is the mechanism behind functional hyperaemia and the bulk of the CO₂ reactivity response.
+
+**Neurogenic.** Cervical sympathetic activation shifts both LLA and ULA rightward, narrowing the window of pressure-passive flow. Parasympathetic input is small in the cerebrovasculature.
+
+## 8. The Lassen curve, and what bends it
+
+The classical curve has a flat plateau between LLA (~60 mmHg) and ULA (~150 mmHg). In severe TBI, this plateau narrows asymmetrically: the LLA rises and the ULA falls. <Cite id="czosnyka2014" /> Chronic hypertension and hyperviscosity shift the entire curve rightward; pregnancy and aging shift it leftward.
+
+## 9. PRx, the operational definition
+
+<Cite id="czosnyka1997prx" /> PRx is the moving Pearson correlation coefficient between 30 consecutive 10-second epoch averages of arterial blood pressure (ABP) and intracranial pressure (ICP), computed over a 5-minute window:
+
+```math
+\mathrm{PRx} = r(\overline{\mathrm{ABP}}_{1..30}, \overline{\mathrm{ICP}}_{1..30})
+```
+
+**Interpretation:**
+- **PRx < 0**: autoregulation active; ICP slow waves move opposite to MAP slow waves (vasoconstriction in response to pressure rise).
+- **0 to +0.25**: ambiguous / borderline; signal quality, slow-wave power, and time of day all matter at this resolution.
+- **> +0.25**: impaired autoregulation, pressure-passive cerebrovasculature. The +0.25 outcome threshold is from Sorrentino 2012 in adult severe TBI; pediatric severe TBI uses 0.25-0.30 (Lewis 2014, Tas 2022). <Cite id="sorrentino2012" /> <Cite id="lewis2014peds" />
+
+**Time constant.** PRx takes 3–7 minutes to stabilise after an autoregulation state change. Do not act on a single point. <Cite id="depreitere2014" /> <Cite id="depreitere2014icpdose" />
+
+The 0.25 outcome threshold derives from the Cambridge series and has been validated in pediatric cohorts. <Cite id="sorrentino2012" /> <Cite id="lewis2014" />
+
+## 10. Mx and ORx, when ICP is not there
+
+**Mx** uses TCD MFV instead of ICP. Same epoch architecture. <Cite id="czosnyka1996mx" />
+
+**ORx** uses NIRS rSO₂. <Cite id="brady2007" /> ORx is noisier (extracerebral contamination, slower physiology) but the non-invasive accessibility makes it the only option in many cardiac-surgery and neonatal contexts. <Cite id="hyttel2015" /> <Cite id="andresen2014nirs" />
+
+<Controversy>
+**Is the 0.25 threshold patient-specific?** Probably yes. Aries and colleagues showed that an individualised CPPopt produces a U-shaped relationship between time outside the band and 6-month outcome. <Cite id="aries2012cppopt" /> The COGiTATE phase II trial demonstrated that targeting CPPopt is feasible. <Cite id="beqiri2024_cogitate" /> Whether this improves outcome is the question phase III studies are now answering. The pediatric CPPopt feasibility studies are even earlier on the evidence curve.
+</Controversy>
+
+## 11. CPPopt, finding the bottom of the U
+
+Over a moving window (typically 4 hours), accumulate (CPP, PRx) pairs. Bin by 5-mmHg CPP intervals. Fit a parabola `PRx = a·CPP² + b·CPP + c` by weighted least squares. **Accept** the fit only if `a > 0` (real U-shape) and the vertex lies within the sampled range. CPPopt = `−b / (2a)`. <Cite id="steiner2002" />
+
+<WidgetEmbed name="CPPoptUCurve" />
+
+## 12. Cushing reflex, brainstem ischaemia at very high ICP
+
+When CPP collapses, brainstem hypoxia triggers a stereotyped autonomic response: sympathetic surge giving hypertension; vagal mediation giving bradycardia; brainstem dysfunction giving irregular respiration. The Cushing triad. <Cite id="cushing1901" /> <Cite id="fodstad2006" />
+
+<WidgetEmbed name="CushingReflexDemo" />
+
+## 13. Why pediatric autoregulation is different
+
+The pediatric autoregulatory plateau is narrower, lower, and more variable than the adult. <Cite id="brady2009" /> <Cite id="lewis2014" /> <Cite id="rivera-lara2017autoreg" /> Age-banded guidelines from the PBTF set CPP targets that scale roughly with size, but they do not capture inter-patient variability, the rationale for CPPopt being studied in pediatric TBI now. <Cite id="kochanek2019" /> <Cite id="kochanek2019_pbtf4" /> <Cite id="tasker2023_pccm_review" /> <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+Three pediatric-specific concerns:
+
+1. **Narrow plateau**: brady2009 piglet data show the plateau may be only 10–20 mmHg wide in neonates, with high inter-individual variation.
+2. **Low LLA**: the lower limit of autoregulation can sit close to baseline MAP, so "normal" BP can already be pressure-passive.
+3. **Variable closure**: post-arrest, post-CPB, and HIE all shift the LLA upward unpredictably.
+
+<Pediatric>
+**Practical thresholds:** Maintain CPP > 40 mmHg in infants and toddlers, > 50 in school-age, > 60 in adolescents, but treat these as floors, not targets, and use PRx where available. <Cite id="kochanek2019_pbtf4" />
+</Pediatric>
+
+</DeepDive>
+
+---
+
+<DeepDive>
+
+## 14. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Original Lassen curve | <Cite id="lassen1959" /> | A |
+| Dynamic autoregulation by TCD | <Cite id="aaslid1989_autoreg" /> | B |
+| PRx introduction | <Cite id="czosnyka1997prx" /> | B |
+| Mx introduction | <Cite id="czosnyka1996mx" /> | B |
+| ORx (NIRS-based) | <Cite id="brady2007" /> <Cite id="brady2007piglet" /> | C |
+| Pediatric piglet model | <Cite id="brady2009" /> <Cite id="brady2009piglet" /> | B |
+| CPPopt feasibility (Cambridge) | <Cite id="aries2012cppopt" /> | B |
+| CPPopt-targeting phase II RCT | <Cite id="beqiri2024_cogitate" /> | B |
+| MAPopt for non-invasive monitoring | <Cite id="donnelly2017mapopt" /> | B |
+| Autoregulation review | <Cite id="rivera-lara2017autoreg" /> | review |
+| ND-NIRS for autoregulation | <Cite id="lee2009ndnirs" /> | C |
+| Pediatric TBI guidelines | <Cite id="kochanek2019_pbtf4" /> | expert |
+| Pediatric MNM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="tasker2023_pccm_review" /> | expert |
+| PRx dose effect | <Cite id="depreitere2014icpdose" /> | B |
+
+</DeepDive>
+
+---
+
+## 15. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 6-year-old with severe TBI has PRx = +0.42 averaged over 30 minutes. What does this most likely indicate?',
+      options: [
+        { id: 'a', label: 'Intact autoregulation; reassure team' },
+        { id: 'b', label: 'Pressure-passive cerebrovasculature; CPP this hour matters more than usual' },
+        { id: 'c', label: 'Sensor artefact only, no clinical implication' },
+        { id: 'd', label: 'Cushing reflex imminent' },
+      ],
+      answer: 'b',
+      explanation: 'PRx > 0.25 sustained over many minutes is pressure-passive: CBF tracks MAP. The autoregulatory buffer is gone, so the operating CPP becomes the all-important variable. Check the CPPopt U-curve next.',
+    },
+    {
+      id: 'q2',
+      prompt: 'A 4-year-old severe TBI on day 2. ICP probe in place. Rolling 4-hour (CPP, PRx) U-curve fits a clean parabola with vertex at CPP 58. The patient has been running at CPP 48 for the past hour with PRx +0.35. What is the best next step?',
+      options: [
+        { id: 'a', label: 'Hold current CPP; PRx will normalise' },
+        { id: 'b', label: 'Increase MAP so CPP reaches 55–60, then reassess PRx in 30–60 minutes' },
+        { id: 'c', label: 'Drop MAP, CPP 58 is too high for a 4-year-old' },
+        { id: 'd', label: 'Switch to ORx for a second opinion' },
+      ],
+      answer: 'b',
+      explanation: 'The U-curve vertex is the data-derived CPPopt for this child today. Sitting 10 mmHg below CPPopt with a high PRx is exactly the scenario the index was built to flag. Target ±5 mmHg of vertex and reassess PRx after the index time constant (3–7 minutes for a single reading, longer for a settled trend).',
+    },
+    {
+      id: 'q3',
+      prompt: 'A neonate with HIE on therapeutic hypothermia. No ICP probe. NIRS in place. COx is +0.45 sustained for 30 minutes. MAP has been 38 throughout. What is the most plausible interpretation?',
+      options: [
+        { id: 'a', label: 'Autoregulation is intact; reassure team' },
+        { id: 'b', label: 'NIRS optode is poorly coupled; ignore the index' },
+        { id: 'c', label: 'The neonate may be on the pressure-passive segment because the autoregulation plateau in this age band is narrow and low; consider whether MAP 38 is below LLA for this baby' },
+        { id: 'd', label: 'COx is not interpretable in HIE' },
+      ],
+      answer: 'c',
+      explanation: 'The neonatal autoregulatory plateau is narrow (10–20 mmHg) and its LLA can sit near baseline MAP. A sustained COx > 0.3 in a HIE neonate at MAP 38 is suspicious for being below LLA. Confirm probe coupling, then consider modest MAP support while monitoring the index over the next hour.',
+    },
+  ]}
+/>

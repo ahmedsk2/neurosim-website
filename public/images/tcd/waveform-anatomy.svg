@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-label="TCD spectral envelope anatomy">
+  <style>
+    .bg { fill: #081224; }
+    .grid { stroke: #1f2a44; stroke-width: 0.5; }
+    .axis { stroke: #475569; stroke-width: 1; }
+    .axisLabel { fill: #94a3b8; font: 11px sans-serif; }
+    .envelope { fill: rgba(94, 234, 212, 0.18); stroke: #5eead4; stroke-width: 1.5; }
+    .lineMean { stroke: #fbbf24; stroke-dasharray: 4 3; stroke-width: 1.4; }
+    .label { fill: #e2e8f0; font: 12px sans-serif; }
+    .smallLabel { fill: #94a3b8; font: 10px sans-serif; }
+    .anno { stroke: #94a3b8; stroke-width: 1; fill: none; }
+    .tag { fill: #5eead4; font: bold 11px sans-serif; }
+    .title { fill: #f1f5f9; font: 600 14px sans-serif; }
+    .placeholder { fill: #64748b; font: italic 10px sans-serif; }
+  </style>
+  <rect class="bg" width="800" height="360"/>
+  <text class="title" x="20" y="28">Anatomy of a TCD spectral envelope (MCA), placeholder schematic</text>
+  <g stroke="#1f2a44" stroke-width="0.5">
+    <line x1="60" y1="80" x2="780" y2="80"/>
+    <line x1="60" y1="140" x2="780" y2="140"/>
+    <line x1="60" y1="200" x2="780" y2="200"/>
+    <line x1="60" y1="260" x2="780" y2="260"/>
+  </g>
+  <line class="axis" x1="60" y1="50" x2="60" y2="300"/>
+  <line class="axis" x1="60" y1="300" x2="780" y2="300"/>
+  <text class="axisLabel" x="20" y="170" transform="rotate(-90 20,170)">Velocity (cm/s)</text>
+  <text class="axisLabel" x="700" y="320">Time (cardiac cycles)</text>
+  <path class="envelope" d="
+    M60 260
+    Q90 245 110 230 Q130 220 150 100 Q165 80 180 90 Q195 105 210 200 Q220 235 230 245
+    Q240 250 250 240 Q260 230 270 245 Q290 260
+    310 260
+    Q340 245 360 230 Q380 220 400 100 Q415 80 430 90 Q445 105 460 200 Q470 235 480 245
+    Q490 250 500 240 Q510 230 520 245 Q540 260
+    560 260
+    Q590 245 610 230 Q630 220 650 100 Q665 80 680 90 Q695 105 710 200 Q720 235 730 245
+    Q740 250 750 240 Q760 230 770 245 L770 300 L60 300 Z"/>
+  <line class="lineMean" x1="60" y1="180" x2="780" y2="180"/>
+  <text class="label" x="685" y="175">MFV</text>
+  <circle cx="180" cy="90" r="3" fill="#fbbf24"/>
+  <text class="tag" x="190" y="86">PSV</text>
+  <circle cx="280" cy="252" r="3" fill="#fbbf24"/>
+  <text class="tag" x="290" y="256">EDV</text>
+  <path class="anno" d="M255 245 q-10 -8 -15 -22"/>
+  <text class="smallLabel" x="195" y="225">dicrotic notch</text>
+  <text class="smallLabel" x="60" y="335">PSV = peak systolic · EDV = end-diastolic · MFV = time-averaged mean · PI = (PSV − EDV) / MFV</text>
+  <text class="placeholder" x="60" y="352">PLACEHOLDER, TODO: replace with a polished SVG component (Fig. 2 on TCD page).</text>
+</svg>

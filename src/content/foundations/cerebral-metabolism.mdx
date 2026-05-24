@@ -1,0 +1,254 @@
+---
+title: Cerebral metabolism and flow-metabolism coupling
+description: Why cerebral blood flow and metabolic rate normally track each other, and what it means clinically when they don't.
+eyebrow: Foundation 3
+prereqs: [autoregulation]
+relatedModalities: [pbto2, sjvo2, microdialysis, brain-temp]
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **CBF**: cerebral blood flow (mL/100g/min)
+- **CMRO₂**: cerebral metabolic rate of oxygen (mL O₂/100g/min)
+- **PbtO₂**: brain-tissue partial pressure of oxygen (mmHg)
+- **SjvO₂**: jugular bulb venous O₂ saturation (%)
+- **L/P**: lactate-to-pyruvate ratio (microdialysis)
+- **MD**: cerebral microdialysis
+- **BBB**: blood-brain barrier
+- **HIE**: hypoxic-ischaemic encephalopathy
+- **TBI / SAH**: traumatic brain injury / subarachnoid haemorrhage
+- **aEEG / cEEG**: amplitude-integrated / continuous EEG
+- **NIRS**: near-infrared spectroscopy; rSO₂ regional tissue O₂ saturation
+- **TTM**: targeted temperature management
+- **MAC**: minimum alveolar concentration (volatile anaesthetic potency)
+</Callout>
+
+<TldrCard>
+**The 60-second version.** The brain is metabolically expensive: ~2% of body mass, ~20% of resting O₂ consumption. CBF normally tracks CMRO₂ within seconds; when the link breaks, you get **luxury perfusion** (CBF > demand) or **misery perfusion** (demand > CBF), both bad. Two big bedside levers move CMRO₂ without moving CBF: **temperature** (CMRO₂ falls 6–7% per degree, the whole basis of HIE cooling at 33–34 °C) and **sedation** (propofol ~30%, pentobarbital up to 50%). Microdialysis L/P ratio and PbtO₂ are the tissue-level monitors that detect uncoupling before NIRS / TCD / ICP can. Pediatric brains run hotter per gram than adult brains, so their absolute thresholds are higher and their cooling response is proportionally larger. <Cite id="polderman2009" /> <Cite id="hutchinson2015_md" />
+</TldrCard>
+
+## 1. Bedside vignette: cooled HIE neonate, day 1
+
+A 38-week neonate is admitted after a tight nuchal cord and meconium aspiration. Apgars 1, 3, 6. By 4 hours she is cooled to 33.5 °C; aEEG is suppressed with no sleep-wake cycling; NIRS rSO₂ is **86%**; TCD MCA shows MFV 80, PI 0.5, EDV 60. The team is anxious about the "high" NIRS.
+
+The signature is **collapsed CMRO₂ with preserved CBF**: cooling has dropped metabolic demand by ~25%, the cortex is electrically near-silent, the mitochondria are not consuming the O₂ that is being delivered, and the venous compartment that NIRS samples runs O₂-rich. The bedside trio (NIRS high, aEEG suppressed, low-PI TCD) is the **luxury-perfusion / metabolic-collapse** phenotype of severe HIE. <Cite id="shankaran2005hie_nichd" /> <Cite id="naim2023_brain_injury_pccm" /> The hopeful counter-signature, returning over days 2–4, is sleep-wake cycling on aEEG with rSO₂ trending back to 70%.
+
+This is the page-in-a-paragraph: when CBF and CMRO₂ separate, the modality readouts no longer mean what they normally mean.
+
+---
+
+## 2. Why coupling exists
+
+Neurons fire → ion gradients dissipate → ATP is consumed → metabolic by-products (adenosine, K⁺, lactate, NO) accumulate locally. Those by-products signal to perivascular smooth muscle within ~3 seconds, dilating local arterioles. **The vessel is being told what to do by the tissue it feeds.** Astrocytes amplify and propagate the signal: they sit between the neuron and the vessel, and their end-feet wrap the capillary.
+
+A picture of coupling at the bedside: a child has a focal seizure. Local CMRO₂ rises 60%. EEG voltage rises (firing). NIRS rSO₂ rises (hyperaemic response). PbtO₂ rises (flow > demand transiently). Microdialysis shows raised lactate (glycolytic shunt) but normal pyruvate; the vessel responded faster than the mitochondria could keep up. That is coupling.
+
+When coupling fails, those signals dissociate: EEG rises but NIRS does not (vasoparalysis or vasospasm), or NIRS is luxury-high while microdialysis L/P ratio creeps up (mitochondrial failure underneath a healthy-looking flow signal).
+
+---
+
+## 3. The numbers
+
+- **Adult CMRO₂** ~ 3.5 mL O₂ / 100 g / min.
+- **Adult CBF** ~ 50 mL / 100 g / min (white matter slower, gray matter faster).
+- **Pediatric CMRO₂** is *higher* per gram in school-age children: they consume more O₂ per gram of brain than adults, explaining their proportionally higher CBF.
+
+The bedside Fick relationship gives global cerebral O₂ extraction:
+
+```math
+\mathrm{SjvO_2} \approx \mathrm{SaO_2} - \frac{\mathrm{CMRO_2}}{\mathrm{CBF} \cdot \mathrm{Hgb} \cdot 1.34}
+```
+
+Normal SjvO₂ 55–75%. Below 55%, either CMRO₂ up or CBF/Hgb down. Above 75%, luxury perfusion or fallen CMRO₂ (sedation, cooling, electrical silence).
+
+---
+
+## 4. Temperature: the cleanest CMRO₂ lever
+
+Each 1 °C above normothermia raises CMRO₂ by ~7%:
+
+```math
+f_{\mathrm{temp}} = 1.07^{(T_{brain} - 37)}
+```
+
+A febrile brain at 39 °C runs ~14% hotter metabolically than at 37 °C. Conversely, **therapeutic hypothermia at 33 °C** drops CMRO₂ by ~30%. <Cite id="polderman2009" />
+
+<Figure
+  src="/images/foundations/cerebral-metabolism/cmro2-temperature.svg"
+  alt="CMRO2 vs brain temperature, with the 33-34 C therapeutic window highlighted"
+  caption="CMRO₂ falls roughly 6–7% per degree of cooling. The therapeutic window 33–34 °C is the band used in NICHD-protocol neonatal HIE cooling and in adult post-cardiac-arrest TTM. Cooling below 32 °C buys little additional metabolic suppression while accruing coagulation, infection, and cardiovascular cost. Hyperthermia at the other end of the curve is a direct CMRO₂ insult, the reason aggressive normothermia matters."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 1"
+/>
+
+<WidgetEmbed name="CMRO2TempSlider" />
+
+### Therapeutic hypothermia: clinical translation
+
+- **Neonatal HIE**: 33.5 °C × 72 h within 6 h of insult; standard of care since the NICHD trial. <Cite id="shankaran2005hie_nichd" />
+- **Pediatric out-of-hospital cardiac arrest**: THAPCA-OH compared 33 °C vs 36.8 °C and showed no significant difference in 12-month VABS-II survival. <Cite id="moler2015thapca_oh" /> Active fever prevention is the practical bottom line.
+- **In-hospital pediatric arrest, adult arrest, refractory ICP**: nuance per local protocol.
+
+<Pearl>
+**Brain temperature usually exceeds core by ~0.5 °C.** It widens with seizure, hyperaemia, and high ICP. A core-only thermometer underestimates brain temperature when the gradient matters most. <Cite id="henker1998" />
+</Pearl>
+
+<Pediatric>
+**Pediatric absolutes shift, the cascade order does not.** A school-age brain has CMRO₂ near 5 mL O₂/100g/min, ~40% above adult. The mitochondrial vulnerability of the developing brain to glutamate excitotoxicity is part of the rationale for cooling in neonatal HIE; the same mechanism contributes to why fever is so harmful in pediatric TBI and post-arrest. <Cite id="kochanek2019_pbtf4" /> <Cite id="naim2023_brain_injury_pccm" />
+</Pediatric>
+
+---
+
+## 5. Drug effects on CMRO₂
+
+- **Propofol:** ~30% reduction.
+- **Pentobarbital:** up to 50%; coma protocol territory.
+- **Midazolam:** ~15%.
+- **Volatile anaesthetics** (sevoflurane, isoflurane): mixed; reduce CMRO₂ but uncouple from flow at higher MAC.
+- **Ketamine:** raises CMRO₂ ~15%; modern view is that ICP rises in normocapnic, ventilated TBI are clinically minimal. <Cite id="cohen2015" />
+- **Dexmedetomidine:** modest CMRO₂ reduction; useful adjunct.
+
+Choosing a sedative is therefore not just an analgesia decision; it shifts the operating point on the metabolism axis. Pentobarbital coma in refractory ICP is a deliberate CMRO₂-collapse strategy, accepting cardiovascular and infectious cost for cerebral metabolic protection.
+
+---
+
+## 6. When supply meets demand: coupling at the bedside
+
+| Pattern | NIRS rSO₂ | PbtO₂ | TCD MFV | EEG | MD L/P | Interpretation |
+|---|---|---|---|---|---|---|
+| **Healthy coupled** | 65–80 | 20–35 | age-band | normal | < 25 | Normal |
+| **Luxury perfusion** | high | high | high | suppressed | normal-low | Flow exceeds demand (post-arrest reperfusion, deep sedation, cooling) |
+| **Misery perfusion** | low | low | low | slow | high | Demand exceeds flow (impending herniation, vasospasm, hypotension) |
+| **Mitochondrial failure** | normal | normal | normal | slow | high (L↑ P normal) | Cells cannot use the O₂ being delivered (TBI day 1–3, sepsis, mitochondrial disease) |
+| **Hyperglycolysis** | normal | normal | normal | seizing | normal-mid (high glucose use) | Seizure-driven anaerobic demand (focal NCSE) |
+
+The matrix is why **single-modality interpretation misleads** in injured brain. NIRS at 80% in a sleeping child is reassuring; NIRS at 80% in a suppressed-EEG cooled HIE neonate is the opposite of reassuring.
+
+<WidgetEmbed name="MicrodialysisGrid" />
+
+---
+
+## 7. Microdialysis quadrants
+
+The lactate-to-pyruvate ratio, glucose, and glycerol from a 20-kDa MWCO microdialysis catheter classify metabolic state in a tissue-level way that no flow monitor can match. <Cite id="hutchinson2015_md" /> <Cite id="engstrom2005" />
+
+| L/P | Glucose | Pattern |
+|---|---|---|
+| < 25 | normal | Normal |
+| ≥ 25 | normal | Mitochondrial dysfunction |
+| ≥ 40 | < 0.8 mmol/L | Ischaemia |
+| normal | high | Hyperglycolysis (seizure / stress) |
+| any | any (with ↑ glycerol) | Membrane disruption |
+
+The Leroux et al. NeuroCritical Care consensus places microdialysis as a tier-2 modality for severe TBI and poor-grade SAH; the pediatric figaji2025 consensus retains it as a research-leaning modality due to invasiveness. <Cite id="leroux2014_neurocrit_consensus" /> <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+---
+
+## 8. Pitfalls
+
+- **Treating SjvO₂ 82% as reassurance.** It can also be luxury perfusion or sedation-induced CMRO₂ collapse; check the EEG and cooling status.
+- **Treating PbtO₂ 18 as reassurance.** It can be misery perfusion at a high SjvO₂ if regional flow is poor; pair with NIRS and TCD.
+- **Reading NIRS in a cooled brain as if it were normothermic.** Cooling drops extraction; rSO₂ rises without any change in tissue health.
+- **Forgetting fever.** Each degree of fever raises CMRO₂ ~7%; aggressive normothermia in TBI / SAH / post-arrest is a metabolic intervention.
+- **Conflating mitochondrial dysfunction with ischaemia.** Raised L/P with preserved glucose is mitochondrial; raised L/P with low glucose is ischaemia. Different treatments.
+- **Reading per-gram pediatric CBF as adult.** Pediatric brains run higher CBF for higher CMRO₂; the same TCD MFV that worries an adult is normal in a 5-year-old.
+
+---
+
+## 9. Combine with…
+
+- [Modality: PbtO₂](/modalities/pbto2/): tissue O₂ as the supply-demand readout.
+- [Modality: SjvO₂](/modalities/sjvo2/): global extraction via Fick.
+- [Modality: microdialysis](/modalities/microdialysis/): tissue chemistry, L/P, glucose, glycerol.
+- [Modality: brain temperature](/modalities/brain-temp/): the lever and the contaminant.
+- [Modality: NIRS](/modalities/nirs/): tissue oximetry, sensitive to coupling.
+- [Foundation: autoregulation](/foundations/autoregulation/): the curve metabolism rides on.
+- [Foundation: Astrup cascade](/foundations/astrup-cascade/): what happens to metabolism when CBF falls.
+
+---
+
+<DeepDive>
+
+## 10. Components of CMRO₂
+
+CMRO₂ has roughly three contributions:
+1. **Synaptic activity**: biggest single bucket; what neuronal firing costs.
+2. **Membrane resting potential**: Na⁺/K⁺-ATPase to maintain ion gradients.
+3. **Macromolecular synthesis and turnover**: small.
+
+Anaesthesia preferentially suppresses synaptic activity, which is why deep sedation can drop CMRO₂ ~50% but not lower: the resting "housekeeping" cost remains until you cool the brain or kill it.
+
+## 11. Coupling biochemistry
+
+Local metabolism produces vasodilators (adenosine, NO, K⁺, lactate, H⁺). Astrocytes propagate signals via Ca²⁺ waves to perivascular smooth muscle. The mechanism is biologically robust but vulnerable in injured brain: astrocyte function and perivascular signalling fail before neuronal death, producing "metabolic-flow uncoupling" as an early injury marker.
+
+## 12. Therapeutic-hypothermia controversies in pediatrics
+
+- **THAPCA-OH (2015)**: out-of-hospital pediatric arrest, 33 °C vs 36.8 °C, no significant 12-month outcome difference. <Cite id="moler2015thapca_oh" /> The dominant interpretation is "actively prevent fever, don't necessarily cool deep."
+- **NICHD HIE (2005)**: severe neonatal HIE, whole-body cooling to 33.5 °C × 72 h improved death-or-disability at 18 months. <Cite id="shankaran2005hie_nichd" /> Remains standard of care.
+- **Refractory ICP**: cooling lowers ICP via CMRO₂ collapse and modest cerebral vasoconstriction; adult Eurotherm and pediatric Hutchison trials showed harm or no benefit when used early or aggressively.
+
+## 13. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Q10 temperature effect on CMRO₂ | <Cite id="polderman2009" /> | review |
+| Brain-core temperature gradient | <Cite id="henker1998" /> | C |
+| Ketamine and CMRO₂ in TBI | <Cite id="cohen2015" /> | review |
+| Microdialysis consensus | <Cite id="hutchinson2015_md" /> <Cite id="engstrom2005" /> | expert |
+| NeuroCritical Care MMM consensus | <Cite id="leroux2014_neurocrit_consensus" /> | expert |
+| Pediatric MMM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> | expert |
+| NICHD HIE trial | <Cite id="shankaran2005hie_nichd" /> | A |
+| THAPCA-OH | <Cite id="moler2015thapca_oh" /> | A |
+| Pediatric TBI / coupling review | <Cite id="naim2023_brain_injury_pccm" /> <Cite id="tasker2023_pccm_review" /> | review |
+| PBTF guideline | <Cite id="kochanek2019_pbtf4" /> | expert |
+
+</DeepDive>
+
+---
+
+## 14. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'Brain temperature 38.5 °C in a sedated TBI patient. Approximate CMRO₂ rise vs 37 °C?',
+      options: [
+        { id: 'a', label: '~2%' },
+        { id: 'b', label: '~10%' },
+        { id: 'c', label: '~25%' },
+        { id: 'd', label: '~50%' },
+      ],
+      answer: 'b',
+      explanation: 'Q10 ≈ 1.07; 1.5 °C × 7%/°C ≈ 10–11% increase. Aggressive normothermia in TBI / SAH / post-arrest is therefore a metabolic intervention, not a comfort measure.',
+    },
+    {
+      id: 'q2',
+      prompt: 'Microdialysis shows L/P = 35, glucose 1.6 mmol/L. What pattern?',
+      options: [
+        { id: 'a', label: 'Normal' },
+        { id: 'b', label: 'Ischaemia' },
+        { id: 'c', label: 'Mitochondrial dysfunction' },
+        { id: 'd', label: 'Hyperglycolysis' },
+      ],
+      answer: 'c',
+      explanation: 'Raised L/P with preserved glucose suggests mitochondrial dysfunction. Ischaemia would have low glucose with high L/P. The therapeutic implication differs: restoring perfusion for ischaemia, supportive care and time for mitochondrial dysfunction.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A cooled HIE neonate on day 1 has NIRS rSO₂ 86%, aEEG suppressed without cycling, TCD PI 0.5. What is the most likely interpretation?',
+      options: [
+        { id: 'a', label: 'Reassuring: cerebral oxygenation is excellent' },
+        { id: 'b', label: 'Luxury perfusion with collapsed CMRO₂; pattern is consistent with severe HIE' },
+        { id: 'c', label: 'Vasospasm developing' },
+        { id: 'd', label: 'Normal post-cooling finding without prognostic information' },
+      ],
+      answer: 'b',
+      explanation: 'Cooling lowers CMRO₂ ~25% at 33.5 °C, but a suppressed aEEG without cycling and a low PI with high diastolic flow signals metabolism collapsed beyond what cooling alone produces. NIRS at 86% in this context is luxury perfusion, not reassurance, and is associated with worse prognosis when sustained.',
+    },
+  ]}
+/>

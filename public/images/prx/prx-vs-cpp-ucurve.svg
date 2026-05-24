@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" role="img" aria-label="PRx vs CPP U-curve">
+  <style>
+    .bg { fill: #081224; }
+    .grid { stroke: #1f2a44; stroke-width: 0.5; }
+    .axis { stroke: #475569; stroke-width: 1; }
+    .title { fill: #f1f5f9; font: 600 14px sans-serif; }
+    .sub { fill: #94a3b8; font: 11px sans-serif; }
+    .label { fill: #e2e8f0; font: 12px sans-serif; }
+    .small { fill: #94a3b8; font: 10px sans-serif; }
+    .placeholder { fill: #64748b; font: italic 10px sans-serif; }
+    .curve { stroke: #5eead4; stroke-width: 2; fill: none; }
+    .curveFill { fill: rgba(94, 234, 212, 0.15); stroke: #5eead4; stroke-width: 1.5; }
+    .accent { fill: #fbbf24; stroke: #fbbf24; }
+    .danger { fill: #f87171; stroke: #f87171; }
+    .ok { fill: #22c55e; stroke: #22c55e; }
+    .purple { fill: #c084fc; stroke: #c084fc; }
+    .box { fill: #0f1c34; stroke: #334155; stroke-width: 1; }
+    .arrow { stroke: #94a3b8; stroke-width: 1; fill: none; marker-end: url(#arrow); }
+    .dash { stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="800" height="380"/>
+  <text class="title" x="20" y="28">PRx vs CPP U-curve, placeholder schematic</text>
+  <text class="sub" x="20" y="48">Classic U-curve with CPPopt at the bottom; LLA and ULA where PRx crosses 0.25.</text>
+  <g class="grid">
+    <line x1="60" y1="90" x2="780" y2="90"/>
+    <line x1="60" y1="160" x2="780" y2="160"/>
+    <line x1="60" y1="230" x2="780" y2="230"/>
+    <line x1="60" y1="300" x2="780" y2="300"/>
+  </g>
+  <line class="axis" x1="60" y1="60" x2="60" y2="310"/>
+  <line class="axis" x1="60" y1="310" x2="780" y2="310"/>
+  <path class="curve" d="M80 110 Q220 320 420 320 Q620 320 760 110"/>
+  <circle class="accent" cx="420" cy="320" r="5"/>
+  <text class="small" x="430" y="316">vertex (optimum)</text>
+  <line class="axis dash" x1="280" y1="60" x2="280" y2="310"/>
+  <line class="axis dash" x1="560" y1="60" x2="560" y2="310"/>
+  <text class="small" x="240" y="80">LLA</text>
+  <text class="small" x="540" y="80">ULA</text>
+  <text class="placeholder" x="20" y="370">PLACEHOLDER, TODO: polish (prx/prx-vs-cpp-ucurve.svg).</text>
+</svg>

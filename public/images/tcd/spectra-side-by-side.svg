@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-label="Five TCD spectral patterns side by side">
+  <style>
+    .bg { fill: #081224; }
+    .panel { fill: #0f172a; stroke: #1f2a44; stroke-width: 1; }
+    .axis { stroke: #475569; stroke-width: 0.8; }
+    .label { fill: #e2e8f0; font: 11px sans-serif; }
+    .smallLabel { fill: #94a3b8; font: 10px sans-serif; }
+    .title { fill: #f1f5f9; font: 600 13px sans-serif; }
+    .subtitle { fill: #5eead4; font: 600 11px sans-serif; }
+    .placeholder { fill: #64748b; font: italic 10px sans-serif; }
+    .env { fill: rgba(94, 234, 212, 0.16); stroke: #5eead4; stroke-width: 1.2; }
+    .envBad { fill: rgba(248, 113, 113, 0.16); stroke: #f87171; stroke-width: 1.2; }
+    .envWarn { fill: rgba(251, 191, 36, 0.16); stroke: #fbbf24; stroke-width: 1.2; }
+    .baseline { stroke: #475569; stroke-width: 0.7; }
+  </style>
+  <rect class="bg" width="900" height="380"/>
+  <text class="title" x="20" y="26">Five canonical TCD spectra, placeholder schematic</text>
+
+  <!-- Panel A: normal -->
+  <rect class="panel" x="20" y="50" width="160" height="240" rx="6"/>
+  <text class="subtitle" x="30" y="68">(a) Normal</text>
+  <line class="baseline" x1="20" y1="200" x2="180" y2="200"/>
+  <path class="env" d="M30 200 Q45 80 60 100 Q75 130 90 200 Q105 180 120 195 Q135 205 150 200 L150 200 Q165 80 180 100 L180 290 L30 290 Z"/>
+  <text class="smallLabel" x="30" y="310">PI ~0.8, EDV healthy</text>
+  <text class="smallLabel" x="30" y="324">clean diastolic shoulder</text>
+
+  <!-- Panel B: vasospasm -->
+  <rect class="panel" x="200" y="50" width="160" height="240" rx="6"/>
+  <text class="subtitle" x="210" y="68">(b) Vasospasm</text>
+  <line class="baseline" x1="200" y1="200" x2="360" y2="200"/>
+  <path class="envWarn" d="M210 200 Q225 55 240 70 Q255 110 270 200 Q285 175 300 195 Q315 205 330 200 L330 200 Q345 55 360 70 L360 290 L210 290 Z"/>
+  <text class="smallLabel" x="210" y="310">MFV ↑↑, LR > 3</text>
+  <text class="smallLabel" x="210" y="324">PI nearly normal</text>
+
+  <!-- Panel C: raised ICP -->
+  <rect class="panel" x="380" y="50" width="160" height="240" rx="6"/>
+  <text class="subtitle" x="390" y="68">(c) Raised ICP</text>
+  <line class="baseline" x1="380" y1="200" x2="540" y2="200"/>
+  <path class="envBad" d="M390 200 Q405 100 420 115 Q430 145 440 200 L440 200 Q442 230 446 240 L450 240 Q455 220 460 200 Q475 180 490 195 Q495 105 510 120 Q520 150 530 200 L530 290 L390 290 Z"/>
+  <text class="smallLabel" x="390" y="310">low EDV, high PI</text>
+  <text class="smallLabel" x="390" y="324">deep dicrotic notch</text>
+
+  <!-- Panel D: oscillating arrest -->
+  <rect class="panel" x="560" y="50" width="160" height="240" rx="6"/>
+  <text class="subtitle" x="570" y="68">(d) Oscillating arrest</text>
+  <line class="baseline" x1="560" y1="200" x2="720" y2="200"/>
+  <path class="envBad" d="M570 200 Q585 100 600 120 L600 200 L600 270 Q615 250 625 200 Q640 105 655 125 L655 200 L655 270 Q670 245 680 200 Q695 110 710 130 L710 290 L570 290 Z"/>
+  <text class="smallLabel" x="570" y="310">forward systolic spike</text>
+  <text class="smallLabel" x="570" y="324">+ reverse end-diastolic</text>
+
+  <!-- Panel E: reverberating arrest -->
+  <rect class="panel" x="740" y="50" width="140" height="240" rx="6"/>
+  <text class="subtitle" x="750" y="68">(e) Reverberating</text>
+  <line class="baseline" x1="740" y1="200" x2="880" y2="200"/>
+  <path class="envBad" d="M750 200 Q758 175 766 195 L766 200 L766 245 Q774 220 782 200 Q790 175 798 195 L798 200 L798 245 Q806 220 814 200 Q822 175 830 195 L830 200 L830 245 Q838 220 846 200 Q854 175 862 195 L870 200 L870 290 L750 290 Z"/>
+  <text class="smallLabel" x="750" y="310">"pendular", no net flow</text>
+  <text class="smallLabel" x="750" y="324">brain-death pattern</text>
+
+  <text class="placeholder" x="20" y="365">PLACEHOLDER, TODO: polish (Fig. 4 on TCD page). Shapes are diagrammatic.</text>
+</svg>

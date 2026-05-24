@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#081224"/>
+  <rect x="56" y="56" width="400" height="400" rx="48" fill="#152238" stroke="#14B8A6" stroke-width="8"/>
+  <text x="256" y="240" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="120" font-weight="700" fill="#14B8A6" letter-spacing="6">MNM</text>
+  <text x="256" y="328" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="40" font-weight="700" fill="#5EEAD4" letter-spacing="3">EDU</text>
+  <circle cx="256" cy="396" r="12" fill="#F59E0B"/>
+  <circle cx="220" cy="396" r="8" fill="#5EEAD4"/>
+  <circle cx="292" cy="396" r="8" fill="#8B5CF6"/>
+</svg>

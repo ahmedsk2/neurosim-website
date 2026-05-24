@@ -1,0 +1,232 @@
+---
+title: CO₂ and O₂ reactivity
+description: Why a single hyperventilation breath drops cerebral blood flow and an FiO₂ change usually doesn't.
+eyebrow: Foundation 2
+prereqs: [autoregulation]
+relatedModalities: [tcd, nirs, pbto2]
+evidenceGrade: A
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **PaCO₂ / PaO₂**: arterial partial pressures of CO₂ and O₂ (mmHg)
+- **etCO₂**: end-tidal CO₂; an approximation of PaCO₂ that fails in V/Q mismatch
+- **CBF**: cerebral blood flow
+- **CMRO₂**: cerebral metabolic rate of oxygen
+- **TCD**: transcranial Doppler; MFV is mean flow velocity (cm/s)
+- **NIRS**: near-infrared spectroscopy; rSO₂ is regional tissue O₂ saturation
+- **PbtO₂**: brain-tissue oxygen partial pressure
+- **TBI / SAH / HIE**: traumatic brain injury / subarachnoid haemorrhage / hypoxic-ischaemic encephalopathy
+- **ARDS**: acute respiratory distress syndrome
+- **ICP / CPP**: intracranial pressure / cerebral perfusion pressure
+- **ROP / BPD**: retinopathy of prematurity / bronchopulmonary dysplasia
+- **PBTF**: Brain Trauma Foundation pediatric guideline
+</Callout>
+
+<TldrCard>
+**The 60-second version.** PaCO₂ is the cerebrovascular lever you actually have at the bedside. Around normocapnia, CBF changes by **~3–4% per mmHg PaCO₂**: drop PaCO₂ from 40 to 30 and CBF falls roughly 30%. The response is fast (~10 s) and lives in the vessel wall via perivascular H⁺. **Below PaCO₂ ~25** the vasoconstriction is maximal; **above ~55** the vasodilation is maximal. PaO₂ matters far less until it falls below ~50 mmHg, then CBF rises hyperbolically. Hyperventilation as a bridge to definitive treatment for impending herniation is acceptable; **prophylactic** hyperventilation harms. <Cite id="kety1948" /> <Cite id="reivich1964" /> <Cite id="kochanek2019_pbtf4" />
+</TldrCard>
+
+## 1. Bedside vignette: hypocapnia hurts
+
+A 4-year-old has severe TBI and was hyperventilated en route to the PICU; PaCO₂ on first arterial blood gas is **28 mmHg**. NIRS rSO₂ has drifted from 72% to 58%. Continuous TCD on the left MCA shows MFV falling from 90 to 60 cm/s and PI rising from 1.0 to 1.4. The team's first instinct (raised ICP) is wrong; the deeper signature is **hypocapnic vasoconstriction** producing iatrogenic ischaemia in already-vulnerable peri-injury tissue.
+
+You ask respiratory therapy to titrate the minute-ventilation down by 15%. Over 20 minutes PaCO₂ rises to 36, MFV recovers to 85, NIRS settles at 70%, and PI returns to baseline. The ICP measured on the new probe placed 1 hour later is 14, not the 25 the team feared. The lesson: **flow falls with hypocapnia in a way that mimics rising ICP on TCD**, and you only know which by knowing the gas. <Cite id="brian1998" /> <Cite id="kochanek2019_pbtf4" />
+
+---
+
+## 2. How CO₂ talks to a vessel
+
+PaCO₂ does not act on smooth muscle directly. The chain is:
+
+1. **CO₂ diffuses across the BBB**: small, lipid-soluble, crosses in seconds.
+2. **CO₂ + H₂O → H₂CO₃ → H⁺ + HCO₃⁻** in the perivascular space.
+3. **H⁺ acts on perivascular smooth muscle** via K⁺ channels and NO; the vessel relaxes (acidosis) or contracts (alkalosis).
+4. **CBF re-equilibrates within ~10 s**, much faster than metabolic acid-base shifts because HCO₃⁻ does not cross the BBB freely.
+
+This is why minute-to-minute ventilator settings move cerebral blood flow, while a slowly evolving metabolic acidosis barely does, until the arterial pH starts crossing the BBB indirectly through other mechanisms.
+
+<Figure
+  src="/images/foundations/co2-o2-reactivity/co2-curve.svg"
+  alt="Cerebral blood flow as a function of PaCO2 from 20 to 80 mmHg, with linear range and saturation"
+  caption="CBF as a function of PaCO₂. The linear range runs roughly from 25 to 55 mmHg with a slope of ~3–4% per mmHg. Below ~25 the vessels are maximally constricted; above ~55 they are maximally dilated. The slope shrinks (vasoparalysis) in severe TBI, large stroke, and end-stage liver disease, and is the bedside finding that defines those conditions."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 1"
+/>
+
+### The practical numbers
+
+Around normocapnia, **CBF changes by ~3–4% per mmHg PaCO₂**. <Cite id="reivich1964" /> <Cite id="kety1948" /> Drop PaCO₂ from 40 to 30 and CBF falls ~30%. The response is fast (~10 s) and survives moderate but not severe TBI. <Cite id="brian1998" />
+
+Clamps:
+- Below ~25 mmHg: maximal vasoconstriction; further drops do nothing.
+- Above ~55 mmHg: maximal vasodilation; further rises do nothing.
+
+A common bedside model:
+
+```math
+f_{\mathrm{PaCO_2}} = \mathrm{clamp}(0.4,\;1.45,\;1 + (\mathrm{PaCO_2} - 40)\cdot 0.03 \cdot s)
+```
+
+where `s` is the reactivity scalar: 1.0 intact, 0.0 lost (vasoparalysis), partial in between.
+
+<Pearl>
+**Hyperventilation is a sledgehammer.** Brief, targeted hyperventilation (PaCO₂ 30–35 mmHg) is acceptable for impending herniation as a **bridge** to definitive treatment. **Prophylactic** hyperventilation is harmful: it drops CBF below the ischaemic threshold without fixing the underlying problem, and the PBTF guideline explicitly cautions against it. <Cite id="kochanek2019_pbtf4" /> <Cite id="tasker2023_pccm_review" />
+</Pearl>
+
+---
+
+## 3. When hypocapnia helps, and when it harms
+
+Hypocapnia is a bedside lever, not a treatment. A simple ladder:
+
+1. **Impending herniation, definitive intervention en route**: brief PaCO₂ 30–35 is appropriate, with continuous monitoring (TCD MFV, NIRS rSO₂, PbtO₂ if present) to detect overshoot.
+2. **Sustained ICP elevation with definitive intervention available**: do not chase ICP with PaCO₂ < 35. Osmotherapy, CSF drainage, sedation, head-up, and surgical decompression are the actual tools.
+3. **Routine post-injury ventilation**: target PaCO₂ **35–40** (normocapnia). Permissive hypercapnia of ARDS is generally tolerated up to PaCO₂ ~50–55 unless ICP is critical.
+4. **Prophylactic hyperventilation**: never. The ischaemic dose accumulates fast.
+
+The mechanism for harm is direct: at PaCO₂ 25 with intact reactivity, CBF is ~55% of baseline, well into the territory where peri-injury cortex falls below the Astrup electrical-failure threshold. <Cite id="brian1998" />
+
+---
+
+## 4. O₂ reactivity, threshold-stepped
+
+Above PaO₂ ~50 mmHg, CBF barely cares. Below 50 mmHg, vasodilation begins; below 30, the response accelerates. <Cite id="brown1985" />
+
+<Figure
+  src="/images/foundations/co2-o2-reactivity/o2-reactivity-low-pao2.svg"
+  alt="Hyperbolic CBF response to PaO2 with vasodilation kicking in below 50 mmHg"
+  caption="CBF as a function of PaO₂. Above 50 mmHg the curve is flat: doubling PaO₂ from 100 to 200 does not change CBF appreciably. Below 50 mmHg the curve climbs steeply: CBF rises by roughly 4% per mmHg between 30 and 50, and by 5% or more per mmHg below 30. The clinical consequence is that hypoxia matters and hyperoxia mostly does not."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 2"
+/>
+
+```
+PaO₂ ≥ 50 → no change
+PaO₂ 30–50 → modest dilation (~4%/mmHg below 50)
+PaO₂ < 30  → strong dilation (~5%/mmHg below 30)
+```
+
+<Pediatric>
+Neonates have **higher resting CBF** and may have a slightly different O₂ reactivity slope. <Cite id="gleason1989" /> Hyperoxia in preterm infants drives retinopathy and pulmonary disease; keep SpO₂ in the prescribed band, not "100%". SafeBoosC trials in neonatal NIRS aim for rSO₂ 55–85% rather than maximising oxygen. <Cite id="hyttel2015" /> <Cite id="plomgaard2024_safeboosc3" />
+</Pediatric>
+
+<WidgetEmbed name="CO2ReactivityCurve" />
+
+<WidgetEmbed name="O2ReactivityCurve" />
+
+---
+
+## 5. Why reactivity matters for monitoring
+
+Each modality you hang on the patient is influenced by PaCO₂ in a predictable way. If you do not control for the gas, you will misread the trace.
+
+- **Mx (TCD-based reactivity)** is computed at fixed PaCO₂; small CO₂ swings will move CBF and bias the index.
+- **PRx** is robust to CO₂ swings because both ABP and ICP slow waves are measured simultaneously and the autoregulatory response is what is being measured.
+- **NIRS rSO₂** is sensitive to CO₂ via the venous compartment: hypercapnia widens the cerebral arterio-venous O₂ difference because flow rises faster than extraction can fall.
+- **PbtO₂** rises with hypercapnia and falls with hypocapnia, both via flow. A PbtO₂ that drops at the same time the gas comes back PaCO₂ 30 is almost always a flow story, not a tissue-injury story. <Cite id="okonkwo2017_boost2" /> <Cite id="bernard2025_boost3" />
+
+### Combine-with: vasoreactivity testing as a bedside autoregulation surrogate
+
+A controlled brief breath-hold or PaCO₂ challenge can be used to **test cerebrovascular reactivity** in real time using NIRS or TCD. A normal cerebrovasculature responds to a 5-mmHg rise in PaCO₂ with a 15–20% rise in MFV (TCD) or a small but reproducible rSO₂ rise (NIRS). A flat response signals vasoparalysis. This is a research-leaning technique at the bedside, but it can rescue management when the autoregulation indices are non-diagnostic. <Cite id="rivera-lara2017autoreg" /> <Cite id="davies2017nirs" />
+
+---
+
+## 6. Pitfalls
+
+- **End-tidal CO₂ is not arterial CO₂** in the ICU. ARDS, V/Q mismatch, and ECMO all widen the gradient; a "normal" etCO₂ 36 can correspond to PaCO₂ 28 or 48 depending on dead space.
+- **Permissive hypercapnia** in ARDS is generally tolerated by the brain unless ICP is critical; routine reflex normalisation of PaCO₂ in ARDS hurts the lung.
+- **Hypocapnia for cooling** is a misconception; temperature management does not require driving down CO₂.
+- **Hyperoxia is not "free"**: hyperoxia drives vasoconstriction at extreme levels (PaO₂ > 300), reactive oxygen species at any sustained level, and ROP / BPD in the preterm.
+- **CO₂ swing-induced PI changes** can be misread as ICP rises on TCD. Pair every TCD reading with the contemporaneous arterial gas.
+
+---
+
+## 7. Loss of reactivity in TBI
+
+Severe TBI can cause **vasoparalysis**: the cerebrovasculature stops responding to CO₂. The clinical signature is a TCD MFV that does not change with brief hyperventilation, or a flat NIRS rSO₂ response to a controlled CO₂ challenge. <Cite id="klingelhofer1996" /> Vasoparalysis does not always recover; it correlates with poor outcome. In a vasoparalytic brain, hyperventilation no longer lowers ICP (the vessels cannot constrict further) but still risks regional ischaemia where reactivity is partly preserved.
+
+---
+
+## 8. Combine with…
+
+- [Modality: TCD](/modalities/tcd/): MFV moves with PaCO₂; control for gas before reading PI as ICP.
+- [Modality: NIRS](/modalities/nirs/): rSO₂ varies with CO₂ via the venous compartment.
+- [Modality: PbtO₂](/modalities/pbto2/): tissue O₂ tracks flow and so tracks PaCO₂.
+- [Foundation: autoregulation](/foundations/autoregulation/): the curve PaCO₂ shifts.
+- [Foundation: pediatric physiology](/foundations/pediatric-physiology/): age-banded reactivity values.
+
+---
+
+<DeepDive>
+
+## 9. Mechanism in more detail
+
+PaCO₂ diffuses across the blood-brain barrier and dissociates to H⁺. The H⁺ is the actual vasodilator, acting on perivascular smooth muscle. This is why **acute respiratory** PaCO₂ changes have a faster CBF effect than equivalent **metabolic** acid-base changes; the BBB is permeable to CO₂ but not bicarbonate.
+
+The vascular target is the arteriole, not the capillary or venule. The first ~5 vessel generations downstream of the M1 do the bulk of the diameter change. This is why TCD MCA MFV is such a clean readout: the M1 diameter is fixed, and downstream resistance is what is moving.
+
+## 10. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Kety-Schmidt and the original CBF measurement | <Cite id="kety1948" /> | foundational |
+| Quantitative PaCO₂ slope | <Cite id="reivich1964" /> | A |
+| PaO₂ thresholds | <Cite id="brown1985" /> | B |
+| Neonatal O₂ reactivity | <Cite id="gleason1989" /> | C |
+| Reactivity in TBI | <Cite id="brian1998" /> | B |
+| Vasoparalysis in severe TBI | <Cite id="klingelhofer1996" /> | C |
+| PBTF guideline (pediatric TBI) | <Cite id="kochanek2019_pbtf4" /> | expert |
+| Pediatric MMM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="tasker2023_pccm_review" /> | expert |
+| Autoregulation review | <Cite id="rivera-lara2017autoreg" /> | review |
+| NIRS for vasoreactivity | <Cite id="davies2017nirs" /> | C |
+| SafeBoosC trial framework | <Cite id="hyttel2015" /> <Cite id="plomgaard2024_safeboosc3" /> | B |
+
+</DeepDive>
+
+---
+
+## 11. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 6-year-old severe TBI is ventilated to PaCO₂ 28 on arrival. NIRS has dropped from 72% to 58%; TCD MFV from 90 to 60. ICP unknown. Best next step?',
+      options: [
+        { id: 'a', label: 'Hyperventilate further; the falling NIRS is rising ICP' },
+        { id: 'b', label: 'Allow PaCO₂ to drift up to 35; reassess MFV and NIRS over 20 minutes' },
+        { id: 'c', label: 'Start hypertonic saline immediately' },
+        { id: 'd', label: 'Increase FiO₂ to 1.0' },
+      ],
+      answer: 'b',
+      explanation: 'The combined NIRS drop and MFV drop at PaCO₂ 28 are most consistent with hypocapnic vasoconstriction, not rising ICP. Allow PaCO₂ to rise to 35 (≈21% CBF recovery predicted) and reassess. Continue ICP work-up in parallel; do not reach for osmotherapy or hyperoxia first.',
+    },
+    {
+      id: 'q2',
+      prompt: 'You raise FiO₂ from 0.40 to 0.80 in a patient with PaO₂ already 110 mmHg. What is the predicted CBF effect?',
+      options: [
+        { id: 'a', label: 'Doubled' },
+        { id: 'b', label: 'No meaningful change' },
+        { id: 'c', label: 'Halved' },
+        { id: 'd', label: 'Falls below ischaemic threshold' },
+      ],
+      answer: 'b',
+      explanation: 'Above PaO₂ 50 mmHg, CBF is essentially unchanged by further oxygenation. The lever is PaCO₂, not PaO₂. Hyperoxia also has its own harms (reactive oxygen species, ROP in preterms).',
+    },
+    {
+      id: 'q3',
+      prompt: 'Why is "prophylactic hyperventilation" considered harmful in pediatric TBI?',
+      options: [
+        { id: 'a', label: 'It increases ICP' },
+        { id: 'b', label: 'It produces ischaemia by dropping CBF below the Astrup threshold without fixing the underlying mass effect' },
+        { id: 'c', label: 'It causes seizures' },
+        { id: 'd', label: 'It is ineffective at lowering ICP' },
+      ],
+      answer: 'b',
+      explanation: 'Hyperventilation lowers ICP via vasoconstriction, but the same vasoconstriction can drop regional CBF below the ischaemic threshold, especially in penumbral tissue. The PBTF guideline explicitly cautions against prophylactic hyperventilation in pediatric severe TBI.',
+    },
+  ]}
+/>

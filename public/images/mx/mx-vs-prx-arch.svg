@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" role="img" aria-label="Mx vs PRx architecture">
+  <style>
+    .bg { fill: #081224; }
+    .grid { stroke: #1f2a44; stroke-width: 0.5; }
+    .axis { stroke: #475569; stroke-width: 1; }
+    .title { fill: #f1f5f9; font: 600 14px sans-serif; }
+    .sub { fill: #94a3b8; font: 11px sans-serif; }
+    .label { fill: #e2e8f0; font: 12px sans-serif; }
+    .small { fill: #94a3b8; font: 10px sans-serif; }
+    .placeholder { fill: #64748b; font: italic 10px sans-serif; }
+    .curve { stroke: #5eead4; stroke-width: 2; fill: none; }
+    .curveFill { fill: rgba(94, 234, 212, 0.15); stroke: #5eead4; stroke-width: 1.5; }
+    .accent { fill: #fbbf24; stroke: #fbbf24; }
+    .danger { fill: #f87171; stroke: #f87171; }
+    .ok { fill: #22c55e; stroke: #22c55e; }
+    .purple { fill: #c084fc; stroke: #c084fc; }
+    .box { fill: #0f1c34; stroke: #334155; stroke-width: 1; }
+    .arrow { stroke: #94a3b8; stroke-width: 1; fill: none; marker-end: url(#arrow); }
+    .dash { stroke-dasharray: 4 3; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="800" height="380"/>
+  <text class="title" x="20" y="28">Mx vs PRx architecture, placeholder schematic</text>
+  <text class="sub" x="20" y="48">Mx uses TCD MFV; PRx uses ICP; both correlate slow waves with MAP.</text>
+  <g>
+    <rect class="box" x="80" y="100" width="180" height="60" rx="8"/>
+    <text class="label" x="170" y="135" text-anchor="middle">Input / measurement</text>
+    <rect class="box" x="320" y="100" width="160" height="60" rx="8"/>
+    <text class="label" x="400" y="135" text-anchor="middle">Mechanism</text>
+    <rect class="box" x="540" y="100" width="200" height="60" rx="8"/>
+    <text class="label" x="640" y="135" text-anchor="middle">Bedside output</text>
+    <path class="arrow" d="M260 130 L320 130"/>
+    <path class="arrow" d="M480 130 L540 130"/>
+    <rect class="box" x="80" y="210" width="180" height="60" rx="8"/>
+    <text class="label" x="170" y="245" text-anchor="middle">Pediatric variant</text>
+    <rect class="box" x="320" y="210" width="160" height="60" rx="8"/>
+    <text class="label" x="400" y="245" text-anchor="middle">Pitfall</text>
+    <rect class="box" x="540" y="210" width="200" height="60" rx="8"/>
+    <text class="label" x="640" y="245" text-anchor="middle">Action / threshold</text>
+    <path class="arrow" d="M170 160 L170 210"/>
+    <path class="arrow" d="M400 160 L400 210"/>
+    <path class="arrow" d="M640 160 L640 210"/>
+  </g>
+  <text class="placeholder" x="20" y="370">PLACEHOLDER, TODO: polish (mx/mx-vs-prx-arch.svg).</text>
+</svg>

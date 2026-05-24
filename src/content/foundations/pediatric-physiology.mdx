@@ -1,0 +1,269 @@
+---
+title: Pediatric cerebral physiology
+description: How CBF, CMRO₂, autoregulation, and ICP differ across the age bands you'll meet in PICU.
+eyebrow: Foundation 9
+prereqs: [autoregulation, cerebral-metabolism, monro-kellie]
+relatedModalities: [icp, cpp, prx, nirs, tcd]
+evidenceGrade: C
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **CBF**: cerebral blood flow (mL/100g/min)
+- **CMRO₂**: cerebral metabolic rate of oxygen (mL O₂/100g/min)
+- **ICP / CPP / MAP**: intracranial / cerebral perfusion / mean arterial pressure
+- **TCD**: transcranial Doppler; MFV mean flow velocity (cm/s)
+- **NIRS**: near-infrared spectroscopy; rSO₂ regional tissue O₂
+- **aEEG / cEEG**: amplitude-integrated / continuous EEG
+- **PRx**: pressure reactivity index
+- **PBTF**: Brain Trauma Foundation pediatric severe-TBI guideline
+- **PALS**: Pediatric Advanced Life Support
+- **PVI**: pressure-volume index
+- **LLA / ULA**: lower / upper limit of autoregulation
+- **HIE**: hypoxic-ischaemic encephalopathy
+- **AIS**: arterial ischaemic stroke
+- **TBI**: traumatic brain injury
+- **PMA**: post-menstrual age
+</Callout>
+
+<TldrCard>
+**The 60-second version. Five pediatric numbers worth memorising.**
+1. **MAP at age** (the "5th percentile lower bound"): 40 in neonate, 55 in school-age, 65 in adolescent. Below this, you are likely below LLA.
+2. **MCA MFV peaks at 4–6 y**, ~100 cm/s. The same MFV in an adult means moderate vasospasm.
+3. **ICP treatment threshold per PBTF 2019**: 20 mmHg across all pediatric ages (weak recommendation; weaker evidence in infants). <Cite id="kochanek2019_pbtf4" /> Some centres apply lower heuristic thresholds in younger children (e.g. 15 in infants, 10 in neonates); these are proposed, not guideline.
+4. **CPP floor**: 40 in infants and toddlers, 50 in school-age, 60 in adolescents; treat as floors, not goals.
+5. **Autoreg plateau is narrower in young children**, only 10–20 mmHg wide in neonates. <Cite id="brady2009" />
+
+Pediatric brains run hot, run high-flow, and run on a narrow autoregulatory band. Reading the monitors without an age-band reference is the single most common pediatric MNM error.
+</TldrCard>
+
+## 1. Bedside vignette: two infants at the same MAP
+
+Two infants share a PICU bay. **Infant A** is 5 days old, 3.4 kg, MAP 38. **Infant B** is 9 months old, 9 kg, MAP 38. Both have NIRS and continuous arterial monitoring. The team is asked whether they should support the BP.
+
+**Infant A** has a healthy plateau roughly centred around MAP 30–50; MAP 38 sits in the middle. NIRS rSO₂ is 72%. The MAP is appropriate for age and the trace is reassuring. No intervention.
+
+**Infant B** has a wider plateau centred around MAP 50–70; MAP 38 sits **below LLA**. NIRS rSO₂ is 58% and falling, COx index is +0.5. The same MAP that is fine for Infant A is pressure-passive for Infant B. A fluid bolus and modest noradrenaline lift MAP to 55; NIRS rises to 70%; COx normalises.
+
+The vignette is the page in one image: **MAP is meaningless without age**, and modern bedside indices (NIRS, COx, ABP-NIRS coherence) can confirm whether a given MAP is on or off the plateau without an ICP probe. <Cite id="brady2009" /> <Cite id="lee2009ndnirs" />
+
+---
+
+## 2. What's actually different in a child's head
+
+- **Skull is more compliant.** Open fontanelles (anterior closes ~12–18 mo, posterior ~2–3 mo) and patent sutures (close around 5 years) act as slow-acting volume buffers. Adult Monro-Kellie assumptions do not fully apply until preschool age.
+- **Brain water content is higher.** Term newborn brain is ~88% water vs ~77% adult. Implication: more diffuse oedema potential, but also more compliance under acute volume changes.
+- **CBF and CMRO₂ peak in mid-childhood**, not infancy. A 4-year-old runs ~2× the per-gram CBF of a teenager.
+- **Autoregulation is narrower in neonates**: the plateau may be only 10–20 mmHg wide vs the textbook 50–70 mmHg adult. Tiny BP swings produce disproportionate flow changes.
+- **The vessel wall is structurally less mature**: thinner adventitia, less elastin. Young vessels respond faster but tire faster.
+
+A neonate at MAP 35 mmHg is not "low": that may be the centre of their plateau. A 16-year-old at MAP 55 is below their plateau and is becoming pressure-passive. The age-band table below is the only way to read MNM signals correctly.
+
+---
+
+## 3. CBF and CMRO₂ across age
+
+| Age | CBF (mL/100g/min) | CMRO₂ (mL O₂/100g/min) |
+|---|---|---|
+| Term newborn | 25–55 | ~3 |
+| 6 mo | 60–80 | ~4 |
+| 1–3 yr | 90–110 | ~5 |
+| 4–6 yr | 100–120 | ~5.5 |
+| 7–11 yr | 80–95 | ~5 |
+| Adolescent | 60–80 | ~3.5 |
+
+The school-age peak is consistent across groups: **pediatric brains run hot**.
+
+<Figure
+  src="/images/foundations/pediatric-physiology/peds-mfv-and-icp-age.svg"
+  alt="Two-panel: pediatric MFV vs age (peak at 4-6 y) and ICP thresholds across age bands"
+  caption="Pediatric MCA mean flow velocity (left) and ICP treatment thresholds (right) across age bands. MFV peaks in the 4–6 year window at ~100–110 cm/s, then falls toward the adult ~55 cm/s. ICP treatment threshold (right panel) per PBTF 2019: 20 mmHg across pediatric ages (weak recommendation). Centre-specific lower heuristic thresholds in infants exist but are not in the guideline. The clinical implication is that absolute thresholds shift but the cascade order (synaptic, then pump, then membrane failure on the Astrup axis) is preserved."
+  attribution="MNM-Edu, original schematic adapted from Bode 1988 and O'Brien 2015. SVG placeholder."
+  label="Fig. 1"
+/>
+
+---
+
+## 4. Normative values
+
+<WidgetEmbed name="AgeBandNorms" />
+
+---
+
+## 5. Autoregulation by age
+
+- **Neonates**: narrow plateau (~10–20 mmHg wide), low LLA. Vulnerable to hypotension and hyperoxia. <Cite id="brady2009" /> <Cite id="hyttel2015" /> <Cite id="brady2007piglet" />
+- **Infants and toddlers**: wider plateau but still lower than adult.
+- **Children**: approaching adult Lassen plateau; LLA ~50 mmHg.
+- **Adolescents**: essentially adult.
+
+<Pediatric>
+**The CPP target is age-dependent.** PBTF / Kochanek 2019 thresholds: ≥ 40 mmHg in infants and toddlers, ≥ 50 in school-age, ≥ 60 in adolescents. <Cite id="kochanek2019_pbtf4" /> Treat as floors, not goals. Individualise with PRx where you have it. <Cite id="rivera-lara2017autoreg" /> <Cite id="figaji2025_mmm_pediatric_consensus" />
+</Pediatric>
+
+---
+
+## 6. Rules of thumb you can use today
+
+1. **MAP minimum by age**: 40 + (2 × age in years). A rough lower-bound floor; do not extrapolate above 13 years or below 1 month.
+2. **MFV upper limit by age**: a 5-year-old can have MFV 110 and be normal; a 15-year-old with MFV 110 is hyperaemic or vasospastic.
+3. **CPP minimum by age**: 40 in toddlers, 50 in school-age, 60 in adolescents. Treat as floors.
+4. **ICP treatment threshold (PBTF 2019)**: 20 mmHg across pediatric ages, weak recommendation. <Cite id="kochanek2019_pbtf4" /> Age-banded heuristics (10 / 15 / 20 by age) appear in some centres but are not guideline.
+5. **NIRS bands**: 65–85% term newborn; 60–80% older children. Asymmetry > 10% is the alert. SafeBoosC neonatal alarm at < 55%. <Cite id="hyttel2015" />
+6. **Pediatric Lindegaard threshold**: > 3 for vasospasm, > 6 for severe; same as adult.
+
+---
+
+## 7. ICP norms and what we do not know
+
+Pediatric "normal" ICP scales roughly with age:
+
+- Newborn: < 6 mmHg
+- Infant: < 8 mmHg
+- 1–6 y: < 10 mmHg
+- 7–18 y: < 15 mmHg
+
+These are mostly extrapolated from adult data and small pediatric cohorts. <Cite id="kochanek2019_pbtf4" /> The PBTF 2019 **treatment threshold** is 20 mmHg across pediatric ages (weak recommendation, weaker evidence in infants). Lower heuristic thresholds (15 in infants, 10 in newborns) appear in centre-specific protocols but are not endorsed by the guideline; flag them as heuristic when used.
+
+---
+
+## 8. TCD velocities (O'Brien norms)
+
+<Cite id="obrien2015" /> The O'Brien pediatric TCD norms remain the canonical reference:
+
+- Newborn MFV ~24 cm/s
+- 1–3 yr MFV ~90 cm/s
+- 4–6 yr MFV peaks at 100–110 cm/s
+- 7–11 yr falls to ~85 cm/s
+- Adolescent ~70 cm/s
+
+Vasospasm thresholds use **ratios** (Lindegaard) and **velocity changes** rather than absolute numbers; pediatric absolutes overlap with adult vasospasm ranges. <Cite id="larovere2018_pedsais" />
+
+---
+
+## 9. NIRS norms
+
+- Term newborn: 65–85% rSO₂.
+- Older children: 60–80% rSO₂.
+- Asymmetry > 10% is significant at any age.
+- SafeBoosC trials in neonatal NIRS target rSO₂ 55–85%; alarm at < 55%. <Cite id="hyttel2015" /> <Cite id="plomgaard2024_safeboosc3" />
+
+---
+
+## 10. Pediatric MNM map: what to monitor at what age
+
+| Age | Best monitor stack |
+|---|---|
+| Term newborn | aEEG + NIRS + clinical exam |
+| Infant | NIRS + TCD; ICP if indicated |
+| Toddler | ICP / CPP + PRx if severe; TCD; NIRS |
+| School-age | Full adult-like MMM if severe |
+| Adolescent | Full adult MMM |
+
+<Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="tasker2023_pccm_review" /> <Cite id="kochanek2019_pbtf4" />
+
+---
+
+## 11. Pitfalls
+
+- **Reading adult MFV thresholds in a 5-year-old**: peak pediatric MFV (100–110 cm/s) overlaps adult moderate-vasospasm territory.
+- **Treating MAP 38 as universally "low"**: that is the centre of a neonate's plateau.
+- **Reassurance from open fontanelle in acute illness**: acute insults overwhelm a slow buffer.
+- **Quoting age-banded heuristic thresholds as PBTF guideline values**: PBTF 2019 recommends 20 mmHg across pediatric ages. Lower thresholds in infants are centre proposals, not guideline. Where individualised PRx / CPPopt is available, use it.
+- **Hyperoxia in preterms**: drives ROP and BPD; pediatric SpO₂ bands are tighter than adult.
+- **Cooling protocols imported from adult evidence**: THAPCA-OH showed no benefit of 33 °C over 36.8 °C in pediatric out-of-hospital arrest. Active fever prevention is the practical bottom line. <Cite id="moler2015thapca_oh" />
+
+---
+
+## 12. Combine with…
+
+- [Modality: ICP](/modalities/icp/): age-banded thresholds.
+- [Modality: CPP](/modalities/cpp/): age-banded floors.
+- [Modality: PRx](/modalities/prx/): individualised autoregulation, applied to the age band.
+- [Modality: NIRS](/modalities/nirs/): SafeBoosC bands.
+- [Modality: TCD](/modalities/tcd/): O'Brien age-banded norms.
+- [Foundation: autoregulation](/foundations/autoregulation/): the narrow neonatal plateau.
+- [Foundation: cerebral metabolism](/foundations/cerebral-metabolism/): the school-age CMRO₂ peak.
+- [Foundation: Monro-Kellie](/foundations/monro-kellie/): the open-fontanelle buffer.
+
+---
+
+<DeepDive>
+
+## 13. Why the school-age peak
+
+Synaptogenesis peaks in early childhood; pruning runs through adolescence. The high CMRO₂ of school-age years reflects synapse density. CBF tracks demand, hence the higher TCD velocities and CBF in this band.
+
+## 14. PVI and compliance
+
+Limited human pediatric PVI data. Open fontanelles add a slow-acting buffer that confounds adult PV-curve assumptions in the first ~18 months. Cranial sutures are open until ~5 years; they fuse later than fontanelles. The implication is that a chronic-onset rise in ICP can be partly compensated by skull expansion until well into preschool age, while an acute insult cannot.
+
+## 15. Pediatric AIS
+
+Pediatric arterial ischaemic stroke is a small but important PICU population. AHA pediatric stroke guidelines support imaging-based triage and selected thrombectomy / thrombolysis; outcome data are smaller and more heterogeneous than adult. <Cite id="ferriero2019aha_pedstroke" /> <Cite id="sun2020_pediatric_thrombectomy" />
+
+## 16. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Bode pediatric MCA reference data | <Cite id="bode1988" /> <Cite id="bode1988peds" /> | B |
+| O'Brien pediatric TCD norms | <Cite id="obrien2015" /> | B |
+| Brady piglet autoregulation | <Cite id="brady2007piglet" /> <Cite id="brady2009" /> | B |
+| Pediatric BTF guideline (4th ed.) | <Cite id="kochanek2019_pbtf4" /> | expert |
+| Pediatric MMM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> | expert |
+| Pediatric brain injury review | <Cite id="naim2023_brain_injury_pccm" /> <Cite id="tasker2023_pccm_review" /> | review |
+| Pediatric AIS guideline | <Cite id="ferriero2019aha_pedstroke" /> | expert |
+| THAPCA-OH | <Cite id="moler2015thapca_oh" /> | A |
+| AHA pediatric post-arrest | <Cite id="topjian2021aha_pediatric" /> | expert |
+| Pediatric AIS small series | <Cite id="larovere2018_pedsais" /> | C |
+| SafeBoosC | <Cite id="hyttel2015" /> <Cite id="plomgaard2024_safeboosc3" /> | A |
+| Autoregulation review | <Cite id="rivera-lara2017autoreg" /> | review |
+
+</DeepDive>
+
+---
+
+## 17. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 5-year-old TBI patient. What is the typical PBTF CPP minimum target?',
+      options: [
+        { id: 'a', label: '30 mmHg' },
+        { id: 'b', label: '50 mmHg' },
+        { id: 'c', label: '70 mmHg' },
+        { id: 'd', label: '90 mmHg' },
+      ],
+      answer: 'b',
+      explanation: 'PBTF (Kochanek 2019) target: ≥ 50 mmHg in school-age. Treat as a floor, not a goal; individualise with PRx if available.',
+    },
+    {
+      id: 'q2',
+      prompt: 'Two infants in the same bay both have MAP 38. Infant A is 5 days old; Infant B is 9 months old. NIRS rSO₂ is 72% in A and 58% (falling) in B with COx +0.5. What is the most likely explanation?',
+      options: [
+        { id: 'a', label: 'Sensor error in Infant B' },
+        { id: 'b', label: 'The same MAP can sit on the plateau for a neonate and below LLA for an older infant; the autoregulation plateau shifts with age' },
+        { id: 'c', label: 'Infant B is septic' },
+        { id: 'd', label: 'Infant A has higher CMRO₂' },
+      ],
+      answer: 'b',
+      explanation: 'The neonatal autoregulation plateau is narrow and low, centred around MAP 30–50. By 9 months the plateau has shifted rightward; MAP 38 may now sit below LLA. The COx +0.5 and falling NIRS in Infant B confirm pressure-passive flow.',
+    },
+    {
+      id: 'q3',
+      prompt: 'TCD MCA MFV is 110 cm/s in a healthy 5-year-old. What should you conclude?',
+      options: [
+        { id: 'a', label: 'Severe vasospasm' },
+        { id: 'b', label: 'Hyperaemia' },
+        { id: 'c', label: 'Within the normal range for that age' },
+        { id: 'd', label: 'Sensor error' },
+      ],
+      answer: 'c',
+      explanation: 'Pediatric MFV peaks at 100–110 cm/s in 4–6 year olds (O\'Brien 2015). The same number in an adult would suggest vasospasm; in a 5-year-old it is the bottom of the curve.',
+    },
+  ]}
+/>

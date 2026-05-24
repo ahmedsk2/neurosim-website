@@ -1,0 +1,510 @@
+---
+title: Advanced NIRS (DCS, TR-NIRS, FD-NIRS)
+description: Diffuse correlation spectroscopy and time/frequency-domain NIRS, research-grade non-invasive techniques that quantify absolute CBF and tissue oxygenation; emerging clinical use in pediatric NICU and CICU.
+eyebrow: Modality 19 · Non-invasive (research)
+short: Advanced NIRS
+domain: non-invasive
+labels:
+  usage: research
+  population: both
+  invasiveness: non-invasive
+  validation: emerging
+evidenceGrade: C
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **NIRS**: near-infrared spectroscopy
+- **cwNIRS**: continuous-wave NIRS (the routine clinical INVOS / Casmed / Nonin variety)
+- **DCS**: diffuse correlation spectroscopy (measures blood-flow index from photon decorrelation)
+- **TR-NIRS**: time-resolved NIRS (measures photon time-of-flight; gives absolute tissue oxygenation)
+- **FD-NIRS**: frequency-domain NIRS (phase-shift measurement; also gives absolute tissue oxygenation)
+- **BFi**: blood flow index (DCS output, in cm²/s units)
+- **CBFi**: cerebral blood flow index (BFi calibrated against arterial pressure)
+- **HbO / HbR / HbT**: oxygenated, deoxygenated, total haemoglobin (µM)
+- **rSO₂**: regional cerebral oxygen saturation (%)
+- **OEF**: oxygen extraction fraction
+- **CMRO₂**: cerebral metabolic rate of oxygen
+- **TBI**: traumatic brain injury · **SAH**: aneurysmal subarachnoid haemorrhage
+- **HIE**: hypoxic-ischaemic encephalopathy · **CHD**: congenital heart disease
+- **IVH / PVHI**: intraventricular haemorrhage / periventricular haemorrhagic infarction
+- **CPB**: cardiopulmonary bypass · **CICU / NICU / PICU**: cardiac / neonatal / pediatric intensive care unit
+- **MMM / MNM**: multimodal monitoring / multimodal neuromonitoring
+</Callout>
+
+<TldrCard>
+**The 60-second version.** Routine clinical NIRS (cwNIRS) reports a relative tissue saturation (rSO₂). Advanced NIRS techniques add absolute and dynamic quantitation: **DCS** measures a blood-flow index (BFi) from photon decorrelation at the tissue surface, giving a non-invasive CBF surrogate; **TR-NIRS** measures photon time-of-flight to yield absolute HbO and HbR concentrations and true rSO₂; **FD-NIRS** does the same using phase-shift measurement. Together, the combined DCS + TR/FD-NIRS bundle gives a **fully non-invasive estimate of CBF and CMRO₂** at the bedside. Clinical use is research-grade but growing rapidly in pediatric NICU (preterm IVH risk, HIE prognostication), CICU (during CPB and circulatory arrest), and post-arrest. Hardware is bulky and expensive; pediatric data are the strongest of any advanced-NIRS application. The next decade will likely see DCS / TR-NIRS move from research to routine bedside in dedicated pediatric centres.
+</TldrCard>
+
+## 1. Bedside vignettes: why this matters
+
+### Vignette A. Research-protocol preterm, BFi falling pre-IVH
+
+A 25-week preterm, 700 g, on a research protocol for SafeBoosC-style autoregulation monitoring with co-located DCS and TR-NIRS. At 18 hours of life, DCS BFi has fallen 30% over 4 hours while rSO₂ from the cwNIRS arm is only marginally changed. The team correlates: MAP has crept down from 32 to 25 mmHg without obvious clinical signs. Fluid bolus and dopamine restore MAP; BFi recovers. Routine TFUS the next day shows **no IVH**. The combined absolute-flow + tissue-oxygenation bundle caught a perfusion event that the routine cwNIRS would have missed. <Cite id="lovett2022noninvasive" /> <Cite id="andrade2021" /> <Cite id="hansen2023safeboosciii" />
+
+### Vignette B. Adolescent post-arrest, CBFi and CMRO₂ tracking
+
+A 14-year-old post-arrest, day 1 post-rewarming. The neuro-monitoring team applies a DCS + FD-NIRS combined sensor over the frontal scalp. Calculated **CMRO₂_NIRS = 1.2 mL O₂/100 g/min** (markedly low; healthy 4–5). Combined with bilateral absent N20 and suppressed cEEG, the metabolic data add quantitative support to the clinical prognostic call. The non-invasive metabolic signal complements the electrophysiology and the clinical exam. <Cite id="andrade2021" /> <Cite id="topjian2021aha_pediatric" /> <Cite id="naim2023_brain_injury_pccm" />
+
+### Vignette C. Pediatric cardiac surgery, CBFi during DHCA
+
+A 2-month-old with single-ventricle physiology undergoing Norwood-stage repair under deep hypothermic circulatory arrest. Combined DCS + FD-NIRS is used research-grade during the procedure. During DHCA, CBFi falls to near-zero; rSO₂ falls slowly; on rewarming, CBFi recovers in advance of rSO₂. The team correlates the duration of low-CBFi periods with post-operative neurologic outcomes, anchoring future protocol development. The modality offers **a non-invasive CBF surrogate where invasive monitoring is impossible**. <Cite id="andrade2021" /> <Cite id="lovett2022noninvasive" />
+
+---
+
+## 2. What advanced NIRS is, and what it is not
+
+Routine clinical NIRS (cwNIRS) measures the relative change in haemoglobin concentrations over a spatially-fixed banana-shaped tissue zone, using two-wavelength absorbance. The output (rSO₂) is **relative** and **uncalibrated**: a normalised ratio of HbO to HbT, accurate for trend but not absolute, with substantial scalp-contamination problems.
+
+Advanced NIRS techniques fix specific limitations of cwNIRS.
+
+### 2.1 Diffuse correlation spectroscopy (DCS)
+
+DCS uses a coherent (laser) light source and measures the **temporal autocorrelation** of speckle intensity at a detector ~ 2–3 cm from the source. Light photons scattered by moving red blood cells lose coherence; the rate at which the autocorrelation decays is proportional to the local blood-flow index (BFi):
+
+```math
+g_2(\tau) = 1 + \beta \cdot e^{-2 \Gamma \tau}
+```
+
+where Γ is proportional to BFi × scattering coefficient. The output is BFi in cm²/s units; with assumptions about haematocrit, scattering, and (optionally) calibration against arterial pressure pulse, an absolute CBF estimate can be derived.
+
+### 2.2 Time-resolved NIRS (TR-NIRS)
+
+TR-NIRS uses short (~ 50–100 ps) light pulses and time-resolved photon detection. The time-of-flight distribution allows separation of photons that have travelled short (scalp) and long (brain) paths, yielding **depth-resolved absorbance**. Combined with the modified Beer-Lambert law, this gives **absolute HbO and HbR concentrations** and therefore true rSO₂.
+
+### 2.3 Frequency-domain NIRS (FD-NIRS)
+
+FD-NIRS modulates the light source at radio frequencies (~ 100 MHz) and measures the phase shift and amplitude attenuation at the detector. From these, **absolute optical properties** of the tissue (absorption and scattering coefficients) are determined, again giving absolute HbO and HbR. FD-NIRS is generally simpler hardware than TR-NIRS for the same absolute output.
+
+### 2.4 The combined DCS + TR/FD-NIRS bundle
+
+The combination is powerful:
+
+- **DCS** gives a continuous non-invasive flow surrogate (BFi).
+- **TR/FD-NIRS** gives absolute tissue oxygenation (true rSO₂, HbO, HbR).
+- **Together** they allow a non-invasive Fick-style computation of CMRO₂:
+
+```math
+\text{CMRO}_2 \propto \text{BFi} \times (\text{SaO}_2 - \text{rSO}_2)
+```
+
+This is the strongest advance over routine cwNIRS: continuous, non-invasive, regional, absolute CBF and CMRO₂ at the bedside.
+
+### What advanced NIRS does well
+
+- **Continuous, non-invasive, regional**: no needle, no transport, repeatable.
+- **Absolute or quantitative flow / oxygenation**: anchors the trend in physiological units.
+- **Pediatric-friendly**: small head, thin skull, ideal optical geometry.
+- **Bedside CMRO₂**: a non-invasive metabolic signal where invasive measurement is unfeasible.
+
+### What advanced NIRS cannot do
+
+- **Be cheap or compact yet**: most systems are research-grade carts.
+- **Replace cwNIRS for routine trends**: the simpler, cheaper modality still dominates the clinical bedside.
+- **Be reliable through thick scalp**: adolescent and adult skull / scalp thickness reduces signal-to-noise.
+- **Match invasive PbtO₂ / TD-CBF for absolute accuracy**: still a research-grade approximation.
+- **Detect focal injury well**: spatial resolution is poor (cm scale); regional, not focal.
+
+<Pearl>
+**Advanced NIRS combines the strengths of cwNIRS (non-invasive, bedside) with a quantitative flow channel that routine NIRS lacks.** Where the hardware and expertise are available, the bundle gives a non-invasive proxy for what would otherwise require invasive PbtO₂ + TD-CBF probes.
+</Pearl>
+
+<Pediatric>
+- **Pediatric heads are ideal for NIRS**: thinner skull, less scalp, shorter source-detector distances. The signal-to-noise advantage drives the pediatric-leaning literature.
+- **Preterm IVH risk and HIE prognostication** are the strongest pediatric applications.
+- **Pediatric CICU during CPB and DHCA** is a growing application area.
+- **Routine pediatric clinical use is still research-grade**, but the trend is toward bedside adoption in dedicated NICU and CICU programmes.
+</Pediatric>
+
+---
+
+## 3. Anatomy and probe geometry
+
+<Figure
+  src="/images/advanced-nirs/dcs-trnirs.svg"
+  alt="Combined DCS and TR-NIRS optode geometry on a pediatric head; banana-shaped photon paths; source and detector spacing"
+  caption="Advanced NIRS geometry. Sources and detectors are placed on the scalp, typically frontal (Fp1, Fp2) for cerebral monitoring or somatic / spinal placement for organ-specific monitoring. Source-detector separation determines depth: a 2–3 cm separation samples a banana-shaped tissue zone reaching ~ 1.5 cm into the brain in a small infant, less in older children and adults. DCS uses a coherent laser source and an avalanche photodiode detector for speckle autocorrelation. TR-NIRS uses picosecond pulsed sources and time-correlated single-photon counting. FD-NIRS uses RF-modulated sources and phase-locked detection. The combined DCS + TR/FD-NIRS sensor delivers BFi and absolute HbO / HbR on the same tissue volume."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 1"
+/>
+
+### 3.1 Source-detector geometry
+
+Pediatric: source-detector separation 1.5–2.5 cm for shallow brain interrogation; 2.5–3 cm for deeper.
+Adult: 3–4 cm separation; deeper banana but more scalp contamination.
+
+### 3.2 Probe placement
+
+- **Cerebral monitoring**: bilateral frontal placement (over Fp1, Fp2 or over forehead lateral to midline) is the standard.
+- **Cerebral plus somatic**: simultaneous flank or thigh placement gives differential brain vs body oxygenation, useful in CHD and septic-shock contexts.
+- **Probe security**: adhesive patches; head wraps in active patients; care to avoid pressure injury under the optode.
+
+### 3.3 Calibration and validation
+
+- **Phantom calibration**: regular calibration against tissue-mimicking phantoms is standard for research-grade systems.
+- **Cross-validation against established modalities**: DCS BFi vs MRI ASL CBF; TR-NIRS rSO₂ vs SjvO₂ or PbtO₂; published validation studies in pediatric and adult cohorts.
+
+---
+
+## 4. The signal: what each technique reports
+
+### 4.1 cwNIRS (reference)
+
+- **Output**: relative HbO, HbR, HbT changes; ratio metric rSO₂ (%).
+- **Limitations**: relative only, scalp contamination, pathlength assumptions.
+
+### 4.2 DCS
+
+- **Output**: BFi (cm²/s); CBFi calibrated against arterial pressure.
+- **Strengths**: continuous, non-invasive flow surrogate; high temporal resolution (~ Hz).
+- **Limitations**: hardware complexity; sensitivity to motion; intermediate scalp contamination.
+
+### 4.3 TR-NIRS
+
+- **Output**: absolute HbO and HbR (µM); true rSO₂; depth-resolved absorbance.
+- **Strengths**: absolute concentrations; depth resolution.
+- **Limitations**: complex hardware; lower temporal resolution (~ 1 Hz).
+
+### 4.4 FD-NIRS
+
+- **Output**: absolute optical properties; absolute HbO, HbR; rSO₂.
+- **Strengths**: simpler hardware than TR-NIRS; absolute output.
+- **Limitations**: phase-shift measurement requires good signal-to-noise; less depth-resolved than TR-NIRS.
+
+### 4.5 Combined DCS + TR/FD-NIRS
+
+- **Output**: BFi + absolute HbO + absolute HbR + non-invasive CMRO₂ estimate.
+- **Strengths**: complete non-invasive flow / oxygenation / metabolism bundle.
+- **Limitations**: research-grade hardware; trained operators; data analysis pipeline.
+
+---
+
+## 5. The numbers to record: the advanced-NIRS six-pack
+
+| Variable | Symbol | What to record |
+|---|---|---|
+| Blood flow index | BFi (cm²/s) | Primary DCS output; with baseline reference |
+| Calibrated CBFi | CBFi (relative units) | Calibrated BFi against arterial pulse |
+| Absolute HbO and HbR | µM | TR/FD-NIRS output |
+| Absolute rSO₂ | % | Derived from HbO and HbR |
+| Non-invasive CMRO₂ estimate | mL O₂/100 g/min | Combined DCS + NIRS Fick computation |
+| Trend over time | ΔBFi / Δrso2 over hours | The bedside read |
+
+Document: probe placement and source-detector separation, scalp thickness if measurable, recent imaging, sedation, body temperature, MAP, and any clinical interventions.
+
+---
+
+## 6. What is normal? Age- and condition-banded reference
+
+Advanced NIRS reference values are emerging; absolute thresholds are evolving. The pediatric data are stronger than adult.
+
+| Age band | DCS BFi (cm²/s × 10⁻⁹) | TR/FD-NIRS rSO₂ (%) | Estimated CMRO₂_NIRS (mL O₂/100 g/min) |
+|---|---|---|---|
+| Preterm 26–32 wk | 1–3 | 55–75 | 0.8–1.5 |
+| Term newborn | 3–6 | 60–80 | 1.5–2.5 |
+| 6 months | 8–14 | 65–80 | 3–4 |
+| 1–3 years | 12–18 | 65–80 | 4–5 |
+| 4–10 years | 12–18 | 65–80 | 4–5 |
+| Adolescent | 8–14 | 65–75 | 3.5–4.5 |
+| Adult | 6–12 | 60–75 | 3–3.5 |
+
+Sources: <Cite id="lovett2022noninvasive" /> <Cite id="andrade2021" /> <Cite id="davies2017nirs" /> <Cite id="andresen2014nirs" /> <Cite id="lee2009ndnirs" />. Reference values vary by device, source-detector separation, and analysis algorithm; centre-specific calibration is the rule.
+
+<Pediatric>
+**Pediatric reference data are the most developed for advanced NIRS**, reflecting the optical advantage of pediatric heads and the strong NICU / CICU research programmes. Adult reference data are sparser; absolute thresholds in adults should be applied with caution.
+</Pediatric>
+
+---
+
+## 7. What is abnormal? Pattern library
+
+| Pattern | Bedside meaning | What to do |
+|---|---|---|
+| **BFi falling > 25% over hours** | Evolving regional perfusion deficit | Check MAP, autoregulation, position; intervene |
+| **Absolute rSO₂ falling > 10 points** | Decreased O₂ saturation, reduced delivery or increased extraction | Address the cause (MAP, Hb, SaO₂, sedation, fever) |
+| **High BFi with normal SaO₂** | Hyperaemia; consider seizure, fever, sepsis | cEEG; treat cause |
+| **High BFi with collapsed rSO₂** | Luxury perfusion with metabolic collapse | Severe injury; pair with cEEG, SSEP |
+| **Combined CMRO₂_NIRS markedly low** | Metabolic suppression (severe injury, deep coma) | Multimodal corroboration |
+| **BFi recovering with intervention** | Therapeutic response | Continue strategy |
+| **Asymmetry > 30% between probes** | Unilateral perfusion deficit | Imaging; clinical exam |
+| **Discordance with cwNIRS** | Algorithm or scalp-contamination issue | Prefer advanced NIRS where calibrated |
+| **Loss of signal** | Probe displacement, hair / skin obstruction | Recheck placement; clean optical contact |
+| **Signal during DHCA** | Allows monitoring during circulatory arrest | Document; correlate with rewarming and outcomes |
+
+---
+
+## 8. Try it: interactive widget
+
+Advanced NIRS techniques do not currently have dedicated interactive widgets on this platform. The closest analogue is the [routine NIRS widget](/modalities/nirs/), which illustrates the photon-path geometry and the rSO₂ trend; the DCS and TR/FD-NIRS extensions are conceptual extensions of the same geometry.
+
+---
+
+## 9. Management: how advanced NIRS changes decisions
+
+### 9.1 Preterm IVH risk reduction
+
+SafeBoosC-style autoregulation monitoring uses cwNIRS as the primary signal. Advanced NIRS adds:
+
+- **DCS BFi** as a quantitative perfusion channel that detects perfusion events the rSO₂ may miss.
+- **TR/FD-NIRS rSO₂** as a true absolute saturation, allowing centre-to-centre comparability.
+- **Combined CMRO₂** as a metabolic signal that may identify oligemia before structural injury appears.
+
+The SafeBoosC-III trial (cwNIRS-only) did not show outcome improvement; advanced-NIRS trials are in design / early phase. <Cite id="hansen2023safeboosciii" /> <Cite id="plomgaard2024_safeboosc3" /> <Cite id="hyttel2015safeboosc" /> <Cite id="greisen2018" />
+
+### 9.2 HIE prognostication
+
+In cooled HIE neonates, advanced NIRS adds a non-invasive metabolic signal:
+
+- Reduced CMRO₂_NIRS over the first 72 hours correlates with severity of injury and outcome.
+- The non-invasive bundle complements aEEG, MRI, and clinical exam in the neuroprognostic stack.
+- The signal is most informative in the early reperfusion phase (12–48 hours post-arrest), where the trajectory of recovery vs deterioration becomes visible. <Cite id="shankaran2005hie_nichd" /> <Cite id="naim2023_brain_injury_pccm" />
+
+### 9.3 Pediatric cardiac surgery and CICU
+
+Continuous DCS during CPB and DHCA gives a flow signal where invasive measurement is impossible:
+
+- Duration of low-CBFi periods correlates with neurodevelopmental outcome.
+- DHCA protocols can be informed by intraoperative BFi.
+- Post-operative CICU monitoring uses combined cwNIRS + DCS for trend.
+
+### 9.4 Post-cardiac-arrest
+
+Combined DCS + TR/FD-NIRS at 24–72 hours post-arrest yields a non-invasive CBF / CMRO₂ bundle that adds to the neuroprognostic dataset. The clinical pathway integrates with EEG, NPI, SSEP, MRI, and clinical exam.
+
+<Callout type="caveat">
+**Decision support, not a clinical protocol.** Advanced NIRS is research-grade in most settings. Application requires centre-specific calibration, trained operators, and integration into a research or quality-improvement framework.
+</Callout>
+
+<AlgorithmDisclaimer />
+
+---
+
+## 10. Clinical contexts
+
+### 10.1 Preterm IVH prevention and SafeBoosC paradigm
+
+The largest evidence base for advanced NIRS is in the preterm population. cwNIRS-guided care (SafeBoosC, SafeBoosC-III) has not improved outcome at the primary endpoint; advanced-NIRS techniques may bring the autoregulation signal closer to direct measurement and improve interventional precision. The next-generation trials will likely incorporate DCS and TR-NIRS. <Cite id="hansen2023safeboosciii" /> <Cite id="plomgaard2024_safeboosc3" /> <Cite id="hyttel2015safeboosc" />
+
+### 10.2 Neonatal HIE and post-arrest
+
+Advanced NIRS adds a non-invasive metabolic channel to the neonatal HIE monitoring bundle (aEEG + cwNIRS + MRI + clinical exam). The combined CMRO₂_NIRS signal complements electrophysiology and imaging. Pediatric post-arrest applications include the THAPCA-era multimodal stack with emerging advanced NIRS adoption. <Cite id="shankaran2005hie_nichd" /> <Cite id="topjian2021aha_pediatric" /> <Cite id="moler2015thapca_oh" /> <Cite id="naim2023_brain_injury_pccm" />
+
+### 10.3 Pediatric cardiac surgery and CICU
+
+A major growth area. Combined DCS + FD-NIRS during CPB / DHCA / ECMO provides bedside continuous CBF and oxygenation surrogates. CICU monitoring uses cwNIRS as routine; advanced NIRS adds research-grade quantitative perfusion. <Cite id="lovett2022noninvasive" /> <Cite id="andrade2021" /> <Cite id="lorusso2017_elso_neuro" />
+
+### 10.4 Severe TBI
+
+Advanced NIRS in pediatric and adult severe TBI is less developed than in neonatal applications. cwNIRS is part of multimodal monitoring; advanced NIRS adds non-invasive CBF / CMRO₂ where invasive monitoring is not in place. <Cite id="kochanek2019_pbtf4" /> <Cite id="okonkwo2017_boost2" /> <Cite id="bernard2025_boost3" />
+
+### 10.5 Aneurysmal SAH and DCI
+
+Adult-cwNIRS data for DCI detection are mixed; advanced NIRS is research-grade. The combined non-invasive flow / oxygenation bundle is being explored as a DCI-detection adjunct. <Cite id="hoh2023sah_aha" /> <Cite id="rass2021dci_review" />
+
+### 10.6 Pediatric arterial ischaemic stroke
+
+cwNIRS over the affected hemisphere may show desaturation in acute MCA-territory infarct. Advanced NIRS adds CBFi to confirm and quantify; research-grade. <Cite id="ferriero2019aha_pedstroke" /> <Cite id="sun2020_pediatric_thrombectomy" />
+
+### 10.7 Pediatric ECMO
+
+Combined cwNIRS + DCS during ECMO supports detection of perfusion events at cannulation and during pump flow changes. Routine cwNIRS is standard; advanced NIRS is research-grade in pediatric ECMO. <Cite id="lorusso2017_elso_neuro" /> <Cite id="cho2024_ecmo_outcomes" />
+
+### 10.8 Bacterial meningitis with raised ICP
+
+Non-invasive monitoring with combined cwNIRS + DCS may track perfusion deficits in severe meningitis with vasculitis or vasospasm. Research-grade. <Cite id="tunkel2004_idsa_meningitis" /> <Cite id="tunkel2017idsa_encephalitis" />
+
+### 10.9 Brain-death determination (supportive)
+
+In brain death, BFi falls to near-zero and rSO₂ approaches arterial saturation. This is **supportive** evidence; the World Brain Death Project framework requires the clinical exam and apnoea test with formal ancillary tests (CTA, TCD, EEG, BAER), not advanced NIRS alone. <Cite id="greer2020_braindeath" /> <Cite id="nakagawa2011peds_bd" />
+
+---
+
+## 11. Multimodal integration: advanced NIRS in the MMM/MNM stack
+
+<Figure
+  src="/images/advanced-nirs/dcs-trnirs.svg"
+  alt="Advanced NIRS in multimodal context"
+  caption="Advanced NIRS occupies the gap between non-invasive bedside (cwNIRS, TCD) and invasive bedside (PbtO2, TD-CBF). It provides continuous, regional, non-invasive estimates of CBF and CMRO2 that approach the information density of invasive probes without the cranial-bolt requirement. In pediatric centres, the bundle pairs naturally with aEEG (electrophysiology), TCD (large-vessel velocity), and TFUS (structure) for the neonatal stack; with cEEG and clinical exam for older children."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 2"
+/>
+
+| Pair with… | What you gain | Worked scenario |
+|---|---|---|
+| **cwNIRS** | Routine trend + advanced quantitation | Pediatric NICU bundle |
+| **aEEG / cEEG** | Electrophysiology + non-invasive flow + non-invasive O₂ | [HIE monitoring bundle](/integration/mnm-in-the-newborn/) |
+| **TCD** | Large-vessel velocity + microvascular flow | [TCD vs ICP vasospasm](/integration/tcd-vs-icp-vasospasm/) |
+| **PbtO₂ / TD-CBF (where available)** | Validate non-invasive against invasive | Research validation |
+| **Clinical exam / NPI** | Cortical and brainstem function + perfusion / metabolism | [Discordance triage](/integration/discordance-triage/) |
+| **MRI / ASL** | Tomographic CBF correlation | HIE day 4–7 |
+| **Microdialysis** | Direct metabolism + non-invasive metabolism | Research bundle |
+
+<Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="helbok2024_pediatric_mmm" /> <Cite id="tasker2023mnm" />
+
+---
+
+<DeepDive>
+
+## 12. Setup and technique
+
+### 12.1 Equipment
+
+- **DCS system**: research-grade systems from MetaOx, ISS, or research-built (custom coherent laser source, avalanche photodiode detector, correlator).
+- **TR-NIRS system**: research-grade (PicoQuant, Hamamatsu time-correlated single-photon counting).
+- **FD-NIRS system**: ISS Imagent, MetaOx (RF-modulated source, phase-shift detection).
+- **Combined optodes**: increasingly available; some research groups build custom combined sensors.
+- **Trained operator**: technician + biomedical engineer + data analyst; the modality is not plug-and-play.
+
+### 12.2 Placement: 6-step protocol
+
+1. **Site selection**: bilateral frontal (Fp1, Fp2) or hemisphere of interest. Avoid hairy scalp where possible; clip hair if necessary.
+2. **Skin prep**: clean with alcohol; gentle abrasion not usually needed.
+3. **Optode placement**: hydrogel pads or custom adhesive holders; secure with light tape or head wrap.
+4. **Source-detector separation**: 1.5–2.5 cm for pediatric; 2.5–4 cm for adult; document on chart.
+5. **Verify signal**: run a brief acquisition; check signal-to-noise; reposition if poor.
+6. **Begin continuous recording**: sampling at 1–10 Hz depending on system; data piped to analysis machine.
+
+### 12.3 Calibration
+
+- **Phantom calibration** at the start of each session for absolute measurements.
+- **Within-patient baseline** in the first 30–60 minutes for trend analysis.
+- **Periodic re-check** of phantom values to detect drift.
+- **Cross-validation** against established modalities (cwNIRS, TCD, PbtO₂ where available).
+
+### 12.4 Analysis pipeline
+
+- **Real-time processing** for BFi, rSO₂, HbO, HbR; data piped to bedside display.
+- **Post-hoc analysis** for CMRO₂_NIRS computation and quality control.
+- **Storage**: raw correlation data, time-resolved photon counts, or phase-shift data archived for offline analysis.
+- **Quality flags**: motion artefact, optode displacement, low signal-to-noise marked automatically.
+
+### 12.5 Operational pitfalls
+
+- **Hair**: dense scalp hair attenuates signal; clip or shave where possible.
+- **Pressure injury**: long-term placement of optodes can cause skin breakdown; rotate sites or use cushioned holders.
+- **Motion artefact**: pediatric patients move; sedation or paralysis improves signal quality.
+- **Ambient light**: bright sunlight or surgical lamps can contaminate; cover with light-blocking material.
+- **Cable management**: research-grade systems have multiple cables; tangling and pulling on optodes destroys signal.
+
+### 12.6 Documentation
+
+The chart entry pairs the advanced NIRS values with the clinical context, the source-detector separation, the calibration status, and any quality flags. Without these, the data are not interpretable in retrospect.
+
+</DeepDive>
+
+---
+
+## 13. Pitfalls
+
+- **Hardware is bulky and expensive**: most centres do not have dedicated advanced-NIRS equipment.
+- **Calibration drift**: regular phantom calibration is required.
+- **Hair attenuates signal**: pediatric advantage is partly because newborn and infant heads have less hair.
+- **Scalp contamination is reduced but not eliminated**: TR-NIRS and FD-NIRS depth-resolve but still mix scalp and brain.
+- **Motion artefact**: pediatric movement degrades signal; sedation or paralysis helps.
+- **Reference values are emerging**: centre-specific calibration is the rule, not the exception.
+- **Algorithm transparency**: different analysis pipelines produce different BFi values; consistency within a study or centre matters more than absolute comparability.
+- **Adult signal-to-noise** is worse than pediatric due to thicker scalp and skull; absolute thresholds in adults are less reliable.
+- **Probe placement matters**: shifting an optode 1 cm changes the interrogated tissue; document and maintain consistent placement.
+- **CMRO₂_NIRS is an estimate**: the non-invasive Fick computation has multiple assumptions (haematocrit, scattering, calibration); validate against invasive measurement where possible.
+
+---
+
+## 14. Combine with…
+
+- [NIRS / cwNIRS](/modalities/nirs/): the routine bedside; advanced NIRS extends the same concept.
+- [TCD](/modalities/tcd/): large-vessel velocity; microvascular complement.
+- [PbtO₂](/modalities/pbto2/): invasive tissue oxygenation; validates non-invasive.
+- [Direct CBF](/modalities/direct-cbf/): invasive regional CBF; validates non-invasive.
+- [aEEG / cEEG](/modalities/aeeg/): electrophysiology + non-invasive flow / O₂.
+- [Foundations: NIRS principles](/modalities/nirs/): the physics underlying all NIRS modalities.
+- [Foundations: cerebral metabolism](/foundations/cerebral-metabolism/): the CMRO₂ context.
+- [Integration: HIE monitoring bundle](/integration/mnm-in-the-newborn/): pediatric neuroprognostic stack.
+
+---
+
+<DeepDive>
+
+## 15. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Original NIRS description | <Cite id="jobsis1977" /> | foundational |
+| Lovett 2022 advanced NIRS review | <Cite id="lovett2022noninvasive" /> | review |
+| Andrade 2021 brain temp / NIRS context | <Cite id="andrade2021" /> | review |
+| Davies pediatric NIRS | <Cite id="davies2017nirs" /> | B |
+| Andresen neonatal NIRS | <Cite id="andresen2014nirs" /> | B |
+| Lee ND-NIRS | <Cite id="lee2009ndnirs" /> | C |
+| SafeBoosC-III primary | <Cite id="hansen2023safeboosciii" /> | A |
+| SafeBoosC-III secondary | <Cite id="plomgaard2024_safeboosc3" /> | A |
+| SafeBoosC-II feasibility | <Cite id="hyttel2015safeboosc" /> | B |
+| Greisen NIRS oversight | <Cite id="greisen2018" /> | review |
+| HIE NICHD cooling trial | <Cite id="shankaran2005hie_nichd" /> | A |
+| AHA pediatric post-arrest | <Cite id="topjian2021aha_pediatric" /> | expert |
+| THAPCA-OH pediatric | <Cite id="moler2015thapca_oh" /> | A |
+| Pediatric brain injury post-arrest | <Cite id="naim2023_brain_injury_pccm" /> | review |
+| Pediatric severe TBI (BTF 4th ed.) | <Cite id="kochanek2019_pbtf4" /> | expert |
+| Pediatric neurocritical care review | <Cite id="tasker2023_pccm_review" /> | review |
+| AHA SAH guidelines | <Cite id="hoh2023sah_aha" /> | expert |
+| Pediatric AIS / thrombectomy | <Cite id="ferriero2019aha_pedstroke" /> <Cite id="sun2020_pediatric_thrombectomy" /> | expert |
+| ECMO neuro outcomes | <Cite id="lorusso2017_elso_neuro" /> <Cite id="cho2024_ecmo_outcomes" /> | C |
+| BOOST-II / BOOST-III | <Cite id="okonkwo2017_boost2" /> <Cite id="bernard2025_boost3" /> | A |
+| Brain-death determination | <Cite id="greer2020_braindeath" /> <Cite id="nakagawa2011peds_bd" /> | expert |
+| Pediatric MMM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="helbok2024_pediatric_mmm" /> <Cite id="tasker2023mnm" /> | expert |
+
+## 16. Recent literature (2022–2025)
+
+- **Lovett 2022 (advanced NIRS review)**: synthesises DCS, TR-NIRS, and FD-NIRS for pediatric clinical translation. <Cite id="lovett2022noninvasive" />
+- **Andrade 2021 (review)**: integrates brain temperature, NIRS, and metabolism in the bedside context. <Cite id="andrade2021" />
+- **SafeBoosC-III (Hansen 2023, Plomgaard 2024)**: cwNIRS-guided autoregulation monitoring in preterm did not improve primary outcome; secondary signals and the case for advanced NIRS in next-generation trials remain active. <Cite id="hansen2023safeboosciii" /> <Cite id="plomgaard2024_safeboosc3" />
+- **Tasker 2023 (pediatric neurocritical care review)**: advanced NIRS listed as emerging research modality with strong potential in pediatric NICU and CICU. <Cite id="tasker2023_pccm_review" />
+- **Naim 2023 (pediatric brain injury post-arrest)**: advanced NIRS as a future channel in post-arrest multimodal monitoring. <Cite id="naim2023_brain_injury_pccm" />
+- **Pediatric MMM consensus (Figaji 2025)**: positions advanced NIRS as a tier-3 research modality with high potential for pediatric translation. <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+</DeepDive>
+
+---
+
+## 17. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 25-week preterm on a research protocol with combined cwNIRS and DCS. Over 4 hours, DCS BFi falls 30% from baseline while cwNIRS rSO₂ falls only marginally. Concurrent MAP has crept down from 32 to 25 mmHg. Best interpretation and action?',
+      options: [
+        { id: 'a', label: 'Reassuring; trust the rSO₂ stability' },
+        { id: 'b', label: 'Falling BFi flags a perfusion event the rSO₂ trend missed; raise MAP (fluid bolus, vasopressor) and recheck' },
+        { id: 'c', label: 'Replace the cwNIRS optode' },
+        { id: 'd', label: 'No action needed; routine monitoring' },
+      ],
+      answer: 'b',
+      explanation: 'DCS BFi falling 30% with relatively stable rSO₂ is a perfusion event that the simpler trend missed. The likely chain: MAP fell below the autoregulatory plateau, CBF (BFi) fell, and metabolic demand was met by increased extraction (preserving rSO₂ temporarily). The bedside action is to raise MAP back to a safer perfusion range and recheck BFi. The next routine TFUS may show evolving injury if the event is not addressed. This is the advantage of combined cwNIRS + DCS: the absolute flow channel catches what the relative O₂ signal misses.',
+    },
+    {
+      id: 'q2',
+      prompt: 'A 14-year-old post-cardiac arrest day 1, on a combined DCS + FD-NIRS protocol. Calculated non-invasive CMRO₂_NIRS is 1.2 mL O₂/100 g/min (markedly low; healthy 4–5). Bilateral N20 absent on SSEP; cEEG suppressed. What does the CMRO₂_NIRS contribute?',
+      options: [
+        { id: 'a', label: 'Quantitative non-invasive corroboration of the metabolic collapse already evident on electrophysiology' },
+        { id: 'b', label: 'Diagnostic of brain death' },
+        { id: 'c', label: 'Replaces the SSEP and cEEG findings' },
+        { id: 'd', label: 'Should change management acutely' },
+      ],
+      answer: 'a',
+      explanation: 'The CMRO₂_NIRS value adds a non-invasive metabolic channel to the multimodal prognostic dataset. It is consistent with the electrophysiological findings (absent N20, suppressed cEEG): metabolism has collapsed and is consistent with severe HIE / hypoxic injury. It does not by itself diagnose brain death (the formal framework requires clinical exam, apnoea test, and specified ancillary tests). It does not replace the established electrophysiology; it complements it. Management does not change acutely on this signal; the conversation with family and the prognostic discussion are informed by the converging dataset.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A research team proposes to use cwNIRS instead of combined cwNIRS + DCS + TR-NIRS to guide autoregulation in a next-generation preterm IVH-prevention trial, citing simpler hardware. What is the key trade-off?',
+      options: [
+        { id: 'a', label: 'No trade-off; cwNIRS is sufficient' },
+        { id: 'b', label: 'Loss of absolute quantitation: cwNIRS rSO₂ is relative and uncalibrated, with scalp contamination; DCS adds a quantitative flow channel; TR-NIRS adds absolute concentrations; the SafeBoosC-III result with cwNIRS-only may reflect the limits of that signal' },
+        { id: 'c', label: 'DCS is non-invasive while cwNIRS is invasive' },
+        { id: 'd', label: 'cwNIRS is research-grade while DCS is clinical' },
+      ],
+      answer: 'b',
+      explanation: 'cwNIRS gives relative, uncalibrated rSO₂ with substantial scalp contamination; the SafeBoosC-III trial (cwNIRS-guided care) did not improve outcome at the primary endpoint, and one interpretation is that the cwNIRS signal is too coarse to drive interventional precision. DCS adds a continuous quantitative flow channel and TR-NIRS adds absolute haemoglobin concentrations; the combined advanced bundle delivers a more precise autoregulation signal. The trade-off for the next-generation trial is hardware complexity and cost versus signal quality; the advanced bundle is the more biologically informative choice but operationally harder to deploy.',
+    },
+  ]}
+/>

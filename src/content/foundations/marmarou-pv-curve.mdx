@@ -1,0 +1,226 @@
+---
+title: The pressure-volume curve
+description: Marmarou's exponential, why "ICP 18" tomorrow can mean trouble even though "ICP 18" today doesn't.
+eyebrow: Foundation 5
+prereqs: [monro-kellie]
+relatedModalities: [icp, rap]
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **PVI**: pressure-volume index (volume change that raises ICP 10-fold)
+- **ICP**: intracranial pressure (mmHg)
+- **RAP**: compensatory reserve index (ICP pulse amplitude ↔ mean ICP)
+- **AMP**: ICP pulse amplitude (the fundamental ICP-waveform feature behind RAP)
+- **HTS**: hypertonic saline (osmotherapy)
+- **CSF**: cerebrospinal fluid
+- **EVD**: external ventricular drain
+- **ONSD**: optic nerve sheath diameter (non-invasive ICP proxy)
+- **CPP**: cerebral perfusion pressure = MAP − ICP
+- **TBI**: traumatic brain injury
+</Callout>
+
+<TldrCard>
+**The 60-second version.** Marmarou described the cranial pressure-volume relationship as **exponential**: ICP rises by a roughly constant factor for each equal increment of added volume. The slope (local elastance) climbs as you move up the curve. The same +1 mL is harmless at ICP 10 and dangerous at ICP 30. A single ICP reading tells you only the operating point; **RAP** (the moving correlation between ICP pulse amplitude and mean ICP) tells you the local slope, which is what predicts the next mL. PVI ~20 mL in adults; smaller in children proportional to intracranial volume; smaller again in infants whose CSF buffer is small. Watch the bedside three: ICP trend, RAP trend, and waveform morphology (P2 dominance). <Cite id="marmarou1975" /> <Cite id="czosnyka1996rap" /> <Cite id="kim2009rap" />
+</TldrCard>
+
+## 1. Bedside vignette: post-craniectomy infant, tense fontanelle
+
+A 9-month-old infant has had a decompressive craniectomy 48 h ago after severe abusive head trauma. The skin flap is intact, the fontanelle is full but not bulging, ICP via parenchymal monitor reads **16 mmHg with RAP 0.75**. The team wonders whether the infant has "run out of skull" already. You ask for a 3 mL/kg HTS bolus and watch.
+
+Over the next 5 minutes the ICP drifts from 16 to **9 mmHg**, the fontanelle softens, and RAP falls to 0.4. That **large response to a small osmotic intervention** is the bedside signature of a low-compliance operating point: the infant was on the steep segment of the Marmarou curve, even with the craniectomy. The craniectomy raised PVI; it did not eliminate elastance. The infant is still vulnerable to small re-accumulations of volume (rebound oedema, blood, CSF) and needs ICP and waveform-morphology surveillance, not reassurance from the open vault. <Cite id="marmarou1975" /> <Cite id="cottenceau2011" />
+
+---
+
+## 2. The equation
+
+```math
+\mathrm{ICP_{target}} = \mathrm{ICP_{baseline}} \cdot \exp\!\left(\frac{\Delta V}{\mathrm{PVI}}\right)
+```
+
+**PVI** (pressure-volume index) is the volume change required to raise ICP by a factor of 10, typically ~20 mL in adults. Pediatric PVI scales roughly with intracranial volume but data are sparse. <Cite id="marmarou1975" />
+
+### Local elastance
+
+The slope of the curve at the operating point:
+
+```math
+E = \frac{dP}{dV} = \frac{\mathrm{ICP_{baseline}}}{\mathrm{PVI}} \cdot \exp\!\left(\frac{\Delta V}{\mathrm{PVI}}\right)
+```
+
+At ICP 10, elastance is small: adding 1 mL barely moves the needle. At ICP 30, the same +1 mL drives ICP up several mmHg. The slope grows with the value; the value grows with the slope. That is why the curve is dangerous.
+
+<Pearl>
+**Two patients with ICP 18.** One has just lost a lot of CSF buffer (steep curve, danger). The other is sitting on a flat curve (compensated). The number alone does not tell you which. <Definition term="RAP">RAP</Definition> and the waveform morphology (P2 dominance) tell you which.
+</Pearl>
+
+<Figure
+  caption="The Marmarou pressure-volume curve. The compensated phase (left) has a low slope: large volume changes produce small pressure changes. As the buffer compartments (CSF, then venous blood) exhaust, the curve bends upward at the knee. On the decompensated phase (right) the slope is steep: small volume changes produce large pressure changes. RAP and waveform morphology (P2 dominance) localise the operating point at the bedside."
+  attribution="MNM-Edu, original schematic. Marmarou 1975; Avezaat 1979."
+  label="Fig. 1"
+>
+  <MarmarouCurve />
+</Figure>
+
+<WidgetEmbed name="MarmarouPVCurve" />
+
+### Time constant
+
+After a volume change, ICP approaches its new equilibrium with τ ≈ 33 s. Do not read the bolus effect of mannitol or hypertonic saline at 30 seconds; wait at least 5 minutes for the full effect to settle.
+
+---
+
+## 3. Why it matters at the bedside
+
+The exponential is not a curiosity, it changes the decisions you make.
+
+- **A single ICP number is not enough.** ICP 18 in a child with RAP 0.2 is a different patient from ICP 18 with RAP 0.85. Plan the next intervention for the slope, not the point.
+- **Small interventions matter more on the steep slope.** A 5 mL/kg HTS bolus drops ICP much more in a low-compliance brain than in a high-compliance one, because you are moving down the steep segment.
+- **EVD drainage is more effective when compliance is low**, for the same reason.
+- **Small accumulations matter more on the steep slope.** A 5 mL re-accumulation of CSF or blood is harmless in a compensated brain, dangerous in a near-decompensated one.
+- **Tomorrow is not today.** The same +1 mL can be tolerable now and disastrous in 8 hours if compliance has been steadily falling. RAP is the trend that warns you.
+
+### What you do at the bedside
+
+A pragmatic protocol when RAP is climbing:
+
+1. **Recheck the basics**: head of bed 30°, no constricting neck lines, sedation adequate, PaCO₂ 35–40, normothermia, no occult seizure.
+2. **Trend RAP**, not just ICP. A creeping RAP from 0.4 to 0.7 over 4 hours is the early warning.
+3. **Test osmolar response**: a single 3 mL/kg HTS bolus that drops ICP from 22 to 12 confirms a steep operating point and earns you time.
+4. **Plan the next escalation early**: when RAP is high, the buffer for the next insult is small. Have CSF drainage capability ready; discuss decompression before it becomes emergent.
+5. **Watch the waveform**: P2 ≥ P1 (the "ICP triad" pattern) is the morphology signature of low compliance, often visible before RAP shifts.
+
+<Pediatric>
+**Smaller buffer, faster decompensation.** Pediatric PVI scales roughly with intracranial volume, so a toddler's buffer is on the order of 8–12 mL versus the adult ~20 mL. The clinical implication is that pediatric ICP can decompensate over a shorter timeline for a given pathological volume. In infants with open fontanelles the surface can soften and bulge, but this is a slow buffer (days to weeks), not an acute rescue. Treat pediatric RAP creep as a stronger signal than the same trajectory in an adult. <Cite id="kochanek2019_pbtf4" /> <Cite id="tasker2023_pccm_review" />
+</Pediatric>
+
+---
+
+## 4. Pattern library
+
+- **Compensated**: ICP 8–14, RAP 0.2–0.4, P1 > P2. Flat segment.
+- **Borderline**: ICP 14–20, RAP 0.4–0.6, P1 ≈ P2. Knee of curve.
+- **Decompensated (steep)**: ICP 20–35, RAP 0.6–0.9, P2 ≥ P1. Steep segment; small additions costly.
+- **Pre-terminal (paradoxical RAP collapse)**: ICP > 35, RAP < 0.2 (falling from previously high), pulse amplitude no longer follows mean. The brain can no longer transmit the pulse.
+- **Plateau wave**: ICP rises trapezoidally from 20 to 50–80 over 60 s, holds 5–20 min, falls. <Cite id="lundberg1960" /> <Cite id="czosnyka1999" /> Marker of low compliance plus active vasomotor plus marginal CPP.
+
+---
+
+## 5. Pitfalls
+
+- **Reading absolute ICP without RAP** when both are available.
+- **Acting on a single ICP point** instead of a 30-minute trend.
+- **Misreading paradoxical RAP collapse as recovery**: at very high ICP, AMP can fall because the brain cannot transmit the pulse.
+- **Forgetting τ**: do not judge a bolus effect at 30 seconds; wait 3–5 minutes.
+- **Treating craniectomy as elimination of elastance**: it raises PVI but does not flatten the curve.
+
+---
+
+## 6. Combine with…
+
+- [Modality: ICP](/modalities/icp/): the readout the curve predicts.
+- [Modality: RAP](/modalities/rap/): the operational compliance index.
+- [Modality: ONSD](/modalities/onsd/): non-invasive ICP proxy when no probe.
+- [Foundation: Monro-Kellie doctrine](/foundations/monro-kellie/): the compartmental basis of the curve.
+- [Foundation: autoregulation](/foundations/autoregulation/): the CPP / PRx axis the curve interacts with.
+- [Integration: osmotherapy ICP NIRS](/integration/osmotherapy-icp-nirs/): a worked osmolar-bolus scenario.
+
+---
+
+<DeepDive>
+
+## 7. Why exponential?
+
+The skull-dura-vasculature system has elastic and viscoelastic compartments. In small ΔV regimes, CSF translocation absorbs added volume without raising pressure. As CSF compartment is depleted and venous blood is compressed, the remaining tissue's elastic modulus dominates, and tissue elastance scales exponentially with strain.
+
+## 8. RAP, the operational compliance index
+
+<Cite id="czosnyka1996rap" /> <Cite id="kim2009rap" /> <Cite id="howells2017rap" /> RAP is the moving Pearson correlation between ICP pulse amplitude (AMP) and mean ICP, computed over a 4-minute window. Interpretations:
+
+- **RAP < 0.3**: flat segment of PV curve; reserve intact.
+- **0.3–0.6**: borderline.
+- **0.6–0.9**: steep segment; low compensatory reserve.
+- **Sudden drop toward zero at high ICP**: *paradoxical* pattern; the brain can no longer transmit pulse. This is decompensation. <Cite id="kazimierska2021" />
+
+<WidgetEmbed name="RAPDemo" />
+
+## 9. What changes the PVI
+
+- **Hydrocephalus** lowers PVI (smaller buffer).
+- **Brain atrophy** (post-traumatic, alcohol-related) raises PVI (more buffer).
+- **Pediatric** PVI scales with brain volume, roughly linearly.
+- **Decompressive craniectomy** dramatically raises PVI by adding a compliant compartment.
+
+## 10. Plateau waves
+
+Lundberg A waves are stochastic: they appear when low compliance plus active vasomotor plus marginal CPP align. Trapezoidal envelope: 60-second rise, 5–20-minute plateau, 60-second fall. <Cite id="lundberg1960" /> <Cite id="czosnyka1999" /> If you see them, look for the underlying state, not the wave itself.
+
+## 11. Therapeutic implications
+
+- A **single 5 mL/kg bolus of HTS** drops ICP more in a low-compliance brain than a high-compliance one, because you are moving down the steep slope.
+- **EVD drainage** is more effective in low-compliance brains for the same reason.
+- Conversely, a small volume *gain* (CSF re-accumulation, oedema, hyperaemia) is dangerous in proportion to where you are on the curve.
+
+## 12. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Marmarou exponential | <Cite id="marmarou1975" /> | A |
+| Avezaat pulse-amplitude relationship | <Cite id="avezaat1979" /> | B |
+| RAP introduction | <Cite id="czosnyka1996rap" /> | B |
+| RAP modern use | <Cite id="kim2009rap" /> <Cite id="howells2017rap" /> | B |
+| Paradoxical RAP at very high ICP | <Cite id="kazimierska2021" /> | C |
+| Plateau waves | <Cite id="lundberg1960" /> <Cite id="czosnyka1999" /> | B |
+| HTS vs mannitol in TBI | <Cite id="cottenceau2011" /> | B |
+| Pediatric TBI guideline | <Cite id="kochanek2019_pbtf4" /> | expert |
+| Pediatric MMM review | <Cite id="tasker2023_pccm_review" /> | review |
+
+</DeepDive>
+
+---
+
+## 13. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A child has ICP 22 and PVI ~18 mL. By approximately how much will ICP rise after a 2 mL CSF re-accumulation?',
+      options: [
+        { id: 'a', label: '~1 mmHg' },
+        { id: 'b', label: '~3 mmHg' },
+        { id: 'c', label: '~10 mmHg' },
+        { id: 'd', label: '~25 mmHg' },
+      ],
+      answer: 'b',
+      explanation: '22 × (10^(2/18) − 1) ≈ 22 × 0.29 ≈ 6 mmHg using a log-10 reading; with the exponential form ΔICP ≈ ICP × (e^(ΔV/PVI) − 1) ≈ 22 × 0.12 ≈ 2.6 mmHg, closer to 3. The point: a small volume change near the knee of the curve costs several mmHg, not one.',
+    },
+    {
+      id: 'q2',
+      prompt: 'What does a sudden drop in RAP from 0.85 to 0.05 at ICP 38 most likely indicate?',
+      options: [
+        { id: 'a', label: 'Recovery; autoregulation restored' },
+        { id: 'b', label: 'Decompensation; AMP collapsing despite high ICP' },
+        { id: 'c', label: 'Sensor disconnected' },
+        { id: 'd', label: 'PRx threshold reached' },
+      ],
+      answer: 'b',
+      explanation: 'Paradoxical RAP drop at high ICP signals that the brain can no longer transmit the pulse, terminal decompensation. Confirm with waveform morphology and respond as imminent herniation.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A post-craniectomy infant with ICP 16 and RAP 0.75 receives 3 mL/kg HTS. ICP falls to 9 over 5 minutes and RAP to 0.4. What does this large response tell you?',
+      options: [
+        { id: 'a', label: 'Decompression has eliminated elastance; the infant is no longer at risk' },
+        { id: 'b', label: 'The infant is on a steep segment of the PV curve; PVI is higher than pre-decompression but elastance is still significant' },
+        { id: 'c', label: 'The HTS dose was inappropriate' },
+        { id: 'd', label: 'The probe is artefacting' },
+      ],
+      answer: 'b',
+      explanation: 'Decompressive craniectomy raises PVI but does not flatten the curve. A large ICP and RAP response to a modest osmolar bolus confirms a low-compliance operating point. The infant remains at risk from further volume accumulation and needs continued ICP surveillance.',
+    },
+  ]}
+/>

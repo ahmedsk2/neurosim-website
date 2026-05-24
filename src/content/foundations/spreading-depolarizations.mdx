@@ -1,0 +1,217 @@
+---
+title: Spreading depolarizations
+description: Slow waves of cellular collapse propagating across cortex, the secondary injury you can't see on routine monitors.
+eyebrow: Foundation 7
+prereqs: [astrup-cascade, cerebral-metabolism]
+relatedModalities: [ecog-sd, eeg, nirs, pbto2]
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **SD**: spreading depolarisation
+- **ECoG**: electrocorticography (subdural recording)
+- **DC-coupled**: direct-current-coupled amplifier (captures slow potentials AC-coupled amplifiers filter out)
+- **EEG / cEEG / aEEG**: standard / continuous / amplitude-integrated EEG
+- **NIRS**: near-infrared spectroscopy; rSO₂ regional tissue O₂
+- **PbtO₂**: brain-tissue oxygen partial pressure
+- **MD**: cerebral microdialysis; L/P lactate-to-pyruvate ratio
+- **TBI / SAH**: traumatic brain injury / subarachnoid haemorrhage
+- **NMDA**: N-methyl-D-aspartate receptor (glutamate)
+- **COSBID**: Cooperative Studies on Brain Injury Depolarisations consortium
+- **MNM / MMM**: multimodal neuromonitoring / multimodal monitoring
+- **CBF**: cerebral blood flow
+</Callout>
+
+<TldrCard>
+**The 60-second version.** A spreading depolarisation is a near-complete breakdown of ion gradients across a contiguous patch of cortex, propagating at **2–5 mm/min** and lasting several minutes. SDs are common after injury: ~60% of severe TBI, ~80% of poor-grade SAH. They are usually **invisible to scalp EEG** (the AC-coupled amplifier filters out the defining slow DC shift) and require **subdural ECoG** with DC-coupled recording for definitive detection. Each SD costs ATP to recover from; in already-injured cortex the bill cannot be paid and the depolarisation becomes terminal, converting penumbra into infarct. Ketamine suppresses SDs; midazolam less so. Clustering and prolonged depression are independent outcome predictors. <Cite id="dreier2017sd_cosbid" /> <Cite id="hartings2020_sd_natural_history" /> <Cite id="hartings2024_sd_intervention" />
+</TldrCard>
+
+## 1. Bedside vignette: severe TBI, clustered SDs in the watershed
+
+A 16-year-old with severe TBI from a motor-vehicle crash. Day 2; bilateral frontal contusions and a small left subdural already evacuated. A subdural ECoG strip was placed at the end of the craniotomy over the peri-contusion watershed. Overnight the strip records **eight SDs in 6 hours**, four of them in a cluster of three within 25 minutes. After each SD, the peri-contusion ICP rises by 3–4 mmHg, NIRS dips 4%, and the ECoG suppression lasts ~12 minutes (longer with each event in the cluster). The team switches sedation from midazolam-fentanyl to a ketamine infusion at 1 mg/kg/h. SD rate falls to one per 6 hours; suppression duration shortens; cluster events stop.
+
+This is the bedside picture of SD-targeted management entering the routine: detection via ECoG, intervention with NMDA antagonism, and tracking the rate-and-duration over time. The COSBID consortium's evidence supports this strategy; the hartings2024 phase II RCT data confirm the suppression effect and trend toward outcome benefit. <Cite id="hartings2024_sd_intervention" /> <Cite id="dreier2017sd_cosbid" />
+
+---
+
+## 2. A picture of an SD
+
+Imagine a normal cortical neuron at rest: Na⁺ outside, K⁺ inside, membrane potential −70 mV, Na⁺/K⁺-ATPase quietly consuming most of the cell's ATP just to hold the gradient. Now something, local injury, glutamate release, transient ischaemia, depolarises a small patch. The patch dumps K⁺ and glutamate into the extracellular space. **Neighbouring neurons see this and depolarise too.** They release more K⁺ and glutamate. The wave moves outward at 2–5 mm/min, which is roughly the speed at which a small water ripple crosses a teacup.
+
+Behind the wave, every neuron is silent for ~5–15 minutes. The ATP cost of restoring the gradient is large. In healthy cortex, the cell pays the bill and recovers. In injured peri-infarct cortex, **the energy bill cannot be paid**: the depolarisation persists, and the cell dies. This is how SDs convert "salvageable" penumbra into infarct.
+
+<Figure
+  src="/images/foundations/spreading-depolarizations/sd-propagation.svg"
+  alt="ECoG strip showing an SD wave with large negative DC shift and suppression of high-frequency activity"
+  caption="A spreading depolarisation as captured on a subdural ECoG strip. Top: large negative DC shift (the signature slow potential that requires DC-coupled amplification). Middle: suppression of high-frequency cortical activity for 5–15 minutes after the wave passes. Bottom: schematic propagation of the wave across the cortical surface at 2–5 mm/min. Each contact records the wave at a slightly different time, which is how propagation direction and velocity are estimated."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 1"
+/>
+
+---
+
+## 3. What happens in a single SD
+
+1. **Priming** (~1 min): local glutamate / K⁺ accumulation.
+2. **Active phase** (~4 min): wave of K⁺ release, cells depolarise en masse.
+3. **Recovery** (~5 min): Na⁺/K⁺-ATPase restores gradients (energy-expensive).
+4. **Refractory period** (~10 min) before another can fire.
+
+Modality footprint during the active phase:
+- **ECoG**: large negative DC shift; transient suppression of high-frequency activity.
+- **NIRS**: rSO₂ falls ~4%.
+- **TCD**: small drop in systolic velocity.
+- **ICP**: small rise (~3 mmHg).
+- **Microdialysis**: glutamate spike, lactate rise.
+
+<Pearl>
+**SDs are common after injury.** ~60% of severe TBI patients show SDs in the first 7 days; ~80% of poor-grade SAH patients. <Cite id="hartings2020_sd_natural_history" /> They are not benign. **Clusters** of SDs and **prolonged spreading depression** are independent predictors of worse outcome.
+</Pearl>
+
+<WidgetEmbed name="SpreadingDepolarizationAnimator" />
+
+---
+
+## 4. Why it matters at the bedside
+
+Even when ICP, CPP, and PRx all look fine, repeated SDs can drive secondary injury: extending infarct, worsening oedema, propagating cell death from initially-spared tissue. The current MNM consensus statement explicitly lists SD monitoring as a frontier modality. <Cite id="leroux2014_neurocrit_consensus" /> <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+Practical implications:
+
+- **SDs are invisible to routine monitoring** unless you specifically look. Scalp EEG misses them; intraparenchymal probes do not pick up the propagating cortical wave.
+- **SD rate and duration matter more than presence.** One SD in 24 hours is the natural history; clusters and prolonged depression are the actionable signals.
+- **Bedside levers**: ketamine suppresses SDs via NMDA antagonism; propofol modestly; midazolam less so. <Cite id="dreier2009" /> Maintaining cortical glucose, oxygen, and normothermia reduces SD generation. Avoid hypotension, hypoglycaemia, hyperthermia, and hypoxia in the at-risk window.
+
+<Pediatric>
+**SDs are documented in pediatric TBI but ECoG is rare.** Subdural strip placement is uncommon in pediatric neurosurgery outside specific epilepsy and tumour cases, so the natural history of pediatric SDs is poorly characterised. **aEEG suppression patterns and PbtO₂ dips** may be indirect proxies in the absence of ECoG monitoring. The figaji2025 pediatric MMM consensus treats SD monitoring as research-only in pediatric centres. <Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="naim2023_brain_injury_pccm" />
+</Pediatric>
+
+---
+
+## 5. Detection
+
+**Gold standard**: subdural ECoG strip with DC-coupled recording. Most clinical EEG amplifiers high-pass at 0.1–0.5 Hz and lose the slow potential. <Cite id="dreier2017sd_cosbid" /> Strip placement is typically done at the end of a craniotomy or via a burr hole; six platinum contacts on a thin silicone strip are slid onto the peri-injury cortex. Recording for 5–7 days is standard in COSBID protocols.
+
+**Indirect cues** at the bedside without ECoG:
+
+- Episodic small ICP rises with no obvious cause.
+- NIRS oscillations or small dips not explained by haemodynamic events.
+- Glutamate spikes on microdialysis.
+- aEEG narrow bursts on a previously quiet trace.
+
+**Scalp EEG**: unreliable for SD detection. Some centres use full-band EEG with DC-coupled amplifiers; this remains research territory.
+
+---
+
+## 6. Therapeutic implications
+
+- **Sedation choice matters**: ketamine and propofol suppress SDs; midazolam less so. <Cite id="dreier2009" />
+- **Cortical milieu**: hypoxia, hypoglycaemia, hypotension, and hyperthermia all promote SDs.
+- **Persistent or clustering SDs** may justify aggressive sedation, hypothermia, or NMDA antagonism.
+- **Trial signal**: hartings2024 phase II RCT of SD-targeted intervention showed feasibility and a suppression signal; phase III data are pending. <Cite id="hartings2024_sd_intervention" />
+
+<Controversy>
+**Should we treat SDs in routine TBI / SAH care?** The evidence base is shifting. Hartings et al. published a phase II RCT of SD-targeted intervention in 2024. <Cite id="hartings2024_sd_intervention" /> Some centres aggressively suppress SDs with ketamine; others wait for phase III data. The COSBID consortium continues to publish prospective cohort data. <Cite id="hartings2020_sd_natural_history" /> Until phase III, the strongest pragmatic case is for SD detection in centres already running ECoG, with ketamine substitution for midazolam when SDs cluster.
+</Controversy>
+
+---
+
+## 7. Pattern library
+
+- **Isolated SD on ECoG**: large negative DC shift, 1–2 min, with 5–15 min suppression. Natural history; not alarming alone.
+- **Cluster of SDs**: three or more within 30 minutes. Independent outcome predictor; intervention candidate.
+- **Prolonged spreading depression**: suppression lasting > 30 minutes after a single SD. Marker of profound metabolic compromise.
+- **Iso-electric SD**: SD arising on an already-suppressed background. Often signals terminal injury.
+- **Cardiogenic SD trigger**: SD timed to a brief hypotensive event or arrhythmia. Look for the haemodynamic correlate.
+
+---
+
+## 8. Combine with…
+
+- [Modality: ECoG-SD](/modalities/ecog-sd/): the bedside detection modality.
+- [Modality: EEG / cEEG](/modalities/eeg/): proxy signals (narrow bursts, isolated suppressions).
+- [Modality: NIRS](/modalities/nirs/): rSO₂ dips that can be SD footprints.
+- [Modality: PbtO₂](/modalities/pbto2/): tissue O₂ falls during clustered SDs.
+- [Modality: microdialysis](/modalities/microdialysis/): glutamate and lactate spikes.
+- [Foundation: Astrup cascade](/foundations/astrup-cascade/): the cellular conditions that birth SDs.
+- [Foundation: cerebral metabolism](/foundations/cerebral-metabolism/): the ATP economics behind the recovery cost.
+
+---
+
+<DeepDive>
+
+## 9. Mechanism
+
+Excessive glutamate or extracellular K⁺ depolarises nearby neurons, releasing more glutamate / K⁺. The wave is autocatalytic. Once the depolarising front passes, Na⁺/K⁺-ATPase has a huge job restoring gradients, consuming ATP and producing local hypoxia. In already-injured cortex, that energy bill cannot be paid: the depolarisation becomes terminal (anoxic depolarisation). The original wave description in cortex is from Leão 1944. <Cite id="leao1944" /> Modern bedside translation is from Strong, Dreier, Hartings, and the COSBID consortium. <Cite id="strong2002" /> <Cite id="dreier2017sd_cosbid" /> <Cite id="hartings2017cosbid" />
+
+## 10. Why scalp EEG misses SDs
+
+The defining electrical signature of an SD is a large, slow negative shift (the DC potential) plus suppression of high-frequency activity. Routine clinical EEG amplifiers are AC-coupled with a high-pass filter at 0.1–0.5 Hz; the DC shift is filtered out, leaving only the suppression, which on scalp recording is non-specific and easily attributed to sedation or background variation. ECoG with DC-coupled amplification captures the full waveform.
+
+## 11. Pediatric specifics
+
+SDs have been documented in pediatric TBI in small case series, but the technical and ethical thresholds for subdural ECoG in pediatric patients are higher, so most centres do not monitor for SDs in routine pediatric severe TBI. Where aEEG and PbtO₂ are in place, narrow-burst patterns or unexplained PbtO₂ dips may be proxies, but the predictive value of these proxies for SD events is not established in pediatric cohorts.
+
+## 12. Recent evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Leão original SD description | <Cite id="leao1944" /> | foundational |
+| Strong ECoG validation | <Cite id="strong2002" /> | B |
+| COSBID consortium framework | <Cite id="dreier2017sd_cosbid" /> <Cite id="hartings2017cosbid" /> | expert |
+| Natural-history cohort | <Cite id="hartings2020_sd_natural_history" /> | B |
+| Phase II SD-intervention RCT | <Cite id="hartings2024_sd_intervention" /> | B |
+| Sedation effects on SD | <Cite id="dreier2009" /> | C |
+| NeuroCritical Care consensus | <Cite id="leroux2014_neurocrit_consensus" /> | expert |
+| Pediatric MMM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> | expert |
+| Pediatric brain injury review | <Cite id="naim2023_brain_injury_pccm" /> | review |
+
+</DeepDive>
+
+---
+
+## 13. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A spreading depolarisation wave propagates at approximately what velocity?',
+      options: [
+        { id: 'a', label: '~50 m/s (action potential speed)' },
+        { id: 'b', label: '~2–5 mm/min' },
+        { id: 'c', label: '~1 cm/s' },
+        { id: 'd', label: '~10 cm/s' },
+      ],
+      answer: 'b',
+      explanation: 'SD propagates at 2–5 mm/min, orders of magnitude slower than action potentials. The slow speed is why subdural strip recordings can estimate propagation direction and velocity from time-of-arrival at different contacts.',
+    },
+    {
+      id: 'q2',
+      prompt: 'Why does scalp EEG miss most SDs?',
+      options: [
+        { id: 'a', label: 'Skull attenuates the signal' },
+        { id: 'b', label: 'Most clinical EEG amplifiers high-pass filter at 0.1–0.5 Hz, removing the DC shift' },
+        { id: 'c', label: 'SDs occur deep in white matter' },
+        { id: 'd', label: 'Algorithms are not trained for them' },
+      ],
+      answer: 'b',
+      explanation: 'The slow DC shift that defines SDs is filtered out by AC-coupled amplifiers. ECoG with DC-coupled recording captures it. Some centres now use full-band scalp EEG with DC-coupled amplifiers, but this remains research.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A severe-TBI patient with subdural ECoG shows three SDs in 25 minutes with progressively longer suppression after each event. Sedation is midazolam-fentanyl. What is the most appropriate next step?',
+      options: [
+        { id: 'a', label: 'Continue current sedation; clusters are common and benign' },
+        { id: 'b', label: 'Substitute ketamine for midazolam to suppress NMDA-mediated SD generation' },
+        { id: 'c', label: 'Add propofol; the patient is under-sedated' },
+        { id: 'd', label: 'Stop ECoG monitoring' },
+      ],
+      answer: 'b',
+      explanation: 'Clustered SDs with progressively longer suppression are an independent predictor of worse outcome. Ketamine suppresses SDs via NMDA antagonism; midazolam does not. The hartings2024 phase II RCT supports ketamine substitution in this setting. Continue ECoG to confirm intervention effect.',
+    },
+  ]}
+/>

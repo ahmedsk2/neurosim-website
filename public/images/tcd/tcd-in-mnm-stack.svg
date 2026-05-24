@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" role="img" aria-label="TCD in the multimodal monitoring stack">
+  <style>
+    .bg { fill: #081224; }
+    .title { fill: #f1f5f9; font: 600 14px sans-serif; }
+    .nodeLabel { fill: #f1f5f9; font: 600 12px sans-serif; text-anchor: middle; }
+    .nodeSub { fill: #94a3b8; font: 10px sans-serif; text-anchor: middle; }
+    .smallLabel { fill: #94a3b8; font: 10px sans-serif; }
+    .placeholder { fill: #64748b; font: italic 10px sans-serif; }
+    .arrow { stroke: #5eead4; stroke-width: 1.4; fill: none; marker-end: url(#arr); }
+    .center { fill: #134e4a; stroke: #5eead4; stroke-width: 2; }
+    .other { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5eead4"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="820" height="400"/>
+  <text class="title" x="20" y="28">TCD in the multimodal monitoring stack, placeholder schematic</text>
+  <ellipse class="center" cx="410" cy="210" rx="110" ry="60"/>
+  <text class="nodeLabel" x="410" y="206">TCD / TCCD</text>
+  <text class="nodeSub" x="410" y="224">velocity · vasospasm · Mx · PI</text>
+  <g>
+    <ellipse class="other" cx="140" cy="100" rx="100" ry="44"/>
+    <text class="nodeLabel" x="140" y="98">ICP</text>
+    <text class="nodeSub" x="140" y="116">PRx · CPP · waveform</text>
+    <path class="arrow" d="M240 110 Q300 140 320 175"/>
+    <path class="arrow" d="M320 175 Q300 140 240 110" stroke="#fbbf24" marker-end="url(#arr)"/>
+  </g>
+  <g>
+    <ellipse class="other" cx="680" cy="100" rx="100" ry="44"/>
+    <text class="nodeLabel" x="680" y="98">NIRS</text>
+    <text class="nodeSub" x="680" y="116">rSO₂ · ORx · tissue oxygenation</text>
+    <path class="arrow" d="M580 110 Q520 140 500 175"/>
+  </g>
+  <g>
+    <ellipse class="other" cx="140" cy="320" rx="100" ry="44"/>
+    <text class="nodeLabel" x="140" y="318">EEG / qEEG</text>
+    <text class="nodeSub" x="140" y="336">cortical function · DCI</text>
+    <path class="arrow" d="M240 310 Q300 280 320 245"/>
+  </g>
+  <g>
+    <ellipse class="other" cx="680" cy="320" rx="100" ry="44"/>
+    <text class="nodeLabel" x="680" y="318">PbtO₂ · μdialysis</text>
+    <text class="nodeSub" x="680" y="336">tissue O₂ · lactate / pyruvate</text>
+    <path class="arrow" d="M580 310 Q520 280 500 245"/>
+  </g>
+  <g>
+    <ellipse class="other" cx="410" cy="370" rx="100" ry="24"/>
+    <text class="nodeLabel" x="410" y="375">Clinical exam · pupils · vitals</text>
+    <path class="arrow" d="M410 346 L410 280"/>
+  </g>
+  <text class="smallLabel" x="20" y="395">TCD's unique contributions: large-vessel velocity, vasospasm detection, autoregulation (Mx) without an ICP monitor.</text>
+  <text class="placeholder" x="620" y="395">PLACEHOLDER, Fig. 6</text>
+</svg>

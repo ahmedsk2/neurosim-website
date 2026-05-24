@@ -1,0 +1,393 @@
+---
+title: Pressure reactivity index (PRx)
+description: A moving correlation between ICP and MAP at slow-wave frequencies, used to grade autoregulation continuously at the bedside and to derive an individualised CPP target.
+eyebrow: Modality 4 · Autoregulation
+short: PRx
+domain: autoregulation
+labels:
+  usage: bedside
+  population: both
+  invasiveness: invasive
+  validation: validated
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **PRx**: pressure reactivity index, moving Pearson correlation between ICP and MAP at slow-wave frequencies
+- **CPP**: cerebral perfusion pressure = MAP − ICP
+- **CPPopt**: the CPP at which PRx is minimised; the individualised target
+- **MAP**: mean arterial pressure · **ICP**: intracranial pressure
+- **Mx**: TCD-based autoregulation index (MFV ↔ CPP correlation)
+- **ORx**: NIRS-based autoregulation index (rSO2 ↔ MAP correlation)
+- **LLA / ULA**: lower / upper limit of autoregulation
+- **TBI**: traumatic brain injury · **SAH**: aneurysmal subarachnoid haemorrhage
+- **DCI**: delayed cerebral ischaemia · **HIE**: hypoxic-ischaemic encephalopathy
+- **COGiTATE**: CPP Opt Guided Therapy: Assessment of Target Effectiveness (phase II trial)
+- **MMM / MNM**: multimodal monitoring / multimodal neuromonitoring
+</Callout>
+
+<TldrCard>
+**The 60-second version.** PRx is a continuous, moving Pearson correlation between **mean ICP** and **mean MAP** computed at slow-wave frequencies (~0.005–0.05 Hz, the Mayer-wave band). When the cerebrovasculature is **reactive** (autoregulation intact), a small rise in MAP triggers vasoconstriction and ICP falls or stays the same: the correlation is **negative or near zero** (PRx ≈ −0.3 to 0). When **autoregulation is impaired**, the vessels are passive pipes and ICP follows MAP: the correlation goes positive (PRx > +0.25). Plotting PRx against CPP over the past 4 hours typically traces a U-curve; the vertex is **CPPopt**, the CPP at which the patient autoregulates best. PRx-guided CPP targeting (COGiTATE phase II) is the most evidence-supported individualised CPP strategy in severe TBI, with growing pediatric data (Tas 2022, 2024). PRx requires high-quality continuous ICP and MAP signals and **does not work in pulseless flow (ECMO, severe LV failure with non-pulsatile cardiac output)** or when ICP signal quality is poor.
+</TldrCard>
+
+## 1. Bedside vignettes: why this matters in the PICU
+
+### Vignette A. Severe TBI day 2 in a 10-year-old, PRx says CPP is too low
+
+A 10-year-old severe TBI day 2, post bifrontal decompressive craniectomy. ICP via parenchymal probe contralateral to the craniectomy reads 12 mmHg, CPP 60. Standard age-based protocol says CPP 50–60 is the floor and 60 is fine. The PRx trend over the past 4 hours has been **+0.45 sustained**. The CPPopt curve, fit to (CPP, PRx) data, gives a vertex at **CPP 75 mmHg**. The team lifts MAP with noradrenaline, CPP rises to 73, PRx falls to +0.05 within the hour. The default age-based target was inadequate for *this child*. Over the next 48 hours the team uses PRx-CPPopt as the operational CPP target and the patient's ICP-dose accumulates less than the matched cohort. <Cite id="aries2012cppopt" /> <Cite id="beqiri2024_cogitate" /> <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" />
+
+### Vignette B. SAH day 5, PRx oscillating, real signal or artefact?
+
+A 14-year-old with aneurysmal SAH post-coiling, day 5. PRx has been oscillating between 0.05 and +0.3 every 20 minutes for the past 4 hours. Is this **fluctuating autoregulation** (truly threshold-borderline) or is it **artefact** (motion, suctioning, sedation lightening)? The bedside team rejects 10-minute windows containing nursing care, looks at the **clean overnight stretch** when sedation was steady, and finds PRx +0.20 sustained. The CPPopt curve fits cleanly with a vertex at CPP 70. Lesson: PRx interpretation is **window choice plus artefact rejection**; you cannot trust a number computed across a suctioning episode. <Cite id="czosnyka1997prx" /> <Cite id="smielewski2018icmplus" />
+
+### Vignette C. Post-cardiac-arrest day 1, PRx not interpretable
+
+A 7-year-old post-cardiac arrest day 1, targeted temperature 33°C. ICP-MAP correlation is **near-zero with very low slow-wave power**. The PRx number reads 0.05 but the underlying signal-to-noise is poor. The team holds off on PRx-guided targeting until day 3 when slow-wave power recovers, and uses **ORx (NIRS-MAP correlation)** as the autoregulation surrogate in the interim. Lesson: **PRx requires slow-wave content** that is often absent in deep sedation, hypothermia, or non-pulsatile cardiac states. Have a fallback (Mx, ORx, COx) for these scenarios. <Cite id="brady2010orx" /> <Cite id="czosnyka1996mx" /> <Cite id="rivera-lara2017autoreg" />
+
+---
+
+## 2. What PRx is, and what it is not
+
+PRx is a **moving Pearson correlation coefficient** between mean ICP and mean MAP, computed in successive overlapping windows.
+
+```math
+\mathrm{PRx} = \mathrm{corr}(\mathrm{ICP}_{10\text{-s avg}}, \mathrm{MAP}_{10\text{-s avg}})
+```
+
+The standard implementation (Czosnyka 1997, refined by Smielewski's ICM+):
+
+1. Sample ICP and MAP at 100–200 Hz.
+2. Compute 10-second averages.
+3. Take 30 consecutive 10-second averages (5 minutes of data).
+4. Compute the Pearson correlation of the 30 paired (ICP, MAP) values.
+5. Update every minute by sliding the window forward.
+
+The **logic**. When autoregulation is intact, a rise in MAP triggers cerebrovascular vasoconstriction (smaller vessel volume, lower cerebral blood volume, lower ICP) within seconds. So MAP and ICP move in **opposite or unrelated directions** at slow-wave frequencies and the correlation is negative or near zero. When autoregulation is impaired, the vasculature is a passive pipe; MAP and ICP rise and fall together at slow frequencies and the correlation is positive.
+
+**Why slow waves.** The autoregulatory response operates over seconds-to-minutes, in the same frequency band as Mayer waves (~0.1 Hz) and B waves (~0.02 Hz). Heart-rate frequency (~1 Hz) and respiration (~0.2 Hz) are filtered out by the 10-second averaging.
+
+**What PRx is not.** It is not a direct measurement of autoregulation; it is a **continuous index** correlated with the cerebrovascular reactivity that defines autoregulation. It is not robust to artefact: motion, suctioning, transducer drift, and rapid sedation changes pollute the correlation. It is not interpretable in pulseless flow states (VA-ECMO with non-pulsatile output, severe LV failure) because the slow-wave drive disappears. <Cite id="czosnyka1997prx" /> <Cite id="rivera-lara2017autoreg" />
+
+<Pearl>
+**PRx is a signal, not a measurement.** Trust trends over hours, not single 5-minute values. The CPPopt fit needs ~4 hours of data to be useful; isolated PRx values are noise.
+</Pearl>
+
+<Pediatric>
+**Pediatric slow-wave content differs.** Younger children have higher heart rates and respiratory rates, shifting power in the slow-wave band. The standard adult window settings still work but signal-to-noise is sometimes lower. Pediatric validation studies (Tas 2022, 2024) used adult-style windowing and demonstrated the same CPPopt U-curve relationship with outcome. **PRx > +0.25 is the same threshold used in pediatric work**, but the CPPopt value will be lower (operational CPP floor 50 in a toddler vs 60 in an adolescent). <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="lewis2014peds" />
+</Pediatric>
+
+---
+
+## 3. The math, in a deep-dive
+
+<DeepDive>
+
+### 3.1 Window choice and signal preparation
+
+- **Sampling**: ICP and MAP sampled at 100–200 Hz from the patient monitor.
+- **Averaging**: 10-second non-overlapping averages reduce high-frequency content (HR, respiration).
+- **Window**: 30 paired 10-second averages = 5 minutes.
+- **Update rate**: slide the window by 60 seconds, recompute Pearson.
+
+### 3.2 Pearson correlation
+
+For paired vectors $\vec{x}, \vec{y}$ of length $n$:
+
+```math
+r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2 \cdot \sum_{i=1}^{n}(y_i - \bar{y})^2}}
+```
+
+PRx is bounded $[-1, +1]$.
+
+### 3.3 Artefact rejection
+
+ICM+ and other validated implementations reject windows when:
+
+- ICP variance is too low (flat trace, blocked catheter).
+- ICP variance is too high (catheter flush, suction artefact).
+- MAP variance is too low (arterial line damping).
+- The window contains nursing or procedural artefact flagged by clinician.
+
+### 3.4 Why a 5-minute window
+
+Short enough to be responsive to changes (suctioning, position) but long enough to capture slow-wave content. Shorter windows (1–2 minutes) are too noisy; longer (15+ minutes) lose temporal resolution. <Cite id="czosnyka1997prx" /> <Cite id="smielewski2018icmplus" />
+
+### 3.5 The CPPopt fit
+
+For each 5-minute window, plot the point (CPP, PRx). Accumulate ~4 hours of points. Bin CPP into 5-mmHg buckets, compute mean PRx in each bin. Fit a parabola; the vertex is CPPopt. The shaded "target band" is ±5 mmHg of CPPopt.
+
+</DeepDive>
+
+---
+
+## 4. Thresholds: what counts as intact, impaired, and ambiguous
+
+| PRx range | Interpretation | Action |
+|---|---|---|
+| −0.3 to 0.0 | Intact autoregulation | Continue current CPP target |
+| 0.0 to +0.25 | Ambiguous / borderline | Lengthen window; check for artefact; re-evaluate in 30 min |
+| > +0.25 sustained | Impaired autoregulation | Re-target CPP; check CPPopt curve |
+| Falling over hours | Improving autoregulation | Consider weaning vasopressor support |
+| Rising over hours | Worsening autoregulation | Investigate cause (ischaemia, oedema progression, seizures, sedation withdrawal) |
+
+The +0.25 threshold comes from a large body of outcome-association work, originally Steiner 2002 (mortality) and confirmed in many subsequent cohorts. Time spent with PRx > +0.25 correlates with 6-month outcome in adult severe TBI. <Cite id="steiner2002" /> <Cite id="sorrentino2012" /> <Cite id="aries2012cppopt" />
+
+<Pitfall>
+**A single PRx value is rarely actionable.** The bedside team should look at a trend over the past 1–2 hours and ask "what changed?". A PRx jump from −0.1 to +0.3 over 30 minutes is more useful than a single +0.4 value.
+</Pitfall>
+
+---
+
+## 5. The PRx trace and pattern library
+
+<Figure
+  src="/images/prx/prx-time-series.svg"
+  alt="Four PRx time series side by side: intact (flat near 0), impaired (sustained above 0.3), oscillating, artefactual"
+  caption="Four canonical PRx patterns over a 4-hour window. (a) Intact: PRx oscillating near zero or slightly negative, signal quality good. (b) Impaired: PRx sustained above 0.25 for hours, often paired with a flat or shallow CPPopt curve. (c) Oscillating: PRx swinging between 0 and 0.4 every 20–40 minutes, often reflecting fluctuating autoregulation threshold or transient sedation changes. (d) Artefactual: PRx jumping to extreme values then back, classic for movement, suctioning, transducer flush; should be rejected from the CPPopt fit."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 1"
+/>
+
+| Pattern | Bedside meaning | What to do |
+|---|---|---|
+| Flat near zero | Intact autoregulation | Continue current CPP |
+| Sustained > +0.25 | Impaired; needs CPPopt re-evaluation | Re-target CPP per CPPopt fit |
+| Oscillating ±0.3 | Threshold-borderline or sedation-fluctuant | Look for triggers; lengthen analysis window |
+| Spikes to extremes | Artefact (motion, flush, suction) | Reject from CPPopt fit; verify with raw trace |
+| Drifting positive over hours | Worsening autoregulation; new pathology | Investigate (seizures, oedema, ischaemia, sedation withdrawal) |
+| Drifting negative over hours | Recovering autoregulation | Consider weaning interventions |
+| Unstable / no signal | Low slow-wave power, pulseless flow, sedation depth | Switch to ORx or Mx; check signal quality |
+
+---
+
+## 6. Try it: interactive widgets
+
+<WidgetEmbed name="PRxCalculator" />
+
+<WidgetEmbed name="CPPoptUCurve" />
+
+<WidgetEmbed name="MxCalculator" />
+
+<WidgetEmbed name="OrxCalculator" />
+
+<WidgetEmbed name="MultimodalDiscordance" />
+
+---
+
+## 7. CPPopt by PRx: the individualised target
+
+The clinical payoff of PRx is **CPPopt**, the CPP at which PRx is minimised.
+
+<Figure
+  src="/images/prx/prx-vs-cpp-ucurve.svg"
+  alt="PRx-versus-CPP U-curve with CPPopt at the vertex, LLA and ULA marked, shaded ±5 mmHg target band"
+  caption="PRx (vertical axis) plotted against CPP (horizontal axis) over the past 4 hours. Each point is a 5-minute window. The parabola fit shows a clear vertex at CPPopt, the CPP at which autoregulation is most efficient (PRx most negative). The lower limit of autoregulation (LLA) is where PRx crosses +0.25 on the descending limb; the upper limit (ULA) is where it crosses +0.25 on the ascending limb. The shaded green band is the recommended target range: ±5 mmHg of CPPopt. A flat curve or unclear vertex means CPPopt is non-fittable in that window; revert to default age-based CPP target."
+  attribution="MNM-Edu, schematic adapted from Aries 2012 and Beqiri 2024. SVG placeholder."
+  label="Fig. 2"
+/>
+
+### 7.1 The five-step workflow
+
+1. **Accumulate** 4 hours of synchronised ICP and MAP recordings.
+2. **Compute PRx** in 5-minute moving windows updating every minute.
+3. **Bin** the (CPP, PRx) points into 5-mmHg CPP buckets.
+4. **Fit a parabola** (or U-curve) to the bin means; the vertex is CPPopt.
+5. **Re-target** MAP so that CPP sits within ±5 mmHg of CPPopt.
+
+### 7.2 What COGiTATE showed
+
+**COGiTATE phase II** (Beqiri 2024) was the first randomised feasibility trial of PRx-CPPopt-guided care in adult severe TBI. Compared to standard CPP 60–70 targeting:
+
+- Patients in the CPPopt arm spent **a significantly larger fraction of monitored time within ±5 mmHg of their CPPopt target** (median 46.5%, IQR 38.3-56.2, versus 30.3%, IQR 22.6-38.4, in the standard-CPP arm; p < 0.001).
+- No safety concerns; no excess fluid balance or vasopressor use.
+- Secondary endpoints (mortality, GOS-E at 6 months) trended favourably but were not powered for definitive conclusion.
+
+The follow-on **COGiTATE-3** (full-scale efficacy trial) is in design. **Tas 2025** has published the 12-month outcome follow-up showing sustained association between CPPopt-targeted time and better functional outcome. <Cite id="beqiri2024_cogitate" /> <Cite id="tas2025_cogitate_followup" />
+
+### 7.3 Pediatric CPPopt evidence
+
+**Tas 2022** (KidsBrainIT and Cambridge cohort, ~95 children) demonstrated:
+
+- A clear PRx-CPP U-curve in the majority of pediatric severe TBI patients.
+- CPPopt was age-dependent: **younger children had lower CPPopt** (mean CPPopt 55 in children < 8 years, vs 70 in adolescents).
+- Time spent below CPPopt correlated with 6-month GOS-E outcome, independent of mean CPP.
+
+**Tas 2024** extended this with a per-patient temporal analysis showing CPPopt is **dynamic** within the same patient over the course of an admission, often rising over the first 48 hours and falling thereafter. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="lewis2014peds" />
+
+<Pediatric>
+**Pediatric CPPopt is often below the age-based default.** A 4-year-old with CPPopt of 50 will be over-perfused if the team holds rigid to a "CPP > 60" default. This is the most important practical lesson from the pediatric data: **the individualised target wins**. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" />
+</Pediatric>
+
+---
+
+## 8. Clinical contexts: PRx across acute brain injuries
+
+### 8.1 Severe TBI (the canonical indication)
+
+The original validation context (Czosnyka 1997). Most outcome-association data come from severe-TBI adults. The CPPopt framework, COGiTATE evidence base, and the +0.25 threshold all originate here. Pediatric severe TBI follows the same physiology with age-banded targets. <Cite id="czosnyka1997prx" /> <Cite id="aries2012cppopt" /> <Cite id="depreitere2014icpdose" /> <Cite id="beqiri2024_cogitate" /> <Cite id="kochanek2019_pbtf4" /> <Cite id="tasker2023_pccm_review" />
+
+### 8.2 Aneurysmal SAH
+
+Increasingly studied. PRx during the spasm window (days 3–14) shows oscillation patterns that correlate with DCI risk. Where ICP via EVD is already in place for SAH, adding PRx-CPPopt is straightforward. The 2023 AHA/ASA SAH guidelines mention multimodal monitoring including autoregulation indices as a tier-2 modality. <Cite id="rass2021dci_review" /> <Cite id="hoh2023sah_aha" /> <Cite id="foreman2022" />
+
+### 8.3 Pediatric severe TBI
+
+Tas 2022, 2024 and the Cambridge group's KidsBrainIT analyses are the main evidence. Pediatric MNM consensus 2025 (Figaji) recommends PRx as a tier-2 monitoring modality in resourced centres. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="lewis2014peds" /> <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+### 8.4 Post-cardiac arrest
+
+PRx in post-arrest patients is **less validated**. The signal often has low slow-wave power because of cooling, deep sedation, and reduced cerebral metabolic activity. **ORx (NIRS-MAP) is often more usable** in the first 48 hours; PRx becomes interpretable on rewarming. <Cite id="rivera-lara2017autoreg" /> <Cite id="topjian2021aha_pediatric" /> <EvidenceLevel grade="sparse" />
+
+### 8.5 ECMO
+
+VA-ECMO with non-pulsatile flow **abolishes PRx interpretability**. The slow-wave drive disappears. Mx (TCD-MFV-MAP correlation) is more usable because it relies on the residual pulsatility detectable on TCD; ORx (NIRS-MAP) is the most robust autoregulation surrogate during ECMO. <Cite id="lorusso2017_elso_neuro" /> <Cite id="cho2024_ecmo_outcomes" /> <Cite id="brady2010orx" />
+
+### 8.6 Bacterial meningitis with raised ICP
+
+Where ICP is being monitored invasively in pediatric meningitis with hydrocephalus, PRx can be computed. Evidence base is thin but pathophysiologically the principle applies. <Cite id="vandebeek2016eu_meningitis" /> <EvidenceLevel grade="sparse" />
+
+### 8.7 Hepatic encephalopathy
+
+ICP monitoring in acute liver failure is contentious (coagulopathy and bleed risk); where placed, PRx adds CPP individualisation. Evidence base is single-centre and small. <Cite id="vespa2010" /> <EvidenceLevel grade="sparse" />
+
+### 8.8 Pediatric stroke and post-thrombectomy
+
+Individualised BP targeting using PRx (where ICP is invasive) or ORx (when ICP cannot be placed) is emerging in adult post-thrombectomy management. Pediatric application is research-stage. <Cite id="ferriero2019aha_pedstroke" /> <Cite id="sun2020_pediatric_thrombectomy" /> <EvidenceLevel grade="sparse" />
+
+---
+
+## 9. Multimodal integration: PRx alongside Mx, ORx, and others
+
+<Figure
+  src="/images/prx/prx-vs-mx-vs-orx.svg"
+  alt="Side-by-side comparison of PRx, Mx, and ORx signals, each plotted against CPP, showing concordant and discordant cases"
+  caption="PRx, Mx (TCD-based), and ORx (NIRS-based) on the same patient. In concordant intact autoregulation all three are near zero. In concordant impaired all three are positive and the CPPopt curves agree. In discordant cases, the indices give different CPPopt values, often because they sample different vascular beds (PRx whole-brain ICP, Mx large-vessel MFV, ORx regional cortex). Discordance is not noise; it carries information about where the autoregulatory failure lies."
+  attribution="MNM-Edu, original schematic. SVG placeholder."
+  label="Fig. 3"
+/>
+
+| Pair with… | What you gain | Worked scenario |
+|---|---|---|
+| **Mx (TCD)** | Non-invasive autoregulation when ICP unavailable; mutual validation when both are available | [TCD page](/modalities/tcd/) |
+| **ORx (NIRS)** | Regional cortical autoregulation; works in ECMO and low-pulsatility states | [ORx page](/modalities/orx/), [NIRS page](/modalities/nirs/) |
+| **PbtO2** | Endpoint validation: low PbtO2 + high PRx = clear ischaemic-autoregulatory crisis | [PbtO2 page](/modalities/pbto2/) |
+| **Microdialysis** | Metabolic endpoint: rising lactate/pyruvate ratio + high PRx = energy crisis | [Microdialysis page](/modalities/microdialysis/) |
+| **EEG / aEEG** | Reactivity loss + impaired PRx = severe brain dysfunction | [EEG page](/modalities/eeg/) |
+| **ICP waveform (RAP)** | Compliance state alongside autoregulatory state | [ICP page](/modalities/icp/), [RAP page](/modalities/rap/) |
+
+**The three-index synthesis**: when PRx, Mx, and ORx all point to impaired autoregulation, the conclusion is robust. When they disagree, ask which vascular bed each samples (whole brain vs large vessel vs regional cortex) and trust the one most relevant to the clinical question. <Cite id="brady2010orx" /> <Cite id="czosnyka1996mx" /> <Cite id="rivera-lara2017autoreg" /> <Cite id="lee2009ndnirs" />
+
+---
+
+## 10. Pitfalls and artefacts
+
+- **Signal quality is everything.** A noisy ICP transducer or poorly-zeroed arterial line produces nonsense PRx. Validate every shift.
+- **Sedation lightening shifts PRx**: deep propofol reduces ICP slow-wave power; lightening raises it. Re-baseline after sedation changes.
+- **Suctioning, position change, agitation**: classic short-window artefact. Reject from CPPopt fit.
+- **Non-pulsatile flow (ECMO)**: PRx becomes uninterpretable. Use ORx or Mx.
+- **Hypothermia**: reduces slow-wave power; PRx less interpretable.
+- **Age-related differences**: pediatric thresholds are similar but slow-wave content can be lower; pediatric validation studies used adult-style windowing.
+- **Short window (single 5-min value)**: not actionable. Always look at hours.
+- **Flat or shallow CPPopt curve**: when the U-curve cannot be fit, do not invent a CPPopt; revert to age-based default.
+- **Time-varying CPPopt**: CPPopt drifts within a single patient over hours. The 4-hour moving window is a compromise.
+- **PRx vs Mx vs ORx disagreement**: not noise, it is information about which vascular bed is failing. Investigate, do not average.
+
+---
+
+## 11. Combine with…
+
+- [Mx, TCD-based autoregulation](/modalities/mx/): non-invasive backup.
+- [ORx, NIRS-based autoregulation](/modalities/orx/): regional cortical, works in ECMO.
+- [CPPopt](/modalities/cppopt/): the individualised target derived from PRx.
+- [ICP](/modalities/icp/): the input signal; quality matters.
+- [CPP](/modalities/cpp/): the action target.
+- [PbtO2](/modalities/pbto2/): endpoint validation.
+- [Microdialysis](/modalities/microdialysis/): metabolic endpoint.
+- [TCD](/modalities/tcd/): for Mx and large-vessel context.
+
+---
+
+<DeepDive>
+
+## 12. Evidence summary and recent literature
+
+### 12.1 Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Original PRx description | <Cite id="czosnyka1997prx" /> | A (foundational) |
+| Pediatric piglet validation | <Cite id="brady2007piglet" /> <Cite id="brady2009piglet" /> | B |
+| ORx (NIRS-based) | <Cite id="brady2010orx" /> | B |
+| Mx (TCD-based) | <Cite id="czosnyka1996mx" /> | B |
+| Mortality outcome association | <Cite id="steiner2002" /> <Cite id="sorrentino2012" /> | B |
+| CPPopt derivation | <Cite id="aries2012cppopt" /> <Cite id="aries2012" /> | B |
+| CPPopt vs PRx vs outcome | <Cite id="depreitere2014icpdose" /> | B |
+| MAPopt extension | <Cite id="donnelly2017mapopt" /> | B |
+| Pediatric CPPopt | <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="lewis2014peds" /> | B |
+| COGiTATE phase II | <Cite id="beqiri2024_cogitate" /> | A |
+| COGiTATE 12-month follow-up | <Cite id="tas2025_cogitate_followup" /> | B |
+| ICM+ implementation reference | <Cite id="smielewski2018icmplus" /> | expert |
+| Autoregulation methods review | <Cite id="rivera-lara2017autoreg" /> | review |
+| Pediatric MNM consensus | <Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="tasker2023_pccm_review" /> <Cite id="helbok2024_pediatric_mmm" /> | expert |
+| NCS MMM consensus | <Cite id="leroux2014_neurocrit_consensus" /> | expert |
+| PBTF 4 ICP / CPP recommendations | <Cite id="kochanek2019_pbtf4" /> | expert |
+
+### 12.2 Recent literature (2022–2025)
+
+- **Beqiri 2024 (COGiTATE phase II)**: feasibility and safety established for PRx-CPPopt-guided care in adult severe TBI. Patients in the CPPopt arm achieved their individualised target a median 46.5% of monitored time (IQR 38.3-56.2) versus 30.3% (IQR 22.6-38.4) in the standard arm, p < 0.001. <Cite id="beqiri2024_cogitate" />
+- **Tas 2025 (COGiTATE 12-month outcome follow-up)**: extended follow-up showing sustained outcome association with CPPopt-targeted time. <Cite id="tas2025_cogitate_followup" />
+- **Tas 2024 (pediatric CPPopt)**: per-patient temporal analysis showing CPPopt dynamism over admission course; pediatric application of the CPPopt framework. <Cite id="tas2024_pediatric_cppopt" />
+- **Figaji 2025 (Pediatric MNM consensus)**: formalises PRx as tier-2 monitoring, recommended where ICP is in place and computational resources allow. <Cite id="figaji2025_mmm_pediatric_consensus" />
+- **Rivera-Lara 2017 (autoregulation methods review)**: contemporary methodological reference for comparing PRx, Mx, ORx, COx and their pitfalls. <Cite id="rivera-lara2017autoreg" />
+- **Smielewski 2018 (ICM+ reference)**: implementation reference for PRx computation and CPPopt fitting in clinical software. <Cite id="smielewski2018icmplus" />
+- **Donnelly 2017 (MAPopt)**: extension from CPP-targeted to MAP-targeted optimisation, useful when ICP changes throughout the day. <Cite id="donnelly2017mapopt" />
+
+</DeepDive>
+
+---
+
+## 13. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 10-year-old severe TBI day 2 post-decompression. ICP 12 mmHg, CPP 60 mmHg, PRx +0.45 sustained over 4 hours. CPPopt fit shows a clear vertex at CPP 75 mmHg. Most appropriate next step?',
+      options: [
+        { id: 'a', label: 'Continue current CPP target; PRx may be artefact' },
+        { id: 'b', label: 'Lift MAP with noradrenaline to bring CPP within ±5 mmHg of CPPopt (target CPP 70–80)' },
+        { id: 'c', label: 'Lower MAP because CPP 60 is already adequate' },
+        { id: 'd', label: 'Start mannitol to lower ICP' },
+      ],
+      answer: 'b',
+      explanation: 'The CPPopt curve gives an individualised target of 75 mmHg for this patient. PRx +0.45 sustained on CPP 60 is below CPPopt and reflects impaired autoregulation at the current operating point. Lifting MAP to bring CPP into the ±5 mmHg band around CPPopt is the COGiTATE-validated intervention. The default age-based CPP 50–60 is a floor, not an optimum; this patient needs more.',
+    },
+    {
+      id: 'q2',
+      prompt: 'A 7-year-old post-cardiac arrest day 1, target temperature 33°C, propofol infusion. The PRx reads 0.05 but the slow-wave power in ICP is very low and the signal is noisy. Best interpretation?',
+      options: [
+        { id: 'a', label: 'PRx 0.05 means intact autoregulation; reassure' },
+        { id: 'b', label: 'PRx is uninterpretable due to low slow-wave power; use ORx or Mx as a fallback' },
+        { id: 'c', label: 'Raise CPP target empirically' },
+        { id: 'd', label: 'Lower sedation immediately to recover signal' },
+      ],
+      answer: 'b',
+      explanation: 'Deep sedation, hypothermia, and post-arrest depressed cerebral metabolism all reduce slow-wave power. PRx values computed on poor-quality signal are not reliable. ORx (NIRS-MAP correlation) works in low-pulsatility states; Mx (TCD-MFV-MAP correlation) is an alternative. Lightening sedation prematurely to "fix" PRx is the wrong tail wagging the wrong dog. Reassuring on a low-signal PRx of 0.05 is a category error.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A 14-year-old SAH day 5 post-coiling. PRx has been oscillating between +0.05 and +0.30 every 20 minutes for the past 4 hours. The CPPopt fit shows a flat curve with no clear vertex. Best next step?',
+      options: [
+        { id: 'a', label: 'Set CPP target at the midpoint of the flat curve' },
+        { id: 'b', label: 'Lengthen the analysis window to 8 hours and reject windows containing nursing care; if still no vertex, revert to age-based default CPP target' },
+        { id: 'c', label: 'Trust the most recent 5-minute PRx value' },
+        { id: 'd', label: 'Stop PRx monitoring as unreliable' },
+      ],
+      answer: 'b',
+      explanation: 'Oscillating PRx with no clear CPPopt vertex is common when sedation lightens, nursing care punctuates the window, or autoregulation is threshold-borderline. The correct sequence is (1) lengthen the window, (2) reject contaminated stretches, (3) if a vertex still cannot be fit, revert to the age-based default. Trusting a single 5-minute value is meaningless; setting CPP at a flat-curve "midpoint" invents a target. Discontinuing PRx because it is hard is throwing away signal you may need on day 7.',
+    },
+  ]}
+/>

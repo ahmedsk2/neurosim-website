@@ -1,0 +1,106 @@
+/* ============================================================
+   MNM-Edu, Hero animations and 3D brain container
+   Canonical version (supersedes all earlier home.css fragments).
+   ============================================================ */
+
+/* ---------- 3D brain mount (future v1.3 BrainModel) ---------- */
+.hero-illustration {
+  position: relative;
+}
+.brain-model-mount,
+.brain-model-mount > canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.brain-model-loading {
+  width: 100%;
+  height: 100%;
+}
+.hero-svg-overlay {
+  pointer-events: none;
+}
+
+/* ---------- Channel fade-in choreography ---------- */
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-channel {
+  opacity: 0;
+  animation: heroFadeIn 0.8s ease-out forwards;
+}
+.hero-channel-1 { animation-delay: 0.4s; }
+.hero-channel-2 { animation-delay: 1.2s; }
+.hero-channel-3 { animation-delay: 2.0s; }
+.hero-channel-4 { animation-delay: 2.8s; }
+.hero-channel-5 { animation-delay: 3.6s; }
+
+/* ---------- ICP waveform scroll ---------- */
+@keyframes icpWaveScroll {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -120; }
+}
+.hero-icp-wave {
+  stroke-dasharray: 4 2;
+  animation: icpWaveScroll 2s linear infinite;
+}
+
+/* ---------- TCD Doppler scroll ---------- */
+@keyframes tcdWaveScroll {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -70; }
+}
+.hero-tcd-wave {
+  stroke-dasharray: 4 2;
+  animation: tcdWaveScroll 1.2s linear infinite;
+}
+
+/* ---------- NIRS border pulse ---------- */
+@keyframes nirsPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1.0; }
+}
+.hero-nirs-pulse {
+  animation: nirsPulse 2.5s ease-in-out infinite;
+}
+
+/* ---------- EEG bands, spectrogram-style opacity cycle ----------
+   Each band cycles between two opacity values with a distinct period
+   and phase offset, so the five bands together read as live frequency
+   content shifting over time. */
+@keyframes eegBand0 { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.75; } }
+@keyframes eegBand1 { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.95; } }
+@keyframes eegBand2 { 0%, 100% { opacity: 0.75; } 50% { opacity: 0.35; } }
+@keyframes eegBand3 { 0%, 100% { opacity: 0.50; } 50% { opacity: 0.85; } }
+@keyframes eegBand4 { 0%, 100% { opacity: 0.30; } 50% { opacity: 0.65; } }
+
+.hero-eeg-band-0 { animation: eegBand0 1.8s ease-in-out infinite;        }
+.hero-eeg-band-1 { animation: eegBand1 2.2s ease-in-out infinite 0.15s;  }
+.hero-eeg-band-2 { animation: eegBand2 2.0s ease-in-out infinite 0.30s;  }
+.hero-eeg-band-3 { animation: eegBand3 1.6s ease-in-out infinite 0.45s;  }
+.hero-eeg-band-4 { animation: eegBand4 2.4s ease-in-out infinite 0.60s;  }
+
+/* ---------- Reduced-motion override ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-channel,
+  .hero-channel-1,
+  .hero-channel-2,
+  .hero-channel-3,
+  .hero-channel-4,
+  .hero-channel-5 {
+    animation-delay: 0s;
+    animation-duration: 0.001s;
+    opacity: 1;
+  }
+  .hero-icp-wave,
+  .hero-tcd-wave,
+  .hero-nirs-pulse,
+  .hero-eeg-band-0,
+  .hero-eeg-band-1,
+  .hero-eeg-band-2,
+  .hero-eeg-band-3,
+  .hero-eeg-band-4 {
+    animation: none !important;
+  }
+}

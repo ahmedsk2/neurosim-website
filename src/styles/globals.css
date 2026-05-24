@@ -1,0 +1,275 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------- */
+/* Design tokens, dark-first theme                            */
+/* ---------------------------------------------------------- */
+:root {
+  /* Background scale */
+  --bg-darker: #081224;
+  --bg-dark: #0F1A2E;
+  --bg-card: #152238;
+  --bg-deeper: #0a1426;
+
+  /* Borders */
+  --border: #2a3a55;
+  --border-strong: #3b4d70;
+
+  /* Brand + accents */
+  --teal: #14B8A6;
+  --teal-light: #5EEAD4;
+  --teal-dark: #0D9488;
+  --amber: #F59E0B;
+  --amber-light: #FCD34D;
+  /* Was #8B5CF6, failed WCAG AA on white (4.23:1). #7C3AED measures ~5.4:1. */
+  --purple: #7C3AED;
+  --blue: #3B82F6;
+
+  /* Status */
+  --green: #10B981;
+  /* Two reds: --red is for red text on dark bg (4.59:1 ✓), --red-strong is for
+   * filled badges where white text sits on top of the red (4.83:1 ✓). */
+  --red: #EF4444;
+  --red-strong: #DC2626;
+
+  /* Text */
+  --text: #FFFFFF;
+  --muted: #94A3B8;
+  /* Was #64748B, that failed WCAG AA contrast (3.65:1) on the dark background.
+   * #8B96A8 measures ~4.6:1 against #0F1A2E. */
+  --muted-dark: #8B96A8;
+}
+
+/* Light theme, re-mapped tokens; layout / structure unchanged */
+[data-theme='light'] {
+  --bg-darker: #F8FAFC;
+  --bg-dark: #F1F5F9;
+  --bg-card: #FFFFFF;
+  --bg-deeper: #E2E8F0;
+
+  --border: #CBD5E1;
+  --border-strong: #94A3B8;
+
+  --teal: #0D9488;
+  --teal-light: #0F766E;
+  --teal-dark: #134E4A;
+  --amber: #B45309;
+  --amber-light: #D97706;
+  --purple: #6D28D9;
+  --blue: #1D4ED8;
+
+  --green: #059669;
+  --red: #DC2626;
+
+  --text: #0F172A;
+  --muted: #475569;
+  --muted-dark: #64748B;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-darker);
+  color: var(--text);
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------- */
+/* Locale-block visibility                                    */
+/* ---------------------------------------------------------- */
+html[lang='en'] [data-lang-block='fr'],
+html[lang='en'] [data-lang-block='ar'] { display: none; }
+html[lang='fr'] [data-lang-block='en'],
+html[lang='fr'] [data-lang-block='ar'] { display: none; }
+html[lang='ar'] [data-lang-block='en'],
+html[lang='ar'] [data-lang-block='fr'] { display: none; }
+
+/* ---------------------------------------------------------- */
+/* Reduced motion                                             */
+/* ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------- */
+/* Print stylesheet                                           */
+/* ---------------------------------------------------------- */
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+
+  header.site-header, footer, nav.site-nav, aside, .no-print, [data-no-print] { display: none !important; }
+
+  .print-only { display: revert !important; }
+
+  a { color: #000 !important; text-decoration: underline; }
+  a[href]::after { content: ' (' attr(href) ')'; font-size: 80%; }
+
+  canvas, .widget-shell { display: none !important; }
+  .widget-takeaway { display: block !important; padding: 1em; border: 1px solid #888; }
+}
+
+/* ---------------------------------------------------------- */
+/* Focus ring                                                 */
+/* ---------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--teal-light);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ---------------------------------------------------------- */
+/* Skip-link                                                  */
+/* ---------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--teal);
+  color: var(--bg-darker);
+  padding: 8px 16px;
+  font-weight: 700;
+  z-index: 10000;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 8px;
+  left: 8px;
+}
+
+/* ---------------------------------------------------------- */
+/* Prose                                                      */
+/* ----------------------------------------------------------
+ * The article spans the full container (≤ 1500 px). Widgets,
+ * panels, tables and figures use that full width. Text-heavy
+ * elements (paragraphs, headings, lists, blockquotes) keep a
+ * comfortable reading measure (~80ch) so long lines stay
+ * scannable.
+ */
+.prose-mnm {
+  max-width: none;
+  line-height: 1.6;
+  color: var(--text);
+}
+.prose-mnm h1,
+.prose-mnm h2,
+.prose-mnm h3,
+.prose-mnm h4,
+.prose-mnm p,
+.prose-mnm ul,
+.prose-mnm ol,
+.prose-mnm blockquote {
+  max-width: 85ch;
+}
+@media (min-width: 1280px) {
+  .prose-mnm.prose-wide h1,
+  .prose-mnm.prose-wide h2,
+  .prose-mnm.prose-wide h3,
+  .prose-mnm.prose-wide h4,
+  .prose-mnm.prose-wide p,
+  .prose-mnm.prose-wide ul,
+  .prose-mnm.prose-wide ol,
+  .prose-mnm.prose-wide blockquote {
+    max-width: 100ch;
+  }
+}
+.prose-mnm h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; margin: 0 0 16px; }
+.prose-mnm h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.2px; margin: 32px 0 12px; color: var(--teal-light); }
+.prose-mnm h3 { font-size: 17px; font-weight: 700; margin: 22px 0 8px; color: var(--text); }
+.prose-mnm h4 { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 16px 0 6px; color: var(--muted); }
+.prose-mnm p { margin: 0 0 12px; color: var(--text); }
+.prose-mnm ul, .prose-mnm ol { margin: 0 0 14px 22px; }
+.prose-mnm li { margin: 4px 0; color: var(--text); }
+.prose-mnm a { color: var(--teal-light); text-decoration: underline; text-underline-offset: 2px; }
+.prose-mnm a:hover { color: var(--teal); }
+.prose-mnm code {
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 12px;
+  background: var(--bg-deeper);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--teal-light);
+}
+.prose-mnm pre {
+  background: var(--bg-deeper);
+  border-left: 3px solid var(--purple);
+  padding: 10px 14px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 12px;
+}
+.prose-mnm blockquote {
+  border-left: 3px solid var(--amber);
+  padding: 6px 14px;
+  margin: 12px 0;
+  color: var(--muted);
+  background: var(--bg-deeper);
+  border-radius: 4px;
+}
+.prose-mnm table {
+  width: 100%;
+  margin: 14px 0;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.prose-mnm th, .prose-mnm td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.prose-mnm th {
+  background: var(--bg-deeper);
+  color: var(--teal-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* KaTeX overrides for dark theme */
+.katex { color: var(--text); }
+.katex-display { margin: 14px 0 !important; overflow-x: auto; }
+
+/* ---------------------------------------------------------- */
+/* Eyebrow text                                               */
+/* ---------------------------------------------------------- */
+.eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+
+/* ---------------------------------------------------------- */
+/* Animations                                                 */
+/* ---------------------------------------------------------- */
+@keyframes demo-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+  70%  { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+/* ---------------------------------------------------------- */
+/* Scrollbar (dark)                                           */
+/* ---------------------------------------------------------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-darker); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }

@@ -1,0 +1,350 @@
+---
+title: Optimal CPP (CPPopt)
+description: The CPP at which the brain's pressure reactivity is most negative, derived from a 4-hour parabolic fit of PRx versus CPP. The individualised perfusion target.
+eyebrow: Modality 5 · Derived
+short: CPPopt
+domain: derived
+labels:
+  usage: bedside
+  population: both
+  invasiveness: invasive
+  validation: emerging
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **CPPopt**: optimal cerebral perfusion pressure, the CPP that minimises PRx
+- **CPP**: cerebral perfusion pressure = MAP − ICP
+- **MAP / ICP**: mean arterial / intracranial pressure
+- **PRx**: pressure reactivity index (the canonical input signal)
+- **Mx**: TCD-based autoregulation index (the non-invasive fallback input)
+- **ORx**: NIRS-based autoregulation index (regional cortical fallback)
+- **MAPopt**: MAP-based extension when ICP changes throughout the day
+- **LLA / ULA**: lower / upper limit of autoregulation
+- **TBI**: traumatic brain injury · **SAH**: subarachnoid haemorrhage · **HIE**: hypoxic-ischaemic encephalopathy
+- **COGiTATE**: CPP Opt Guided Therapy: Assessment of Target Effectiveness (phase II trial)
+- **MMM / MNM**: multimodal monitoring / multimodal neuromonitoring
+</Callout>
+
+<TldrCard>
+**The 60-second version.** CPPopt is the **CPP at which this patient's PRx is most negative**, found by fitting a parabola to (CPP, PRx) data over the past 4 hours. The shaded ±5 mmHg band around the vertex is the operational target. The framework (Aries 2012, Beqiri 2024 COGiTATE) is the most evidence-supported individualised CPP strategy in severe TBI; pediatric data (Tas 2022, 2024) confirm the same physiology with **lower CPPopt in younger children**. Dose-response is real: time spent outside CPPopt correlates with 6-month outcome independent of mean CPP or peak ICP. The five-step workflow is mechanical (accumulate 4 hours, compute PRx, bin by CPP, fit a parabola, re-target MAP); the bedside skill is **recognising when CPPopt is fittable and when it is not**. A flat curve means revert to age-based default; a clear vertex means trust the number.
+</TldrCard>
+
+## 1. Bedside vignettes: why this matters in the PICU
+
+### Vignette A. The 8-hour COGiTATE loop in a 12-year-old severe TBI
+
+A 12-year-old severe TBI day 3. ICP 14 mmHg, MAP 80, CPP 66. Default age-based CPP floor is 60. The bedside team runs a CPPopt loop using the unit's ICM+ workstation:
+
+- **Hour 0–4**: accumulate data, PRx oscillating between 0 and +0.3. CPPopt fit gives vertex at CPP 72 mmHg with a clear parabola. Lift MAP with noradrenaline, CPP rises to 71.
+- **Hour 4–8**: PRx falls to 0.05 within the new operating range. CPPopt vertex shifts to CPP 73, stable. Continue.
+- **Hour 8–12**: a small subdural extension on the right (re-CT for sudden pupil change) raises ICP to 22. CPPopt recalculates to 78 because the brain is now less compliant; team raises MAP further.
+
+The loop **followed the patient** through a physiological change rather than holding a static number. Over the 24-hour window the ICP-dose accumulated was lower than the matched-protocol cohort, and the family reported sustained improvement in the patient's GOS-E at 6 months. <Cite id="aries2012cppopt" /> <Cite id="beqiri2024_cogitate" /> <Cite id="tas2025_cogitate_followup" /> <Cite id="tas2024_pediatric_cppopt" />
+
+### Vignette B. CPPopt unobtainable after 4 hours
+
+A 6-year-old severe TBI day 1. After 4 hours of clean recordings the (CPP, PRx) plot is **flat: PRx hovers near +0.15 across every CPP bin from 50 to 90**. No vertex, no parabola. What to do?
+
+- **First check**: signal quality. Re-zero the arterial line; confirm ICP transducer is reading a clean three-peak waveform. Both pass.
+- **Second check**: did the patient experience MAP variation across the 4-hour window? If MAP was tightly controlled around a narrow range (say 65–72), the algorithm has no data outside that band and cannot fit a U-curve.
+- **Third check**: is the patient on a high-dose vasopressor that pegs MAP within ±5 mmHg of a fixed target? Consider a deliberate small MAP excursion (lower noradrenaline slightly for 30 minutes, then raise) to give the fit data.
+- **Fallback**: revert to **age-based CPP floor** (CPP > 50 for a 6-year-old) until a fittable CPPopt is available.
+
+CPPopt is a fitted parameter; it is not always fittable. **Do not invent a CPPopt.** <Cite id="aries2012cppopt" /> <Cite id="beqiri2024_cogitate" />
+
+### Vignette C. Pediatric difference: CPPopt 50 in a 3-year-old vs default 60
+
+A 3-year-old severe TBI day 2. ICP 11 mmHg, MAP 65, CPP 54. Default team protocol says "CPP < 60 means action": team starts a noradrenaline infusion to lift MAP. The PRx, computed over the past 4 hours, shows a clean U-curve with **CPPopt at CPP 48 mmHg**. The team's noradrenaline took CPP to 64, where PRx rose to +0.30. **The intervention pushed the patient above CPPopt.** They wean noradrenaline back to baseline; CPP returns to 54; PRx falls to −0.10.
+
+This is the most important pediatric lesson from Tas 2022 and 2024: **younger children have lower CPPopt** and the adult-style default of 60–70 mmHg can be **harmful** by causing over-perfusion. Trust the data, not the default. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="lewis2014peds" />
+
+---
+
+## 2. What CPPopt is, and what it is not
+
+CPPopt is the **CPP coordinate at the vertex of a parabolic fit through (CPP, PRx) data over the past 4 hours**.
+
+```math
+\mathrm{CPPopt} = \arg\min_{CPP} \left[ \mathrm{PRx}(CPP) \right]
+```
+
+where PRx(CPP) is the binned mean of PRx values in each 5-mmHg CPP bucket.
+
+The **logic**. PRx is minimised when autoregulation is most efficient: small CPP changes do not drive ICP changes. Below CPPopt the brain is under-perfused and autoregulation fails by passive collapse (vessels dilate but cannot maintain flow); above CPPopt the brain is over-perfused and autoregulation fails by hyperaemia (vessels saturated at maximum constriction). The shape of PRx-vs-CPP is therefore a U-curve, and the vertex is the patient's biological sweet spot.
+
+**Two things follow.**
+
+**CPPopt requires PRx as the input.** Without continuous high-quality ICP and MAP signals, CPPopt cannot be derived. Non-invasive surrogates (Mx with TCD, ORx with NIRS) can substitute as input, with differing sample volumes and noise profiles.
+
+**CPPopt is dynamic.** A patient's CPPopt drifts over hours-to-days. The 4-hour moving window is a compromise between responsiveness and noise suppression. Tas 2024 showed that within-patient CPPopt variation can exceed 15 mmHg over 48 hours.
+
+<Pearl>
+**CPPopt is not a number to set and forget.** It is a moving target that responds to the brain's state. Re-fit every hour and update the operational target accordingly. <Cite id="aries2012cppopt" /> <Cite id="tas2024_pediatric_cppopt" />
+</Pearl>
+
+<Pediatric>
+**Pediatric CPPopt is age-dependent and often below the adult-style default.** The 3-year-old in Vignette C is the canonical example: CPPopt 48 vs default 60 means a 12 mmHg over-perfusion if the default is held rigidly. Younger brains have lower baseline cerebral metabolic rate and lower autoregulatory floor; trust the data. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="brady2009" />
+</Pediatric>
+
+---
+
+## 3. The five-step workflow
+
+<Figure
+  src="/images/cppopt/cppopt-workflow.svg"
+  alt="Five-step CPPopt workflow diagram: accumulate, compute, bin, fit, re-target"
+  caption="The CPPopt workflow. Step 1: accumulate 4 hours of synchronous ICP and MAP recordings at 100–200 Hz. Step 2: compute PRx in 5-minute moving windows updating every minute (288 windows over 4 hours, after artefact rejection typically 200+ remain). Step 3: bin the (CPP, PRx) points into 5-mmHg CPP buckets, take the mean PRx in each bucket. Step 4: fit a parabola (or smoothed U-curve) to the binned means; the vertex is CPPopt. Step 5: re-target MAP so CPP sits within ±5 mmHg of CPPopt. Repeat the loop every 30–60 minutes."
+  attribution="MNM-Edu, original schematic adapted from Aries 2012. SVG placeholder."
+  label="Fig. 1"
+/>
+
+### Step 1: Accumulate
+
+Continuous ICP and MAP at 100–200 Hz from the patient monitor, synchronised to a common clock. ICM+ or equivalent software handles this. Four hours of data is the conventional window for first-fit; longer windows reduce noise but slow responsiveness.
+
+### Step 2: Compute PRx
+
+5-minute moving windows of 30 paired 10-second averages. Update every 60 seconds. Reject windows containing flagged artefacts (motion, suction, transducer flush, low MAP variance). See [PRx page](/modalities/prx/) for the math.
+
+### Step 3: Bin
+
+Place each 5-minute (CPP, PRx) point into a 5-mmHg CPP bucket (e.g., CPP 60–64 mmHg, CPP 65–69 mmHg, …). Compute the mean PRx in each bucket. Buckets with fewer than ~5 points are excluded as undersampled.
+
+### Step 4: Fit
+
+Fit a parabola (least-squares) through the bucket means. The vertex of the parabola is CPPopt. A clean U-curve has a clear vertex; a flat curve has no fittable vertex and CPPopt is "not available".
+
+### Step 5: Re-target
+
+Set the operational CPP target as **CPPopt ± 5 mmHg**. Adjust MAP (via fluid, vasopressor, or sedation lightening) to bring CPP into this band. Re-evaluate the loop every 30–60 minutes.
+
+<Pitfall>
+**A flat curve is not a "wide CPPopt"**, it is "CPPopt unobtainable". Setting the target at the midpoint of a flat curve is inventing a number. Revert to age-based default and try again next hour. <Cite id="aries2012cppopt" />
+</Pitfall>
+
+---
+
+## 4. Try it: interactive widgets
+
+<WidgetEmbed name="CPPoptUCurve" />
+
+<WidgetEmbed name="MAPoptUCurve" />
+
+<WidgetEmbed name="PRxCalculator" />
+
+<WidgetEmbed name="MxCalculator" />
+
+<WidgetEmbed name="MultimodalDiscordance" />
+
+---
+
+## 5. Dose-response: time outside CPPopt versus outcome
+
+<Figure
+  src="/images/cppopt/cppopt-dose-response.svg"
+  alt="Dose-response plot: cumulative time outside CPPopt band over 72 hours vs 6-month GOS-E outcome, with a knee at approximately 30% time-outside"
+  caption="Dose-response from Aries 2012 and follow-on cohorts. Cumulative time spent outside the ±5 mmHg CPPopt band (horizontal axis) versus 6-month GOS-E outcome (vertical axis). A clear gradient: more time outside CPPopt predicts worse outcome, with a knee around 30% time-outside above which the curve steepens. This dose-response is the foundation of the COGiTATE intervention and the rationale for re-targeting based on CPPopt rather than fixed thresholds."
+  attribution="MNM-Edu, adapted from Aries 2012, Depreitere 2014, Beqiri 2024. SVG placeholder."
+  label="Fig. 2"
+/>
+
+The Aries 2012 cohort showed:
+
+- Time spent with CPP **below CPPopt** predicted **mortality and severe disability**.
+- Time spent with CPP **above CPPopt** predicted **severe disability** (over-perfusion injury).
+- The dose-response was continuous; no safe "outside CPPopt" threshold below which outcome was unchanged.
+
+**Depreitere 2014** extended this with high-resolution data showing the ICP-dose framework integrates with CPPopt-dose. **Tas 2022** showed the same in pediatrics. **Beqiri 2024** moved from observational to interventional: the COGiTATE phase II trial demonstrated feasibility and safety of actively targeting CPPopt and **increased time within target band** (53% vs 34% in standard care). <Cite id="aries2012cppopt" /> <Cite id="depreitere2014icpdose" /> <Cite id="tas2022peds" /> <Cite id="beqiri2024_cogitate" />
+
+---
+
+## 6. Trial evidence: COGiTATE, the follow-up, and pediatric extension
+
+### 6.1 COGiTATE phase II (Beqiri 2024)
+
+The first randomised feasibility trial of PRx-CPPopt-guided care in adult severe TBI.
+
+- **Design**: multicentre RCT, ~60 adults severe TBI, randomised to CPPopt-guided vs standard CPP 60–70 care for the first 72 hours.
+- **Primary endpoint**: feasibility (could clinicians achieve CPPopt targeting?). Yes: 53% time in target band vs 34% standard.
+- **Safety endpoints**: no excess fluid balance, no excess vasopressor use, no excess complications.
+- **Secondary endpoints**: GOS-E at 6 months trended favourably (not powered for definitive significance).
+
+The result establishes the framework as safe and feasible at scale. <Cite id="beqiri2024_cogitate" />
+
+### 6.2 12-month follow-up (Tas 2025)
+
+The 12-month outcome data show **sustained association between CPPopt-targeted time and better functional outcome** in the original COGiTATE cohort. A full-scale phase III efficacy trial (**COGiTATE-3**) is in design. <Cite id="tas2025_cogitate_followup" />
+
+### 6.3 Pediatric extension (Tas 2024)
+
+Single-centre pediatric severe-TBI cohort. Key findings:
+
+- **CPPopt was fittable in 75% of monitored time** in pediatric patients.
+- **Pediatric CPPopt was lower** than adult (mean 55 in < 8-year-olds, 70 in adolescents).
+- **Time spent below CPPopt** was a stronger predictor of 6-month GOS-E than mean CPP or peak ICP.
+- **CPPopt dynamism**: within-patient variation up to 15 mmHg over 48 hours.
+
+The pediatric phase III trial is anticipated but not yet underway. The Tas 2024 and Tas 2022 data form the strongest pediatric evidence base for the framework. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="lewis2014peds" />
+
+### 6.4 Donnelly 2017 MAPopt extension
+
+When ICP varies throughout the day (e.g., during decompression recovery, or with CSF drainage), holding CPP constant requires constant MAP adjustment. The **MAPopt extension** keeps the optimisation target on MAP directly (which is the variable the team controls), simplifying the bedside loop. Useful when ICP is being managed via EVD drainage. <Cite id="donnelly2017mapopt" />
+
+---
+
+## 7. Clinical contexts: CPPopt across acute brain injuries
+
+### 7.1 Severe TBI (the validated indication)
+
+Adult severe TBI is the canonical context. Pediatric severe TBI (Tas 2022, 2024; Lewis 2014) extends the framework with age-specific CPPopt values. The BTF 4 pediatric guidelines and Pediatric MNM consensus 2025 recommend PRx-based CPPopt as a tier-2 modality where resources allow. <Cite id="kochanek2019_pbtf4" /> <Cite id="tasker2023_pccm_review" /> <Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="beqiri2024_cogitate" />
+
+### 7.2 SAH (growing use)
+
+CPPopt in SAH is less validated. The principle applies: if ICP is being monitored (via EVD for hydrocephalus or DCI), adding PRx-CPPopt is straightforward. AHA/ASA 2023 SAH guidelines acknowledge MMM including autoregulation indices as tier-2 modalities. <Cite id="hoh2023sah_aha" /> <Cite id="rass2021dci_review" /> <Cite id="foreman2022" />
+
+### 7.3 Pediatric severe TBI (Tas et al)
+
+Tas 2022 (95 children, retrospective): clear U-curve in majority; CPPopt time predicts outcome. Tas 2024 (per-patient temporal analysis): CPPopt dynamism over admission; younger children have lower CPPopt. Pediatric MNM consensus 2025 endorses framework as tier-2. <Cite id="tas2022peds" /> <Cite id="tas2024_pediatric_cppopt" /> <Cite id="figaji2025_mmm_pediatric_consensus" />
+
+### 7.4 HIE / post-cardiac arrest (research only)
+
+PRx signal quality is poor in early post-arrest (deep sedation, hypothermia, low slow-wave power). **ORx (NIRS-MAP)** is more usable; an "ORxopt" framework is in development. Not yet validated for routine use. <Cite id="rivera-lara2017autoreg" /> <Cite id="topjian2021aha_pediatric" /> <EvidenceLevel grade="sparse" />
+
+### 7.5 ECMO (research only)
+
+Non-pulsatile VA-ECMO destroys PRx interpretability. ORx-based CPPopt has been demonstrated in case series. <Cite id="lorusso2017_elso_neuro" /> <Cite id="cho2024_ecmo_outcomes" /> <Cite id="brady2010orx" /> <EvidenceLevel grade="sparse" />
+
+---
+
+## 8. Multimodal integration: CPPopt inputs and endpoints
+
+| Input modality | Output (CPPopt) | When to use |
+|---|---|---|
+| **PRx (ICP + MAP)** | Canonical CPPopt | Severe TBI, SAH with EVD; whole-brain ICP available |
+| **Mx (TCD-MFV + CPP)** | Non-invasive CPPopt | No ICP placed; pediatric without invasive monitoring; resource-limited |
+| **ORx (NIRS-rSO2 + MAP)** | Regional cortical CPPopt | ECMO, low-pulsatility flow, post-arrest |
+| **COx (NIRS-MAP)** | NIRS-derived autoregulation | Cardiac surgery, CHD, perioperative |
+
+| Pair with… | What you gain | Worked scenario |
+|---|---|---|
+| **PbtO2** | Endpoint validation: target CPPopt and confirm tissue O2 is in range | [PbtO2 page](/modalities/pbto2/) |
+| **Microdialysis** | Metabolic endpoint: L/P ratio falls when CPPopt achieved | [Microdialysis page](/modalities/microdialysis/) |
+| **EEG / aEEG** | Reactivity returns when CPPopt achieved in HIE | [EEG page](/modalities/eeg/) |
+| **TCD / Mx** | Cross-validate CPPopt with Mx-CPPopt | [TCD page](/modalities/tcd/) |
+| **NIRS / ORx** | Cross-validate with ORx-CPPopt | [NIRS page](/modalities/nirs/) |
+| **ICP** | The input signal; quality is everything | [ICP page](/modalities/icp/) |
+
+<Cite id="figaji2025_mmm_pediatric_consensus" /> <Cite id="helbok2024_pediatric_mmm" /> <Cite id="leroux2014_neurocrit_consensus" />
+
+---
+
+## 9. Pitfalls and artefacts
+
+- **Signal quality**: a noisy ICP or arterial line poisons the fit. Validate every shift.
+- **MAP tightly controlled**: if MAP varies less than the bin width (5 mmHg), the algorithm has no data outside the operating range and cannot fit. Allow physiological MAP variation across the recording window.
+- **Vasopressor dose pegging MAP**: noradrenaline infusions held at a fixed target can produce a flat fit. A deliberate small MAP excursion (with bedside consent and senior oversight) provides data.
+- **Flat curve**: not a wide CPPopt; CPPopt is unobtainable. Revert to default and try again.
+- **Yes-bias of fitting**: any parabola-fit algorithm will produce a vertex from any data, even when the underlying curve is flat. Use quality metrics (residual variance, R², bin coverage) to reject low-confidence fits.
+- **Time-varying CPPopt**: CPPopt drifts over hours. The 4-hour window is a compromise; do not over-react to single-window changes.
+- **Trust trends over snapshots**: a CPPopt that has been stable at 70 for 12 hours is more trustworthy than one that has jumped 15 mmHg in the last 30 minutes.
+- **Sedation changes**: PRx changes with sedation depth; re-baseline after major changes.
+- **Pediatric default trap**: holding rigid to adult-style CPP 60–70 over a fitted pediatric CPPopt of 50 is the most common error. Trust the data.
+- **ECMO and low-pulsatility flow**: switch to ORx or Mx as input.
+
+---
+
+## 10. Combine with…
+
+- [PRx](/modalities/prx/): the canonical input signal.
+- [Mx](/modalities/mx/): the non-invasive (TCD) fallback input.
+- [ORx](/modalities/orx/): the regional cortical (NIRS) fallback input.
+- [CPP](/modalities/cpp/): the action target.
+- [ICP](/modalities/icp/): the input signal pair.
+- [PbtO2](/modalities/pbto2/): endpoint validation.
+- [Microdialysis](/modalities/microdialysis/): metabolic endpoint validation.
+
+---
+
+<DeepDive>
+
+## 11. Evidence summary and recent literature
+
+### 11.1 Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Aries 2012 original CPPopt cohort | <Cite id="aries2012cppopt" /> <Cite id="aries2012" /> | B |
+| PRx-mortality association (Steiner 2002) | <Cite id="steiner2002" /> | B |
+| Sorrentino 2012 CPPopt outcome | <Cite id="sorrentino2012" /> | B |
+| Depreitere 2014 ICP-dose + CPPopt | <Cite id="depreitere2014icpdose" /> | B |
+| MAPopt (Donnelly 2017) | <Cite id="donnelly2017mapopt" /> | B |
+| Pediatric CPPopt (Tas 2022) | <Cite id="tas2022peds" /> | B |
+| Pediatric CPPopt temporal analysis (Tas 2024) | <Cite id="tas2024_pediatric_cppopt" /> | B |
+| Lewis 2014 pediatric CPPopt foundational | <Cite id="lewis2014peds" /> | C |
+| COGiTATE phase II | <Cite id="beqiri2024_cogitate" /> | A |
+| COGiTATE 12-month follow-up | <Cite id="tas2025_cogitate_followup" /> | B |
+| Pediatric MNM consensus 2025 | <Cite id="figaji2025_mmm_pediatric_consensus" /> | expert |
+| BTF 4 pediatric | <Cite id="kochanek2019_pbtf4" /> | expert |
+| NCS MMM consensus | <Cite id="leroux2014_neurocrit_consensus" /> | expert |
+| Autoregulation methods review | <Cite id="rivera-lara2017autoreg" /> | review |
+
+### 11.2 Recent literature (2022–2025)
+
+- **Beqiri 2024 COGiTATE phase II**: feasibility and safety of CPPopt-guided care; 53% in target band vs 34% standard. The single most important interventional study to date. <Cite id="beqiri2024_cogitate" />
+- **Tas 2025 12-month follow-up**: sustained outcome association at 12 months. <Cite id="tas2025_cogitate_followup" />
+- **Tas 2024 pediatric temporal analysis**: CPPopt drifts within-patient over 48 hours; younger children have lower CPPopt; time below CPPopt predicts outcome independent of mean CPP. <Cite id="tas2024_pediatric_cppopt" />
+- **Figaji 2025 Pediatric MNM consensus**: endorses CPPopt as tier-2 monitoring framework in resourced pediatric centres. <Cite id="figaji2025_mmm_pediatric_consensus" />
+- **Donnelly 2017 MAPopt**: framework extension to MAP optimisation when ICP varies. <Cite id="donnelly2017mapopt" />
+- **Tas 2022 pediatric retrospective**: 95 children; clear pediatric CPPopt U-curves; outcome association. <Cite id="tas2022peds" />
+- **COGiTATE-3 in design**: full-scale phase III efficacy trial anticipated 2025–2027.
+
+</DeepDive>
+
+---
+
+## 12. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'A 12-year-old severe TBI day 3. ICP 14, MAP 80, CPP 66. CPPopt fit over the past 4 hours shows a clean U-curve with vertex at CPP 72 mmHg. PRx in the current window is +0.20. Most appropriate next step?',
+      options: [
+        { id: 'a', label: 'Hold current CPP; 66 is within the age-based target range' },
+        { id: 'b', label: 'Lift MAP with noradrenaline so CPP falls in the 67–77 mmHg band (CPPopt ±5)' },
+        { id: 'c', label: 'Lower MAP because the CPPopt is too high to chase safely' },
+        { id: 'd', label: 'Repeat the CPPopt fit in 4 hours before acting' },
+      ],
+      answer: 'b',
+      explanation: 'CPPopt 72 with current CPP 66 puts the operating point 6 mmHg below the band; PRx +0.20 confirms the lower limb of the U. Lifting MAP to bring CPP into the ±5 mmHg target band is the COGiTATE-validated intervention. Waiting 4 hours wastes the data; "holding" because the number falls within an age-based default ignores the individualised target. Lowering MAP would worsen the situation.',
+    },
+    {
+      id: 'q2',
+      prompt: 'After 4 hours of clean recording in a 6-year-old, the (CPP, PRx) plot is flat across CPP 50–90 with PRx near +0.15. Signal quality is good; MAP has varied between 60 and 78 over the window. What does this mean?',
+      options: [
+        { id: 'a', label: 'CPPopt is "wide"; pick the midpoint (CPP 70) as the target' },
+        { id: 'b', label: 'CPPopt is unobtainable; revert to age-based default (CPP > 50) and re-fit in 1 hour' },
+        { id: 'c', label: 'CPPopt is the lowest CPP point in the data (CPP 50)' },
+        { id: 'd', label: 'CPPopt monitoring should be abandoned for this patient' },
+      ],
+      answer: 'b',
+      explanation: 'A flat curve means CPPopt cannot be fit. There is no "midpoint of a flat curve" because no vertex exists. The correct response is to revert to the age-based default, continue accumulating data, and re-fit at the next interval. Picking the lowest CPP is meaningless. Abandoning monitoring is over-reactive; PRx and CPPopt may become fittable as the patient evolves.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A 3-year-old severe TBI day 2. ICP 11, MAP 65, CPP 54. The team starts noradrenaline to "lift CPP above 60 per protocol". PRx was −0.10 at baseline; after CPP rises to 64, PRx rises to +0.30. CPPopt fit gives a vertex at CPP 48. Most appropriate next step?',
+      options: [
+        { id: 'a', label: 'Continue noradrenaline; lifting CPP further is appropriate' },
+        { id: 'b', label: 'Wean noradrenaline back to baseline; the patient was over-perfused above CPPopt 48' },
+        { id: 'c', label: 'Add a second vasopressor for tighter control' },
+        { id: 'd', label: 'Start mannitol to lower ICP' },
+      ],
+      answer: 'b',
+      explanation: 'Pediatric CPPopt is age-dependent and often below the adult-style default. Tas 2022 and 2024 showed CPPopt of 48–55 in young children is normal. The noradrenaline pushed CPP above CPPopt, into the right (over-perfusion) limb of the U-curve where autoregulation also fails. PRx +0.30 confirms this. Weaning the vasopressor restores the patient to the operating point near CPPopt. Adding mannitol or another pressor compounds the iatrogenic injury.',
+    },
+  ]}
+/>

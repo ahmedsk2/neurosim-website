@@ -1,0 +1,237 @@
+---
+title: The Monro-Kellie doctrine
+description: The cranial vault is rigid. Anything that adds volume must be paid for somewhere, first by CSF, then by blood, then by ICP.
+eyebrow: Foundation 4
+prereqs: []
+relatedModalities: [icp, rap, cpp]
+evidenceGrade: B
+lastReviewed: 2026-05-17
+---
+
+<Callout type="reference">
+**Acronyms used on this page**
+
+- **ICP**: intracranial pressure (mmHg)
+- **CPP**: cerebral perfusion pressure = MAP − ICP
+- **CSF**: cerebrospinal fluid
+- **PVI**: pressure-volume index (Marmarou; volume that raises ICP 10-fold)
+- **RAP**: compensatory reserve index (Pearson correlation of ICP pulse amplitude vs mean ICP)
+- **CVP**: central venous pressure
+- **PEEP**: positive end-expiratory pressure
+- **EVD**: external ventricular drain
+- **TBI**: traumatic brain injury
+- **SIH**: spontaneous intracranial hypotension
+</Callout>
+
+<TldrCard>
+**The 60-second version.** The cranial vault is a rigid box of ~1500 mL in adults (smaller in children). Brain (~80%) + blood (~10%) + CSF (~10%) is constant; add to one and you must subtract from another, or ICP rises. The buffer order is **CSF first** (translocates to spinal subarachnoid space), **venous blood second** (sinus compression), then **the curve goes vertical**: the Marmarou exponential. **RAP** is the bedside readout of where you are on that curve: RAP < 0.3 is flat (compensated), 0.6–0.9 is steep (decompensating), and a paradoxical fall to zero at very high ICP is terminal. Pediatric open fontanelles add a slow buffer that delays but does not prevent acute decompensation. <Cite id="monro1783" /> <Cite id="kellie1824" /> <Cite id="marmarou1975" /> <Cite id="kim2009rap" />
+</TldrCard>
+
+## 1. Bedside vignette: small volume, big spike
+
+A 6-year-old with medulloblastoma develops increasing morning headaches and vomiting. The baseline ICP from the ventricular reservoir at clinic last week was **12 mmHg with RAP 0.4**, no waveform abnormalities. On admission she undergoes a stable anaesthetic. Halfway through scan transfer her ICP suddenly spikes from 14 to **32 mmHg** during a routine 5 mL CSF aspiration delay; pupils stay equal; ICP recovers over 4 minutes to 22.
+
+What happened? The slow tumour growth over the past week has moved the operating point up the Marmarou exponential. A volume change that was unimportant last month is now happening near the knee of the curve. The CSF buffer is nearly exhausted; the venous reserve is partly used; the next mL costs many mmHg. RAP redrawn the next morning is 0.8, the patient is on the steep segment. The case for urgent CSF diversion is now numerical, not just clinical. <Cite id="marmarou1975" /> <Cite id="kim2009rap" />
+
+This is what the Monro-Kellie doctrine looks like at the bedside: not in static numbers, but in **how much one more mL costs**.
+
+---
+
+## 2. The three compartments
+
+A child's skull begins as flexible plates joined by sutures and fontanelles, then ossifies through childhood. By school age, the cranial vault is a rigid box. Volume in must equal volume out, or pressure rises.
+
+The cranial vault, about **1500 mL** in an adult, holds three things in fixed total:
+
+- **Brain parenchyma**, ~80% (~1200 mL): cells + interstitial fluid + myelin.
+- **Blood (mostly venous)**, ~10% (~150 mL): the arterial side is small; most blood at any moment sits in the veins and venous sinuses.
+- **CSF**, ~10% (~150 mL): made by the choroid plexus at ~500 mL/day; whole CSF volume turns over 3–4 times a day.
+
+<Figure
+  src="/images/foundations/monro-kellie/monro-kellie-sagittal.png"
+  alt="Mid-sagittal cross-section of a head showing the rigid cranial vault with brain parenchyma, lateral and third ventricles filled with CSF, subarachnoid CSF space, brainstem, and the spinal canal drainage path. Right panel lists compartment volumes and the compensation cascade."
+  caption="Mid-sagittal cross-section showing the three Monro-Kellie compartments inside the rigid cranial vault: brain parenchyma (~80%, ~1200 mL), CSF (~10%, ~150 mL, in the ventricles and the subarachnoid space), and blood (~10%, ~150 mL, split arterial / venous). With a growing mass the compensation cascade fires in order: CSF translocates to the spinal subarachnoid space first (~80 mL of slack), then venous blood is compressed (~60 mL), then buffers exhaust and ICP rises exponentially on the Marmarou curve. In infants with open fontanelles (closure ~18-24 months) the vault is not yet rigid and the doctrine applies only partially."
+  attribution="MNM-Edu, original schematic. Monro 1783; Kellie 1824."
+  label="Fig. 1"
+/>
+
+Add to one and the body must subtract from another, or pressure rises. <Cite id="monro1783" /> <Cite id="kellie1824" />
+
+---
+
+## 3. Compensatory sequence: CSF, venous, then crisis
+
+When something starts to grow (tumour, haematoma, contusion oedema, abscess, hydrocephalus):
+
+1. **CSF first.** The cheapest buffer. CSF translocates from the cranial subarachnoid space into the spinal canal via the foramen magnum. Up to ~80 mL of pathological volume is absorbed this way without ICP rising at all.
+2. **Venous blood second.** Once CSF capacity is exhausted, the dural venous sinuses and cerebral veins compress. Cerebral venous outflow speeds up. Another ~60 mL absorbed.
+3. **No more buffer.** Now ICP climbs steeply along the **Marmarou exponential**: every additional mL produces a much larger pressure jump than the last one. <Cite id="marmarou1975" /> <Cite id="avezaat1979" />
+
+<Pearl>
+**Why the first 5 mL is free and the last 5 mL is fatal.** Compliance falls exponentially. The Marmarou pressure-volume index (PVI), the volume change required to raise ICP by a factor of 10, is ~20 mL in adults. Below the knee of the curve, +1 mL is harmless; near the top, +1 mL doubles ICP.
+</Pearl>
+
+<WidgetEmbed name="VolumeCompartmentAnimation" />
+
+---
+
+## 4. Why the curve goes vertical: Marmarou exponential and compliance exhaustion
+
+The pressure-volume relationship in the cranium is approximately:
+
+```math
+\mathrm{ICP} = \mathrm{ICP_0} \cdot \exp\!\left(\frac{\Delta V}{\mathrm{PVI}}\right)
+```
+
+with **local elastance** (dP/dV) climbing as you move up the curve. At ICP 10, +1 mL barely moves the needle. At ICP 30, the same +1 mL adds several mmHg. The Marmarou exponential is the mathematical statement of the Monro-Kellie doctrine; the foundation page on the [pressure-volume curve](/foundations/marmarou-pv-curve/) covers the math in detail.
+
+**RAP** operationalises compliance at the bedside: it is the moving Pearson correlation between ICP pulse amplitude (AMP) and mean ICP, computed over a 4-minute window. <Cite id="czosnyka1996rap" /> <Cite id="kim2009rap" /> <Cite id="howells2017rap" />
+
+- **RAP < 0.3**: flat segment of the PV curve; reserve intact.
+- **0.3–0.6**: borderline.
+- **0.6–0.9**: steep segment; low compensatory reserve.
+- **Paradoxical fall toward 0 at high ICP**: the brain can no longer transmit the pulse; terminal decompensation. <Cite id="kazimierska2021" />
+
+---
+
+## 5. Why it matters at the bedside
+
+The Monro-Kellie doctrine has direct management consequences:
+
+- **Head-up 30°** improves jugular outflow; reduces venous compartment volume.
+- **Avoiding tight cervical collars** preserves outflow.
+- **Sedation and analgesia** lower CMRO₂ and indirectly trim cerebral blood volume.
+- **Brief hypocapnia** is a vasoconstrictive lever (acute use only; see CO₂ reactivity page).
+- **Osmotherapy** (HTS or mannitol) draws water out of the brain compartment.
+- **CSF drainage via EVD** is the fastest tool when the CSF compartment can be tapped.
+- **Decompressive craniectomy** removes the rigid-box constraint: the new compliant compartment buys the brain time, though outcome data are mixed in pediatric severe TBI. <Cite id="hutchinson2016" /> <Cite id="cooper2011" />
+
+<Pediatric>
+**Open fontanelles compensate, but only slowly.** A neonate with a slowly growing tumour or chronic hydrocephalus may compensate by skull expansion (head circumference rising) for weeks. An acute insult, haematoma, severe oedema, status epilepticus, overwhelms even an open fontanelle in hours because the elastic limit of skin and dura is far less than that of the volume buffer the suture lines provide. **Do not be reassured by a soft fontanelle in an acutely ill child.** Anterior fontanelle closes ~12–18 months; posterior ~2–3 months. Sutures fuse by ~5 years. <Cite id="kochanek2019_pbtf4" />
+</Pediatric>
+
+---
+
+## 6. Pattern library
+
+- **RAP rising as ICP rises**: classic decompensation; compliance falling, operating point moving up the curve.
+- **RAP high but ICP stable**: stable compensation at a low-reserve point; small additional insult will cost more.
+- **RAP collapsing at very high ICP**: AMP can no longer follow mean ICP; pulse transmission is failing. Bad sign.
+- **Plateau waves (Lundberg A)**: trapezoidal envelope, 60-second rise, 5–20-minute plateau at very high ICP, 60-second fall. Appear when low compliance plus marginal CPP plus active vasomotor align. <Cite id="lundberg1960" /> <Cite id="czosnyka1999" />
+- **B-waves**: rhythmic 0.5–2/min, 5–20 mmHg amplitude; associated with low compliance and sleep cycles.
+
+---
+
+## 7. Pitfalls
+
+- **Reading ICP without context**: ICP 18 with RAP 0.2 is different from ICP 18 with RAP 0.85.
+- **Forgetting venous outflow**: tight neck lines, cervical collar misuse, prone positioning all raise CVP and therefore ICP.
+- **Reassurance from open fontanelle**: chronic compensation, not acute buffer.
+- **Treating absolute number without trend**: ICP creeping from 12 to 18 over 6 hours matters even if both are "normal".
+- **Mannitol after BBB failure**: in late TBI or stroke, mannitol can redistribute and worsen oedema.
+
+---
+
+## 8. Combine with…
+
+- [Modality: ICP](/modalities/icp/): the bedside readout that the doctrine predicts.
+- [Modality: RAP](/modalities/rap/): the operational compliance index.
+- [Modality: CPP](/modalities/cpp/): MAP − ICP, the perfusion correlate.
+- [Foundation: pressure-volume curve](/foundations/marmarou-pv-curve/): the maths behind compliance exhaustion.
+- [Foundation: pediatric physiology](/foundations/pediatric-physiology/): fontanelle and skull development.
+- [Integration: osmotherapy ICP NIRS](/integration/osmotherapy-icp-nirs/): a worked scenario.
+
+---
+
+<DeepDive>
+
+## 9. Why rigidity matters
+
+The skull's mechanical stiffness is what makes pressure-volume relationships in the cranium so steep compared to other compartments. The rigid box also means that **venous pressure** matters: anything that raises CVP (PEEP, head-down positioning, jugular obstruction) raises ICP through impeded outflow. <Cite id="caricato2005" />
+
+## 10. Compartments and pathology
+
+- **Brain oedema** (vasogenic, cytotoxic, osmotic) raises parenchymal volume.
+- **Haematoma** (intracerebral, subdural, epidural) raises blood compartment.
+- **Hydrocephalus** raises CSF compartment.
+- **Mass lesion** (tumour, abscess) follows the same logic.
+
+In each case the compensatory window is the same: first CSF, then venous, then crisis.
+
+## 11. The hidden compartment
+
+In open systems (decompressive craniectomy, large skull fractures), the rigid-box assumption breaks down. ICP becomes a function of *external* atmospheric pressure plus tissue pressure across the bone defect. This is part of the rationale for craniectomy in refractory hypertension. <Cite id="hutchinson2016" /> <Cite id="cooper2011" />
+
+## 12. Mokri 2001, the contemporary statement
+
+<Cite id="mokri2001" /> Mokri reformulates Monro-Kellie for the era of CSF leaks: when CSF *volume* falls (e.g., spontaneous intracranial hypotension), the body compensates by **expanding venous volume**, producing the venous engorgement and pachymeningeal enhancement seen on MRI. The doctrine works in both directions.
+
+## 13. Practical bedside application
+
+The doctrine is why:
+
+- **Head-up 30°** matters (improves jugular outflow).
+- **Avoiding tight cervical collars** matters (preserves outflow).
+- **PEEP** matters less in stiff lungs (low transmission).
+- **EVD drainage** is fast and effective when CSF compartment is accessible.
+- **Decompressive craniectomy** removes the rigid-box constraint.
+
+## 14. Evidence summary
+
+| Topic | Source | Grade |
+|---|---|---|
+| Original doctrine | <Cite id="monro1783" /> <Cite id="kellie1824" /> | foundational |
+| Marmarou exponential | <Cite id="marmarou1975" /> | A |
+| Avezaat pulsatility-pressure | <Cite id="avezaat1979" /> | B |
+| RAP introduction | <Cite id="czosnyka1996rap" /> | B |
+| RAP modern use | <Cite id="kim2009rap" /> <Cite id="howells2017rap" /> | B |
+| RAP at very high ICP | <Cite id="kazimierska2021" /> | C |
+| Mokri reformulation | <Cite id="mokri2001" /> | review |
+| Decompressive craniectomy (adult) | <Cite id="hutchinson2016" /> <Cite id="cooper2011" /> | A |
+| Venous outflow / CVP effects | <Cite id="caricato2005" /> | C |
+| Pediatric TBI guideline | <Cite id="kochanek2019_pbtf4" /> | expert |
+
+</DeepDive>
+
+---
+
+## 15. Self-check
+
+<Quiz
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'In a child with intracranial mass effect, which volume compartment is recruited first to compensate?',
+      options: [
+        { id: 'a', label: 'Brain parenchyma (atrophy)' },
+        { id: 'b', label: 'CSF (translocation to spine)' },
+        { id: 'c', label: 'Arterial blood' },
+        { id: 'd', label: 'Venous blood' },
+      ],
+      answer: 'b',
+      explanation: 'CSF translocation to the spinal subarachnoid space is the cheapest and quickest first response. Venous compression follows; arterial compromise is late.',
+    },
+    {
+      id: 'q2',
+      prompt: 'A 6-year-old has had baseline ICP 12 and RAP 0.4 throughout the past week. Today during a quiet procedure her ICP spikes from 14 to 32 with a 5 mL volume change and slowly recovers. What changed?',
+      options: [
+        { id: 'a', label: 'Skull rigidity increased acutely' },
+        { id: 'b', label: 'Operating point has moved up the Marmarou exponential; compensatory reserve has fallen and small volume changes now cost large pressure changes' },
+        { id: 'c', label: 'CSF density increased' },
+        { id: 'd', label: 'The probe is artefacting' },
+      ],
+      answer: 'b',
+      explanation: 'Steady-state ICP can stay near "normal" while the operating point moves up the exponential curve. RAP drifting from 0.4 to 0.8 confirms compliance exhaustion. The same volume that was harmless last month is dangerous today.',
+    },
+    {
+      id: 'q3',
+      prompt: 'A bulging fontanelle in an acutely ill 4-month-old should reassure you about ICP because the open fontanelle compensates.',
+      options: [
+        { id: 'a', label: 'True; relax' },
+        { id: 'b', label: 'False; open fontanelle is a slow buffer; acute insults overwhelm it' },
+      ],
+      answer: 'b',
+      explanation: 'Fontanelle expansion compensates over days to weeks (head circumference rising), not minutes to hours. Acute haematoma, severe oedema, or status epilepticus can drive ICP up fast despite an open fontanelle.',
+    },
+  ]}
+/>
