@@ -29,19 +29,19 @@
   </g>
   <g transform="translate(370, 460)">
     <rect width="260" height="40" rx="6" fill="#152238" stroke="#2a3a55"/>
-    <text x="20" y="26" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#5EEAD4" letter-spacing="2">MODALITIES · 24 PAGES</text>
+    <text x="20" y="26" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#5EEAD4" letter-spacing="2">MODALITIES · 27 PAGES</text>
   </g>
   <g transform="translate(650, 460)">
     <rect width="240" height="40" rx="6" fill="#152238" stroke="#2a3a55"/>
-    <text x="20" y="26" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#FCD34D" letter-spacing="2">WIDGETS · 33 INTERACTIVE</text>
+    <text x="20" y="26" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#FCD34D" letter-spacing="2">WIDGETS · 42 INTERACTIVE</text>
   </g>
   <g transform="translate(910, 460)">
     <rect width="200" height="40" rx="6" fill="#152238" stroke="#2a3a55"/>
-    <text x="20" y="26" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#FCD34D" letter-spacing="2">SCENARIOS · 10</text>
+    <text x="20" y="26" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#FCD34D" letter-spacing="2">SCENARIOS · 18</text>
   </g>
 
   <g transform="translate(80, 540)">
     <text font-family="Consolas, monospace" font-size="14" fill="#94A3B8">For PICU fellows, intensivists, neurosurgery / neurology trainees, allied bedside clinicians.</text>
-    <text y="22" font-family="Consolas, monospace" font-size="12" fill="#64748B">Pedagogical resource — not a clinical device.</text>
+    <text y="22" font-family="Consolas, monospace" font-size="12" fill="#64748B">Pedagogical resource, not a clinical device.</text>
   </g>
 </svg>
