@@ -1,0 +1,53 @@
+# CI for MNM-Edu.
+# Runs the full quality gate on every pull request and on every push to main.
+# Any failing step fails the whole workflow.
+#
+# Branch protection note: on the remote, configure branch protection for `main`
+# to require this "CI" workflow to pass before a pull request can be merged.
+# That setting lives on the hosting side and is intentionally not part of this file.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies (clean, from lockfile)
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests (Vitest)
+        run: npm run test
+
+      - name: Install Playwright browsers and OS deps
+        run: npx playwright install --with-deps
+
+      - name: End-to-end tests (Playwright and axe)
+        run: npm run test:e2e
+
+      - name: Build (Next.js static export to out/)
+        run: npm run build
+
+      - name: Verify the static export produced out/
+        run: test -d out

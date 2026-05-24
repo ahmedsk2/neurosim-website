@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Pediatric Multimodal Neuromonitoring — Interactive Educational Site",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
