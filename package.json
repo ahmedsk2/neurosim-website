@@ -10,6 +10,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/generate-og.mjs",
     "build": "next build",
+    "postbuild": "node scripts/emit-content-versions.mjs",
     "start": "next start",
     "lint": "next lint",
     "validate-content": "node scripts/validate-content.mjs",
