@@ -79,3 +79,12 @@ grouped by theme. Each notes what was observed so you have the context to answer
 14. **What is the production target and cache strategy?** The static bundle is host-agnostic
     (`docs/deployment.md` lists options). Is a specific host/domain chosen, and should the audit
     follow-up include a deploy runbook and cache-header recommendation?
+
+## Content cross-links (recorded during Phase 1)
+
+15. **Two referenced foundation pages do not exist (possible content gaps).** The Phase 1
+    content-integrity validator found internal links to `/foundations/prognostic-timing/`
+    (`family-communication-mnm`, `wlst-organ-donation`) and `/foundations/cerebral-perfusion/`
+    (`pediatric-stroke-ais`). Phase 1 removed the prognostic-timing links and retargeted
+    cerebral-perfusion to the autoregulation foundation. Recorded in case a dedicated "prognostic
+    timing" or "cerebral perfusion / CBF" foundation page is worth authoring later.
