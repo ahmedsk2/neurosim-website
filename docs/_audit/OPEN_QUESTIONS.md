@@ -94,3 +94,24 @@ grouped by theme. Each notes what was observed so you have the context to answer
 16. **`public/og/*` and `public/search-index.json` are build-generated** (OG via the `prebuild` hook,
     search index by `next build`) and may later be gitignored once deploy-time generation is
     confirmed. Kept tracked for now to stay safe; revisit when the Phase 5 deploy pipeline is finalized.
+
+## Dependency upgrades (recorded during Phase 2 Wave 3a)
+
+17. **react-hooks v7 "rules of React" backlog (deferred to a dedicated PR).** Phase 2 Wave 3a bumped
+    eslint-config-next to 16, which ships eslint-plugin-react-hooks v7. Its new rules flag 18
+    pre-existing patterns as errors; they were demoted to WARNINGS in `eslint.config.mjs` so the upgrade
+    could land without a code refactor riding inside a dependency PR. The backlog, by rule:
+    - `react-hooks/set-state-in-effect` (6): `LocalePicker`, `ThemeToggle`, `LectureTimer`, `useCountUp`,
+      `lib/i18n`, `lib/theme` (setState called synchronously in a mount effect, mostly localStorage /
+      theme / locale hydration).
+    - `react-hooks/immutability` (7): `CPPTriangle`, `SDPropagation`, `SpreadingDepolarizationAnimator`,
+      `aEEGGenerator` (mutating values the rule treats as immutable, in canvas / animation code).
+    - `react-hooks/purity` (4): `MxAutoregContrast`, `MultimodalDiscordance`, `NonInvasiveICPDemo`
+      (impure calls such as `Math.random` during render, in data generation).
+    - `react-hooks/static-components` (1): `WidgetEmbed` (`next/dynamic()` called during render).
+    - Plus 5 now-unnecessary `eslint-disable react-hooks/exhaustive-deps` directives (`CPPoptUCurve`,
+      `MxCalculator`, `OrxCalculator`, `PRxCalculator`, `shared/useCanvas`).
+    Should a dedicated react-hooks-fixes PR address these (re-promoting each rule to error as it is
+    fixed), and in what priority? `set-state-in-effect` and `purity` are the most likely to mask real
+    bugs; `immutability` in canvas code may be intentional. This is application-logic work, deliberately
+    kept out of the dependency wave.
