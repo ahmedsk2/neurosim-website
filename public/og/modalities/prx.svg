@@ -19,11 +19,12 @@
   <text x="140" y="98" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#F59E0B" letter-spacing="3">MODALITY</text>
   <text x="140" y="120" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">MNM-Edu · Pediatric Multimodal Neuromonitoring</text>
 
-  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">PRx — pressure reactivity</text>
-  <text x="80" y="330" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">index</text>
+  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Pressure reactivity index</text>
+  <text x="80" y="330" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">(PRx)</text>
 
-  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">The Cambridge moving correlation between MAP and ICP slow waves — the bedside</text>
-  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">operationalization of &quot;is autoregulation intact?&quot;.</text>
+  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">A moving correlation between ICP and MAP at slow-wave frequencies, used to grade</text>
+  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">autoregulation continuously at the bedside and to derive an individualised CPP</text>
+  <text x="80" y="532" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">target.</text>
 
   <text x="80" y="600" font-family="Consolas, monospace" font-size="13" fill="#475569">mnm-edu · interactive · evidence-anchored</text>
 </svg>

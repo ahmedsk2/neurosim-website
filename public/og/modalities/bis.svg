@@ -19,11 +19,10 @@
   <text x="140" y="98" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#F59E0B" letter-spacing="3">MODALITY</text>
   <text x="140" y="120" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">MNM-Edu · Pediatric Multimodal Neuromonitoring</text>
 
-  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Processed EEG (BIS · SedLine</text>
-  <text x="80" y="330" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">PSI · Narcotrend)</text>
+  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Bispectral Index (BIS)</text>
 
-  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">Single-number processed-EEG sedation depth — useful trend, never a substitute</text>
-  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">for raw EEG.</text>
+  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">A proprietary frontal-EEG-derived sedation index, useful for titration in</text>
+  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">paralysed PICU patients, with well-defined limits in pediatrics.</text>
 
   <text x="80" y="600" font-family="Consolas, monospace" font-size="13" fill="#475569">mnm-edu · interactive · evidence-anchored</text>
 </svg>

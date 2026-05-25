@@ -19,10 +19,11 @@
   <text x="140" y="98" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#F59E0B" letter-spacing="3">MODALITY</text>
   <text x="140" y="120" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">MNM-Edu · Pediatric Multimodal Neuromonitoring</text>
 
-  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Brain tissue oxygen (PbtO₂)</text>
+  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Brain tissue oxygen (PbtO2)</text>
 
-  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">A polarographic or fluorescent probe in white matter — and the modality that</text>
-  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">re-shifted modern TBI care toward tissue-level oxygen targets.</text>
+  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">A polarographic Clark electrode in white matter that measures absolute</text>
+  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">interstitial oxygen tension, the modality that reshaped modern severe-TBI care</text>
+  <text x="80" y="532" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">toward tissue-level oxygen targets.</text>
 
   <text x="80" y="600" font-family="Consolas, monospace" font-size="13" fill="#475569">mnm-edu · interactive · evidence-anchored</text>
 </svg>

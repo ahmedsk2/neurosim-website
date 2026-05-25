@@ -19,10 +19,12 @@
   <text x="140" y="98" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#F59E0B" letter-spacing="3">MODALITY</text>
   <text x="140" y="120" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">MNM-Edu · Pediatric Multimodal Neuromonitoring</text>
 
-  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Mx — TCD-based reactivity</text>
+  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">Mx, the TCD-based</text>
+  <text x="80" y="330" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">autoregulation index</text>
 
-  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">When ICP isn&apos;t there, TCD mean velocity replaces it — same Pearson,</text>
-  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">different signal.</text>
+  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">When ICP is not available, TCD mean flow velocity replaces it. Same slow-wave</text>
+  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">Pearson correlation, different signal. Non-invasive CPPopt without a bolt, with</text>
+  <text x="80" y="532" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">the Mx-PRx-ORx triad on the same page.</text>
 
   <text x="80" y="600" font-family="Consolas, monospace" font-size="13" fill="#475569">mnm-edu · interactive · evidence-anchored</text>
 </svg>

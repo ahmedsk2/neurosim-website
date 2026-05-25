@@ -19,13 +19,12 @@
   <text x="140" y="98" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#FCD34D" letter-spacing="3">INTEGRATION SCENARIO</text>
   <text x="140" y="120" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">MNM-Edu · Pediatric Multimodal Neuromonitoring</text>
 
-  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">aEEG narrowing + TCD</text>
-  <text x="80" y="330" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">systolic peaks — what&apos;s</text>
-  <text x="80" y="400" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">happening?</text>
+  <text x="80" y="260" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">EEG and TCD non-convulsive</text>
+  <text x="80" y="330" font-family="Segoe UI, sans-serif" font-size="58" font-weight="700" fill="#FFFFFF" letter-spacing="-1">seizure detection</text>
 
-  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">A sedated TBI patient where the bedside aEEG bandwidth narrows and TCD shows new</text>
-  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">systolic peaks — and the team must decide between NCSE, vasospasm, or something</text>
-  <text x="80" y="532" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">else.</text>
+  <text x="80" y="480" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">The sedated PICU patient with intermittent aEEG narrowing and synchronous TCD</text>
+  <text x="80" y="506" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">systolic peaks. Sedation-induced burst-suppression with paradoxical flow swings</text>
+  <text x="80" y="532" font-family="Segoe UI, sans-serif" font-size="20" font-weight="500" fill="#94A3B8">versus non-convulsive status. Pediatric-first.</text>
 
   <text x="80" y="600" font-family="Consolas, monospace" font-size="13" fill="#475569">mnm-edu · interactive · evidence-anchored</text>
 </svg>

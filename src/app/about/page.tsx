@@ -1,5 +1,6 @@
 import { PageHeader } from '@/components/layout/PageScaffold';
 import { Card } from '@/components/ui';
+import { MODALITIES } from '@/data/modalities';
 
 export const metadata = { title: 'About' };
 
@@ -15,7 +16,7 @@ export default function AboutPage() {
       <h2>What this is</h2>
       <p>
         An interactive, evidence-anchored educational resource for pediatric multimodal
-        neuromonitoring (MNM). Twenty-four modalities are covered, from clinical exam, ICP, PRx,
+        neuromonitoring (MNM). {MODALITIES.length} modalities are covered, from clinical exam, ICP, PRx,
         and CPPopt through TCD, NIRS, EEG, aEEG, BIS, pupillometry, PbtO₂, microdialysis, SjvO₂,
         ONSD, non-invasive ICP, brain temperature, evoked potentials, direct CBF, and ECoG /
         spreading depolarizations.

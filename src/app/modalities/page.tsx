@@ -9,7 +9,7 @@ export default function ModalitiesIndex() {
     <div>
       <PageHeader
         eyebrow="Modalities"
-        title="Twenty-four monitors, one template"
+        title={`${MODALITIES.length} monitors, one template`}
         description="Every modality opens with the bedside view, walks through the physical signal, links physiology to a hands-on widget, then closes with pediatric-specific evidence and recent literature. Use the filters to narrow by type (electrical, flow, pressure…), invasiveness, usage, population, and validation status."
       />
       <ModalitiesBrowser modalities={MODALITIES} />

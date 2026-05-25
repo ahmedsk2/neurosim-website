@@ -37,6 +37,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Validate content integrity
+        run: npm run validate-content
+
       - name: Unit tests (Vitest)
         run: npm run test
 

@@ -7,11 +7,11 @@ import { SecondaryInjuryTimeline } from '@/components/home/SecondaryInjuryTimeli
 import { ModalityGridTeaser } from '@/components/home/ModalityGridTeaser';
 import { FoundationsEntry } from '@/components/home/FoundationsEntry';
 import { AboutFooter } from '@/components/home/AboutFooter';
+import { MODALITIES } from '@/data/modalities';
 
 export const metadata = {
   title: 'Pediatric Multimodal Neuromonitoring, MNM-Edu',
-  description:
-    'An evidence-anchored educational resource on pediatric multimodal neuromonitoring: 24 modalities, foundations curriculum, interactive widgets, and case library.',
+  description: `An evidence-anchored educational resource on pediatric multimodal neuromonitoring: ${MODALITIES.length} modalities, foundations curriculum, interactive widgets, and case library.`,
 };
 
 export default function HomePage() {
