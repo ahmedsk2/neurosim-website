@@ -25,14 +25,14 @@ export function AboutFooter() {
           >
             Built by a pediatric intensivist, for the team.
           </h2>
-          <p className="m-0 max-w-prose text-[14px] leading-[1.65] text-ink/85">
+          <p className="m-0 max-w-[70ch] text-[14px] leading-[1.65] text-ink/85">
             MNM-Edu is an open educational resource focused on pediatric multimodal neuromonitoring.
             Every modality page is grounded in current peer-reviewed literature; evidence levels are
             stated honestly; widgets demonstrate the physiology you can&apos;t see at the bedside.
             The companion simulation platform, NeuroSim ICU, drives bedside-realistic cases for
             fellow training.
           </p>
-          <p className="m-0 mt-3 max-w-prose text-[12.5px] text-ink-dim">
+          <p className="m-0 mt-3 max-w-[70ch] text-[12.5px] text-ink-dim">
             Pull requests, corrections, and case contributions welcome.
           </p>
         </div>

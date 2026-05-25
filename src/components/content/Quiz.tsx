@@ -39,7 +39,7 @@ function QuestionItem({ q }: { q: QuizQuestion }) {
 
   return (
     <div className="">
-      <div className="text-[14px] text-ink mb-2 leading-[1.5]">{q.prompt}</div>
+      <div className="text-[14px] text-ink mb-2 leading-normal">{q.prompt}</div>
       <div className="grid gap-1.5">
         {q.options.map((o) => {
           const isPicked = picked === o.id;

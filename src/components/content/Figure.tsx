@@ -47,7 +47,7 @@ export function Figure({
         )}
       </div>
       {(caption || attribution) && (
-        <figcaption className="px-4 py-3 text-[12px] text-ink/85 leading-[1.5]">
+        <figcaption className="px-4 py-3 text-[12px] text-ink/85 leading-normal">
           {caption && <div>{caption}</div>}
           {attribution && (
             <div className="mt-1 text-[11px] text-ink-muted italic">{attribution}</div>

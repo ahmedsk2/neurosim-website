@@ -41,7 +41,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
             <a
               href={`#${it.id}`}
               className={cn(
-                'block rounded px-2 py-0.5',
+                'block rounded-sm px-2 py-0.5',
                 it.level === 3 && 'pl-4',
                 active === it.id
                   ? 'text-brand-tealLight font-semibold'

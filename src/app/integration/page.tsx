@@ -26,7 +26,7 @@ export default function IntegrationIndex() {
                       kind={thumb.kind}
                       tone={thumb.tone}
                       aspect="1/1"
-                      className="h-14 w-14 flex-shrink-0"
+                      className="h-14 w-14 shrink-0"
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">

@@ -99,8 +99,8 @@ export function chipText(kind: ChipKind, value: string): string {
 export function ModalityLabels({ labels, size = 'sm', className }: ModalityLabelsProps) {
   const sizeClass =
     size === 'sm'
-      ? 'text-[9px] px-1.5 py-[1px] tracking-[0.08em]'
-      : 'text-[10px] px-2 py-0.5 tracking-[0.1em]';
+      ? 'text-[9px] px-1.5 py-px tracking-[0.08em]'
+      : 'text-[10px] px-2 py-0.5 tracking-widest';
   const chip = (kind: ChipKind, value: string) => (
     <span
       key={kind}

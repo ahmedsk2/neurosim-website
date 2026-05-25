@@ -158,7 +158,7 @@ export default function PediatricDoseCalculator() {
                   {d.computed}
                   {d.ceiling && <span className="text-ink-dim text-[10px] ml-1">({d.ceiling})</span>}
                 </td>
-                <td className="py-1.5 text-[10.5px] text-ink-muted leading-[1.5]">{d.hint}</td>
+                <td className="py-1.5 text-[10.5px] text-ink-muted leading-normal">{d.hint}</td>
               </tr>
             ))}
           </tbody>

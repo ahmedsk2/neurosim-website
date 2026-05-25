@@ -105,7 +105,7 @@ export function SectionNav() {
           {SECTIONS.map((s) => {
             const isActive = active === s.id;
             return (
-              <li key={s.id} className="flex-shrink-0">
+              <li key={s.id} className="shrink-0">
                 <a
                   href={`#${s.id}`}
                   onClick={(e) => handleClick(e, s.id)}

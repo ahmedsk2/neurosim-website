@@ -67,7 +67,7 @@ function SensorBox({ side, value }: { side: 'L' | 'R'; value: number }) {
     status === 'good' ? 'border-status-good text-status-good' : status === 'warn' ? 'border-brand-amber text-brand-amber' : 'border-status-danger text-status-dangerText';
   return (
     <div className={`rounded-md border-l-[3px] bg-surface-darker p-3 ${color}`}>
-      <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-ink-muted">{side === 'L' ? 'Left frontal' : 'Right frontal'}</div>
+      <div className="text-[9px] font-bold uppercase tracking-eyebrow text-ink-muted">{side === 'L' ? 'Left frontal' : 'Right frontal'}</div>
       <div className={`mt-1 font-mono text-[34px] font-bold ${color.split(' ')[1]}`}>{value.toFixed(0)}</div>
       <div className="text-[10px] text-ink-dim">% rSO₂</div>
     </div>

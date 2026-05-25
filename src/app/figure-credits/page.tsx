@@ -152,7 +152,7 @@ export default function FigureCreditsPage() {
       </ol>
 
       <Card className="my-3 p-0">
-        <pre className="m-0 overflow-x-auto p-3 text-[11.5px] leading-[1.5] text-ink">
+        <pre className="m-0 overflow-x-auto p-3 text-[11.5px] leading-normal text-ink">
 {`<SourcedFigure
   src="/figures/icp/icp-bolt-photo.jpg"
   alt="Camino bolt in situ on a pediatric patient, frontal placement"

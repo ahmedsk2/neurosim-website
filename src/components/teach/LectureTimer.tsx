@@ -111,7 +111,7 @@ export function LectureTimer() {
             <div
               key={s.label}
               className={cn(
-                'rounded px-1 py-0.5 text-center text-[9px] font-mono font-bold uppercase tracking-wider',
+                'rounded-sm px-1 py-0.5 text-center text-[9px] font-mono font-bold uppercase tracking-wider',
                 active ? 'bg-brand-teal text-surface-darker' : done ? 'bg-status-good/30 text-status-good' : 'bg-surface-card text-ink-dim',
               )}
             >

@@ -62,7 +62,7 @@ export default function SearchClient() {
           placeholder="Search modalities, foundations, scenarios…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          className="flex-1 bg-transparent text-[14px] text-ink placeholder:text-ink-dim outline-none"
+          className="flex-1 bg-transparent text-[14px] text-ink placeholder:text-ink-dim outline-hidden"
         />
       </label>
 
@@ -107,7 +107,7 @@ export default function SearchClient() {
                         <Link
                           key={slug}
                           href={`/modalities/${slug}/`}
-                          className="inline-flex items-center rounded border border-line bg-surface-card px-2 py-0.5 text-[11.5px] font-semibold text-brand-tealLight hover:bg-surface-darker"
+                          className="inline-flex items-center rounded-sm border border-line bg-surface-card px-2 py-0.5 text-[11.5px] font-semibold text-brand-tealLight hover:bg-surface-darker"
                         >
                           {m.short}
                         </Link>
@@ -128,7 +128,7 @@ export default function SearchClient() {
                         <Link
                           key={slug}
                           href={`/integration/${slug}/`}
-                          className="rounded border border-line bg-surface-card px-2 py-1 text-[12px] font-semibold text-ink hover:border-brand-teal"
+                          className="rounded-sm border border-line bg-surface-card px-2 py-1 text-[12px] font-semibold text-ink hover:border-brand-teal"
                         >
                           {c.title}
                         </Link>

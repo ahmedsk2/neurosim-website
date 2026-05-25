@@ -257,12 +257,12 @@ export function DomainPentagon() {
               >
                 <span
                   aria-hidden
-                  className="mt-1 inline-block h-3 w-3 flex-shrink-0 rounded-full"
+                  className="mt-1 inline-block h-3 w-3 shrink-0 rounded-full"
                   style={{ backgroundColor: v.colorHex }}
                 />
                 <div>
                   <h3 className="m-0 text-[14px] font-bold text-ink">{v.name}</h3>
-                  <p className="m-0 mt-1 text-[12.5px] text-ink/80 leading-[1.5]">{v.examples}</p>
+                  <p className="m-0 mt-1 text-[12.5px] text-ink/80 leading-normal">{v.examples}</p>
                 </div>
                 <span
                   className="ml-auto text-[10px] font-mono text-ink-dim"

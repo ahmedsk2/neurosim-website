@@ -116,7 +116,7 @@ export default function MultimodalDiscordance() {
       status={{ variant: 'demo', label: data.label }}
       footnote="Pedagogical scenarios, not real-patient data."
     >
-      <p className="text-[12.5px] text-ink/85 leading-[1.55] mb-3 max-w-prose">{data.subtitle}</p>
+      <p className="text-[12.5px] text-ink/85 leading-[1.55] mb-3 max-w-[70ch]">{data.subtitle}</p>
       <div className="grid gap-2.5 grid-cols-2 md:grid-cols-4 lg:grid-cols-7 mb-2.5">
         <Readout label="ICP" value={cur.icp.toFixed(0)} unit="mmHg" status={cur.icp <= 20 ? 'good' : 'warn'} />
         <Readout label="CPP" value={cur.cpp.toFixed(0)} unit="mmHg" status={cur.cpp >= 60 ? 'good' : 'danger'} />

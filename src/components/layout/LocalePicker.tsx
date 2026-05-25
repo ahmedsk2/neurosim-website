@@ -48,7 +48,7 @@ export function LocalePicker({ className }: { className?: string }) {
               aria-selected={locale === l}
               onClick={() => choose(l)}
               className={cn(
-                'block w-full text-left rounded px-3 py-1.5 text-[12.5px]',
+                'block w-full text-left rounded-sm px-3 py-1.5 text-[12.5px]',
                 locale === l
                   ? 'bg-brand-teal text-surface-darker font-bold'
                   : 'text-ink hover:bg-surface-deeper',

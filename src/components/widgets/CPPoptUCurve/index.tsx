@@ -273,7 +273,7 @@ function Legend({ dot, label }: { dot: string; label: string }) {
   return (
     <span className="inline-flex items-center gap-1">
       <span
-        className="inline-block h-[3px] w-2.5 rounded-sm"
+        className="inline-block h-[3px] w-2.5 rounded-xs"
         style={{ background: dot }}
         aria-hidden
       />
@@ -376,7 +376,7 @@ function Steps({
                   <span className="ml-1.5 font-mono text-[10px] text-brand-tealLight">{it.tag}</span>
                 )}
               </div>
-              <div className="text-[11px] text-ink-muted leading-[1.5] mt-0.5">{it.desc}</div>
+              <div className="text-[11px] text-ink-muted leading-normal mt-0.5">{it.desc}</div>
             </div>
           </li>
         ))}

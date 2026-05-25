@@ -28,9 +28,9 @@ export function PrevNextNav({ prev, next }: PrevNextNavProps) {
       {prev ? (
         <Link
           href={prev.href}
-          className="group flex items-center gap-3 rounded-md border border-line bg-surface-card p-4 transition-colors hover:border-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal"
+          className="group flex items-center gap-3 rounded-md border border-line bg-surface-card p-4 transition-colors hover:border-brand-teal focus:outline-hidden focus:ring-2 focus:ring-brand-teal"
         >
-          <ArrowLeft className="h-5 w-5 flex-shrink-0 text-brand-tealLight transition-transform group-hover:-translate-x-0.5" />
+          <ArrowLeft className="h-5 w-5 shrink-0 text-brand-tealLight transition-transform group-hover:-translate-x-0.5" />
           <div className="min-w-0">
             {prev.eyebrow && (
               <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-ink-dim">
@@ -53,7 +53,7 @@ export function PrevNextNav({ prev, next }: PrevNextNavProps) {
       {next ? (
         <Link
           href={next.href}
-          className="group flex items-center gap-3 rounded-md border border-line bg-surface-card p-4 text-right transition-colors hover:border-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal md:justify-end"
+          className="group flex items-center gap-3 rounded-md border border-line bg-surface-card p-4 text-right transition-colors hover:border-brand-teal focus:outline-hidden focus:ring-2 focus:ring-brand-teal md:justify-end"
         >
           <div className="min-w-0 flex-1">
             {next.eyebrow && (
@@ -70,7 +70,7 @@ export function PrevNextNav({ prev, next }: PrevNextNavProps) {
               {next.label}
             </div>
           </div>
-          <ArrowRight className="h-5 w-5 flex-shrink-0 text-brand-tealLight transition-transform group-hover:translate-x-0.5" />
+          <ArrowRight className="h-5 w-5 shrink-0 text-brand-tealLight transition-transform group-hover:translate-x-0.5" />
         </Link>
       ) : (
         <span className="hidden md:block" />

@@ -144,9 +144,9 @@ export function Callout({
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center gap-2 px-3 py-2.5 md:px-4 text-left hover:bg-surface-card/40 focus:outline-none focus:ring-2 focus:ring-brand-teal rounded-md"
+        className="flex w-full items-center gap-2 px-3 py-2.5 md:px-4 text-left hover:bg-surface-card/40 focus:outline-hidden focus:ring-2 focus:ring-brand-teal rounded-md"
       >
-        <Icon className={cn('h-4 w-4 flex-shrink-0', c.iconColor)} aria-hidden />
+        <Icon className={cn('h-4 w-4 shrink-0', c.iconColor)} aria-hidden />
         <span
           className={cn(
             'text-[10px] font-bold uppercase tracking-[0.16em]',
