@@ -34,6 +34,19 @@ function cleanText(node) {
   return node ? (node.textContent || '').replace(/\s+/g, ' ').trim() : '';
 }
 
+// Visible heading text with the rehype-autolink-headings anchor removed. The autolink
+// (append mode, PR #17) adds <a class="heading-anchor">...#...</a> as the heading's
+// last child, which would otherwise leak a trailing "#" into textContent. We clone the
+// heading and drop that anchor by class before reading text, so a real "#" in heading
+// text is preserved and the live DOM (hence contentHash and the id/level fields) is
+// untouched.
+function headingText(node) {
+  if (!node) return '';
+  const clone = node.cloneNode(true);
+  for (const a of clone.querySelectorAll('a.heading-anchor')) a.remove();
+  return (clone.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
 async function slugsFor(kind) {
   try {
     const files = await fs.readdir(path.join(CONTENT_DIR, kind));
@@ -53,11 +66,11 @@ function extract(html) {
   const article =
     doc.querySelector('article.prose-mnm') || doc.querySelector('article') || doc.querySelector('main');
   if (!article) return null;
-  // Section headings carry stable ids from rehype-slug. textContent is the clean
-  // visible text (the autolink wrap adds no visible "#"), section number included.
+  // Section headings carry stable ids from rehype-slug. headingText() returns the clean
+  // visible text (section number included) with the autolink anchor stripped.
   const headings = [];
   for (const h of article.querySelectorAll('h2[id], h3[id], h4[id], h5[id], h6[id]')) {
-    headings.push({ id: h.getAttribute('id'), text: cleanText(h), level: Number(h.tagName.slice(1)) });
+    headings.push({ id: h.getAttribute('id'), text: headingText(h), level: Number(h.tagName.slice(1)) });
   }
   return {
     title: cleanText(article.querySelector('h1')),
