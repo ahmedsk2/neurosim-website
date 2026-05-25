@@ -75,6 +75,10 @@ export default function MultimodalDiscordance() {
   const [frame, setFrame] = useState(0);
   const [running, setRunning] = useState(true);
   const rafRef = useRef<number | null>(null);
+  // performance.now() seeds the delta-time baseline for the rAF loop. It is read in
+  // render only to initialize the ref (used once); moving it into the effect would
+  // shift the first-frame/resume dt, so the in-render read is kept intentionally.
+  // eslint-disable-next-line react-hooks/purity
   const lastRef = useRef(performance.now());
 
   useEffect(() => {

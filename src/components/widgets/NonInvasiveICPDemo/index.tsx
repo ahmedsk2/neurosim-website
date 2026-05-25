@@ -16,7 +16,14 @@ export default function NonInvasiveICPDemo() {
   const [icpTrue, setIcpTrue] = useState(15);
   const pi = piFromIcp(icpTrue);
   const bellnerEst = bellner(pi);
+  // The tympanic and B4C non-invasive estimates are intentionally noisy: these methods
+  // are not reliable for absolute ICP, so Math.random models their jitter, re-rolled
+  // per render as the clinician drags the true ICP. The in-render randomness is the
+  // teaching point, so the purity rule is disabled on both. (tympanic is not yet
+  // surfaced in the UI; that is a separate, pre-existing unused-var warning.)
+  // eslint-disable-next-line react-hooks/purity
   const tympanic = icpTrue + (Math.random() - 0.5) * 4 - 2; // noisy
+  // eslint-disable-next-line react-hooks/purity
   const b4c = icpTrue + (Math.random() - 0.5) * 6;
 
   return (
