@@ -242,16 +242,38 @@ in-range by `npm update` / `npm audit fix`.
   (next-mdx-remote, Wave 4). Recommendation: take every in-range/non-major SECURITY fix in Wave 1.
 
 ### Wave 2: toolchain majors
-- typescript (5 to 6), vitest (2 to 4; note the security fix only needs 2.1.9, the 4.x is the toolchain
-  upgrade), @playwright/test (1.49 to 1.60 is a minor, not a major; the security fix lands it here or
-  in Wave 1), eslint (9 to 10), @vitejs/plugin-react (4 to 6), jsdom (25 to 29).
+Original plan list: typescript (5 to 6), vitest (2 to 4; the security fix only needed 2.1.9, the 4.x is
+the toolchain upgrade), @playwright/test (1.49 to 1.60, a minor), eslint (9 to 10),
+@vitejs/plugin-react (4 to 6), jsdom (25 to 29), with @types/node (22 to 25) folded in.
+
+**Executed (landed, merged to main):** typescript 6.0.3, vitest 4.1.7, @vitejs/plugin-react 6.0.2,
+jsdom 29.1.1, @types/node 25.9.1. All six local gates green; CI green. @playwright/test 1.60.0 had
+already landed in Wave 1. vitest 4 needed no config migration (the existing vitest.config.ts shape is
+still valid in v4). vite resolved to 8.0.14, shared (deduped) by @vitejs/plugin-react 6 and vitest 4;
+the vitest 4 bump also cleared the 5 dev/test vite-chain advisories (vitest, vite, vite-node, esbuild,
+@vitest/mocker), moving the audit from 8 vulnerabilities to 3 (the remaining 3 are out-of-scope:
+next, postcss, next-mdx-remote).
+
+**typescript 6 KEPT:** the secondary coupling (eslint-config-next 15.1.6 drives @typescript-eslint v8)
+produced no failure and not even an "unsupported version" warning; typecheck and lint both pass. TS 6
+did require one new ambient declaration (globals.d.ts: `declare module '*.css';`) because TS 6 raises
+TS2882 on side-effect imports of untyped CSS assets that TS 5 allowed silently. That is the idiomatic
+fix and loosens no strictness (strict / noUncheckedIndexedAccess etc. unchanged).
+
+**eslint 10 DEFERRED to Wave 3:** the pinned eslint-config-next 15.1.6 declares peer
+`eslint ^7.23.0 || ^8.0.0 || ^9.0.0` (no ^10), so eslint 10 cannot land without bumping
+eslint-config-next, which is out of Wave 2 scope. Moved to Wave 3 to ride with eslint-config-next 16
+(and Next 16), per the rule not to bump eslint-config-next standalone.
+
 - **Coupling flag:** eslint-config-next (15 to 16) is a "lint config" but its major tracks Next's
   major; bump it WITH Next 16 in Wave 3, not standalone. @types/node (22 to 25) is a dev-types major,
-  low runtime risk; fold into Wave 2 or treat as a Wave 1 exception.
+  low runtime risk; landed in Wave 2 as planned.
 
 ### Wave 3: framework / runtime majors (highest risk, each its own PR)
-- next (15 to 16) plus eslint-config-next (15 to 16) together; confirm the static-export contract still
-  holds. react / react-dom are only minors (19.0 to 19.2).
+- next (15 to 16) plus eslint-config-next (15 to 16) together, and eslint (9 to 10) folded in with them
+  (eslint-config-next 16 is the version whose peer range admits eslint 10; deferred here from Wave 2 for
+  exactly that reason). Confirm the static-export contract still holds. react / react-dom are only
+  minors (19.0 to 19.2).
 - tailwindcss (3 to 4): a real migration (CSS-first `@theme`, breaking utilities). Its own PR, visual
   regression review, rollback plan. Not started (Section 4).
 - three / simplex-noise: no pending bump today, but the plan flags them for hero-specific testing on
