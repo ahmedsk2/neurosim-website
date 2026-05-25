@@ -50,24 +50,35 @@ const REGISTRY: Record<string, () => Promise<{ default: ComponentType<WidgetProp
   MAPoptUCurve: () => import('@/components/widgets/MAPoptUCurve'),
 };
 
+// Build each widget's lazy component ONCE at module load, keyed by name, instead of
+// calling dynamic() inside WidgetEmbed's render. The old in-render dynamic() created
+// a brand-new lazy component on every render, which remounted the widget and reset
+// its state whenever WidgetEmbed re-rendered. ssr:false and the skeleton fallback are
+// preserved exactly, and REGISTRY above is unchanged.
+const WIDGETS: Record<string, ComponentType<WidgetProps>> = Object.fromEntries(
+  Object.entries(REGISTRY).map(([name, loader]) => [
+    name,
+    dynamic(loader, {
+      ssr: false,
+      loading: () => <WidgetSkeleton name={name} />,
+    }),
+  ]),
+);
+
 export function WidgetEmbed({
   name,
   ...rest
 }: {
   name: string;
 } & WidgetProps) {
-  const loader = REGISTRY[name];
-  if (!loader) {
+  const Component = WIDGETS[name];
+  if (!Component) {
     return (
       <div className="my-4 rounded-md border border-status-danger bg-status-danger/10 p-3 text-[12px] text-status-dangerText">
         Unknown widget: <code>{name}</code>
       </div>
     );
   }
-  const Component = dynamic(loader, {
-    ssr: false,
-    loading: () => <WidgetSkeleton name={name} />,
-  });
   return <Component {...rest} />;
 }
 
