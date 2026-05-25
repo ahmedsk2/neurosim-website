@@ -4,8 +4,15 @@
 // module and there are no .mdx route files, so it compiled nothing.
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Server app (Phase 3a): no `output: 'export'`, so `next build` emits a server
+  // build in .next/ and `next start` serves it. The content routes carry no
+  // per-request data, so Next still prerenders them (SSG / Static), keeping public
+  // pages static-fast; only the serving process changes.
   trailingSlash: true,
+  // Kept from the export era and still valid in server mode: the site is SVG and
+  // canvas heavy, so the Next image optimizer is not needed and unoptimized avoids
+  // its runtime cost. No image behavior change here; flip later if real <Image>
+  // optimization is ever wanted.
   images: { unoptimized: true },
   pageExtensions: ['ts', 'tsx'],
   reactStrictMode: true,

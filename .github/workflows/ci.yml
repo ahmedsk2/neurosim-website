@@ -43,7 +43,7 @@ jobs:
       - name: Unit tests (Vitest)
         run: npm run test
 
-      - name: Build (Next.js static export to out/)
+      - name: Build (Next.js server build to .next/)
         run: npm run build
 
       - name: Install Playwright browsers and OS deps

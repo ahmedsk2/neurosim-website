@@ -10,7 +10,6 @@
     "dev": "next dev --webpack",
     "prebuild": "node scripts/generate-og.mjs",
     "build": "next build --webpack",
-    "postbuild": "node scripts/emit-content-versions.mjs",
     "start": "next start",
     "lint": "eslint src",
     "validate-content": "node scripts/validate-content.mjs",
