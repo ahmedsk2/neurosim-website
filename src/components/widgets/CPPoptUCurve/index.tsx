@@ -98,7 +98,6 @@ export default function CPPoptUCurve() {
   // Re-draw on first render after seed
   useEffect(() => {
     drawAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function onReset() {
