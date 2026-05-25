@@ -1,25 +1,14 @@
-import createMDX from '@next/mdx';
-import remarkMath from 'remark-math';
-import remarkGfm from 'remark-gfm';
-import rehypeKatex from 'rehype-katex';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-
+// MDX content is compiled at the page level by next-mdx-remote/rsc (see the
+// dynamic [slug] / [scenario] route pages, which pass their own remark/rehype
+// plugins). @next/mdx is intentionally not wired here: nothing imports .mdx as a
+// module and there are no .mdx route files, so it compiled nothing.
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
   images: { unoptimized: true },
-  pageExtensions: ['ts', 'tsx', 'mdx'],
+  pageExtensions: ['ts', 'tsx'],
   reactStrictMode: true,
-  experimental: { mdxRs: false },
 };
 
-const withMDX = createMDX({
-  options: {
-    remarkPlugins: [remarkMath, remarkGfm],
-    rehypePlugins: [rehypeKatex, rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
-  },
-});
-
-export default withMDX(nextConfig);
+export default nextConfig;
