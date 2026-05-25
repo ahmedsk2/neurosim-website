@@ -65,6 +65,5 @@ export function useAnimationLoop(tick: (now: number, dtMs: number) => void, runn
       if (handleRef.current != null) cancelAnimationFrame(handleRef.current);
       handleRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running]);
 }

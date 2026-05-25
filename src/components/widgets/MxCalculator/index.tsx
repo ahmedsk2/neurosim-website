@@ -56,7 +56,6 @@ export default function MxCalculator() {
     seed(stateRef.current, MX_CONFIG, rngRef.current, 8 * 60);
     drawAll();
     force();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

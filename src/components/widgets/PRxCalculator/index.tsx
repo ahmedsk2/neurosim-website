@@ -35,7 +35,6 @@ export default function PRxCalculator() {
     seed(stateRef.current, cfgRef.current, rngRef.current, 8 * 60);
     drawAll();
     force();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
