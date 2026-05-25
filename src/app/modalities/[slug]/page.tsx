@@ -83,6 +83,11 @@ export default async function ModalityPage({
                 remarkPlugins: [remarkMath, remarkGfm],
                 rehypePlugins: [rehypeKatex, rehypeSlug],
               },
+              // First-party MDX only (never untrusted): blockJS:false re-enables JS
+              // expression props like <Quiz questions={[...]} />; blockDangerousJS:true
+              // still blocks eval/Function/process/require. See docs/_audit/WAVE4_DISCOVERY.md.
+              blockJS: false,
+              blockDangerousJS: true,
             }}
           />
           <ReferencesList ids={doc.citationOrder} />

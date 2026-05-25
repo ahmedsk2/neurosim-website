@@ -46,6 +46,31 @@ Everything else is a non-event:
 
 (Versions from `npm view <pkg> version`.)
 
+## Execution correction (Wave 4 PR1, 2026-05-25)
+
+This discovery's section 3 called next-mdx-remote 6 a "near-drop-in" because "content
+has no raw JS expressions." That was WRONG and is corrected here: our content DOES use
+JS EXPRESSION PROPS on components, for example `<Quiz questions={[ ... ]} />` (and
+other object/array-literal props). next-mdx-remote 6's new `blockJS: true` default
+strips exactly those `{...}` expressions (it preserves JSX elements and Markdown but
+removes expression nodes), so the bumped build crashed prerendering the first content
+page with such a prop, `/foundations/astrup-cascade`, with `TypeError: Cannot read
+properties of undefined (reading 'map')` (the Quiz received `questions = undefined`).
+This affects every page with an expression prop (53 `<Quiz>` usages alone), not just
+astrup-cascade.
+
+Resolution (owner-approved): set `blockJS: false` plus an explicit
+`blockDangerousJS: true` at all three `MDXRemote` call sites. Verified from
+next-mdx-remote 6's compiled `serialize.js`: the dangerous-globals guard is applied
+under exactly `!blockJS && blockDangerousJS`, so with our config eval / Function /
+process / require remain blocked while our legitimate first-party expression props
+compile. The threat model the v6 default guards against (RCE when compiling UNTRUSTED
+MDX) does not apply here: all MDX is first-party authored and never compiled from
+untrusted input. The npm audit HIGH still clears because it is resolved by the v6
+version itself (3 to 2). Parity was then re-verified on a COMPLETE v6 build: all seven
+canaries byte-identical to v5, and the Quiz on `/foundations/astrup-cascade` renders
+with its options intact.
+
 ---
 
 ## 1. Versions and breaking changes per package
