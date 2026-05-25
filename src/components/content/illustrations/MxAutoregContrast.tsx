@@ -52,7 +52,10 @@ export function MxAutoregContrast() {
       if (impaired) {
         mfv = 0.7 * map + 0.25 * noise;
       } else {
-        // Near-zero correlation: random with small drift
+        // Near-zero correlation: a small random drift. The in-render Math.random is
+        // intentional illustrative jitter (re-rolled per render); no deterministic
+        // substitute reproduces the look, so the purity rule is disabled here.
+        // eslint-disable-next-line react-hooks/purity
         prev = 0.4 * prev + 0.2 * noise + 0.1 * (Math.random() - 0.5);
         mfv = prev;
       }
