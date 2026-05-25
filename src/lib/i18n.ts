@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 export type Locale = 'en' | 'fr' | 'ar';
 
@@ -65,18 +65,17 @@ export function setLocale(next: Locale): void {
   window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: next }));
 }
 
+function subscribeLocale(onStoreChange: () => void): () => void {
+  window.addEventListener(EVENT_NAME, onStoreChange);
+  return () => window.removeEventListener(EVENT_NAME, onStoreChange);
+}
+
+// The locale lives in the DOM lang attribute (set by the no-flash bootstrap script
+// and by setLocale), an external store read with useSyncExternalStore. getLocale is
+// SSR-safe (returns 'en' when there is no document), so it is both the client and
+// server snapshot, keeping SSR consistent with the en default.
 export function useLocale(): Locale {
-  const [l, setL] = useState<Locale>(() => getLocale());
-  useEffect(() => {
-    setL(getLocale());
-    const handler = (e: Event) => {
-      const ce = e as CustomEvent<Locale>;
-      setL(ce.detail ?? getLocale());
-    };
-    window.addEventListener(EVENT_NAME, handler);
-    return () => window.removeEventListener(EVENT_NAME, handler);
-  }, []);
-  return l;
+  return useSyncExternalStore(subscribeLocale, getLocale, getLocale);
 }
 
 export function t(key: string, locale?: Locale): string {
