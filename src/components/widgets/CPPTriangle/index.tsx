@@ -14,11 +14,6 @@ export default function CPPTriangle() {
   const cppCv = useRef<HTMLCanvasElement>(null);
   const lassenCv = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    drawCPPDiagram();
-    drawLassen();
-  });
-
   function drawCPPDiagram() {
     const cv = cppCv.current;
     if (!cv) return;
@@ -182,6 +177,11 @@ export default function CPPTriangle() {
     ctx.fillText('CBF (mL/100g/min)', 0, 0);
     ctx.restore();
   }
+
+  useEffect(() => {
+    drawCPPDiagram();
+    drawLassen();
+  });
 
   const status: 'good' | 'warn' | 'danger' = cpp >= lla && cpp <= ula ? 'good' : cpp < lla ? 'danger' : 'warn';
 

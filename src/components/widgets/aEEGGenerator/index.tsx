@@ -17,12 +17,6 @@ export default function AEEGGenerator() {
   const aeegCv = useRef<HTMLCanvasElement>(null);
   const pipelineCv = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    drawAEEG();
-    drawPipeline();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pattern]);
-
   function drawAEEG() {
     const c = aeegCv.current;
     if (!c) return;
@@ -175,6 +169,12 @@ export default function AEEGGenerator() {
       ctx.stroke();
     });
   }
+
+  useEffect(() => {
+    drawAEEG();
+    drawPipeline();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pattern]);
 
   return (
     <WidgetShell
