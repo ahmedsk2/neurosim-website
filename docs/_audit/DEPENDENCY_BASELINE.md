@@ -270,12 +270,42 @@ eslint-config-next, which is out of Wave 2 scope. Moved to Wave 3 to ride with e
   low runtime risk; landed in Wave 2 as planned.
 
 ### Wave 3: framework / runtime majors (highest risk, each its own PR)
-- next (15 to 16) plus eslint-config-next (15 to 16) together, and eslint (9 to 10) folded in with them
-  (eslint-config-next 16 is the version whose peer range admits eslint 10; deferred here from Wave 2 for
-  exactly that reason). Confirm the static-export contract still holds. react / react-dom are only
-  minors (19.0 to 19.2).
-- tailwindcss (3 to 4): a real migration (CSS-first `@theme`, breaking utilities). Its own PR, visual
-  regression review, rollback plan. Not started (Section 4).
+Split into sub-waves. Wave 3a is EXECUTED and merged; 3b and 3c remain.
+
+**Wave 3a (next 16 + eslint cluster): EXECUTED.** next 15.5.18 to 16.2.6, eslint-config-next 15.1.6 to
+16.2.6, eslint 9.39.4 to 10.4.0, plus @eslint/eslintrc 3.3.5 (devDep). eslint-config-next 16's peer
+(`eslint >=9.0.0`, `typescript >=3.3.1`) admits both eslint 10 and our TS 6, which is why this cluster
+landed together (eslint 10 was deferred here from Wave 2 for exactly that reason). Decisions and findings
+(grounded in docs/_audit/WAVE3A_DISCOVERY.md):
+- BUILD STAYS ON WEBPACK (Path A). Next 16 defaults builds to Turbopack, which cannot take our
+  function-form @next/mdx remark/rehype plugins, and no gate proves MDX parity across all 54 pages
+  between the webpack and Turbopack compile paths. The build / dev / analyze scripts use `--webpack` to
+  preserve the exact current MDX compilation (KaTeX, anchors, GFM). Turbopack adoption is a separate
+  future project, explicitly OUT OF SCOPE. @next/mdx therefore stays at 15.1.6 (its webpack loader is
+  unchanged; @next/mdx 16 remains Wave 4).
+- LINT MIGRATED TO FLAT CONFIG. eslint 10 drops legacy .eslintrc, so .eslintrc.json was replaced by
+  eslint.config.mjs using eslint-config-next 16's native flat exports (eslint-config-next/core-web-vitals
+  and /typescript; no FlatCompat needed). The two custom rules carried over verbatim and the 11 baseline
+  warnings reproduce exactly. The lint script is `eslint src` (matches next lint's old coverage: root has
+  no app/pages/components/lib dirs, so src is the full source set). One required setting: a pinned
+  settings.react.version, because eslint-plugin-react 7.37.5 calls the removed context.getFilename()
+  under eslint 10 when the version is 'detect'.
+- REACT-HOOKS v7 BACKLOG. eslint-config-next 16 ships eslint-plugin-react-hooks v7, whose new rules of
+  React (immutability, purity, set-state-in-effect, static-components) error on 18 pre-existing patterns
+  across 14 widget/lib files, plus 5 now-stale exhaustive-deps disable directives. These are DEMOTED TO
+  WARNINGS (not off, not error) so they surface as a tracked backlog without failing the gate. Fixing the
+  flagged code is deferred to a dedicated react-hooks-fixes PR (see docs/_audit/OPEN_QUESTIONS.md); it is
+  application-logic work and must not ride in a dependency PR.
+- AUTO-EDITED FILES KEPT. Next 16's build rewrote tsconfig.json (jsx preserve to react-jsx, added
+  .next/dev/types to include) and next-env.d.ts (routes reference became an import). Kept, since Next
+  manages these tracked files and reverting churns them on every build.
+- AUDIT UNCHANGED (3 to 3). next 16.2.6 bundles postcss 8.4.31 (< 8.5.10), so the `next` (via postcss)
+  and `postcss` moderates persist; our direct postcss devDep is already 8.5.15 (safe). Clearing them
+  needs an npm `overrides` forcing next's postcss to >=8.5.10, out of scope here. next-mdx-remote (HIGH)
+  remains for Wave 4. All gates green (build via --webpack exported all routes).
+
+**Wave 3b (remaining): tailwindcss (3 to 4)** a real migration (CSS-first `@theme`, breaking utilities).
+Its own PR, visual regression review, rollback plan. react / react-dom are only minors (19.0 to 19.2).
 - three / simplex-noise: no pending bump today, but the plan flags them for hero-specific testing on
   any future bump.
 - **UI/library majors the plan did not name (place here or in a dedicated UI-majors PR):** framer-motion
