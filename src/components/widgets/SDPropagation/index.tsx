@@ -15,34 +15,6 @@ export default function SDPropagation() {
   const rafRef = useRef<number | null>(null);
   const cv = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    const tick = () => {
-      if (running) {
-        tRef.current += 0.016 * 30; // 30× sim speed → 1s real ≈ 30s sim
-        setPosition((p) => {
-          const next = p + (PROPAGATION_MM_PER_MIN / 60) * (0.016 * 30);
-          if (next >= STRIP_LENGTH_MM) {
-            setRunning(false);
-            return 0;
-          }
-          return next;
-        });
-        setTrace((tr) => {
-          const supp = Math.max(0, 1 - Math.exp(-((position - 30) ** 2) / 100));
-          const next = [...tr, { t: tRef.current, x: position, ecogSuppression: supp }];
-          return next.slice(-200);
-        });
-      }
-      drawStrip();
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [running, position]);
-
   function drawStrip() {
     const c = cv.current;
     if (!c) return;
@@ -133,6 +105,34 @@ export default function SDPropagation() {
       ctx.fillText(`Ch ${i + 1}`, padL - 4, yBase + 3);
     }
   }
+
+  useEffect(() => {
+    const tick = () => {
+      if (running) {
+        tRef.current += 0.016 * 30; // 30× sim speed → 1s real ≈ 30s sim
+        setPosition((p) => {
+          const next = p + (PROPAGATION_MM_PER_MIN / 60) * (0.016 * 30);
+          if (next >= STRIP_LENGTH_MM) {
+            setRunning(false);
+            return 0;
+          }
+          return next;
+        });
+        setTrace((tr) => {
+          const supp = Math.max(0, 1 - Math.exp(-((position - 30) ** 2) / 100));
+          const next = [...tr, { t: tRef.current, x: position, ecogSuppression: supp }];
+          return next.slice(-200);
+        });
+      }
+      drawStrip();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [running, position]);
 
   return (
     <WidgetShell

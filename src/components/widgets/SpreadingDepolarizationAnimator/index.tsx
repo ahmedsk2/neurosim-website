@@ -24,36 +24,6 @@ export default function SpreadingDepolarizationAnimator() {
   const tRef = useRef(0);
   const rafRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    const tick = () => {
-      tRef.current += 0.016;
-      setState((prev) => {
-        if (prev.phase === 'idle') return prev;
-        const elapsed = tRef.current - prev.startSec;
-        if (prev.phase === 'priming' && elapsed >= PRIMING_S) {
-          return { phase: 'active', startSec: tRef.current, position: 0 };
-        }
-        if (prev.phase === 'active') {
-          const pos = (elapsed / 60) * SPEED_MM_PER_MIN;
-          if (elapsed >= ACTIVE_S) return { phase: 'recovery', startSec: tRef.current, position: pos };
-          return { ...prev, position: pos };
-        }
-        if (prev.phase === 'recovery' && elapsed >= RECOVERY_S) {
-          return { phase: 'idle', startSec: tRef.current, position: 0 };
-        }
-        return prev;
-      });
-      drawCortical();
-      drawEcog();
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-
   function trigger() {
     setState({ phase: 'priming', startSec: tRef.current, position: 0 });
   }
@@ -158,6 +128,36 @@ export default function SpreadingDepolarizationAnimator() {
       ctx.stroke();
     });
   }
+
+  useEffect(() => {
+    const tick = () => {
+      tRef.current += 0.016;
+      setState((prev) => {
+        if (prev.phase === 'idle') return prev;
+        const elapsed = tRef.current - prev.startSec;
+        if (prev.phase === 'priming' && elapsed >= PRIMING_S) {
+          return { phase: 'active', startSec: tRef.current, position: 0 };
+        }
+        if (prev.phase === 'active') {
+          const pos = (elapsed / 60) * SPEED_MM_PER_MIN;
+          if (elapsed >= ACTIVE_S) return { phase: 'recovery', startSec: tRef.current, position: pos };
+          return { ...prev, position: pos };
+        }
+        if (prev.phase === 'recovery' && elapsed >= RECOVERY_S) {
+          return { phase: 'idle', startSec: tRef.current, position: 0 };
+        }
+        return prev;
+      });
+      drawCortical();
+      drawEcog();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <WidgetShell
