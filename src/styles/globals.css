@@ -275,6 +275,29 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
 .prose-mnm li { margin: 4px 0; color: var(--text); }
 .prose-mnm a { color: var(--teal-light); text-decoration: underline; text-underline-offset: 2px; }
 .prose-mnm a:hover { color: var(--teal); }
+
+/* Heading autolinks (rehype-autolink-headings, behavior: append). A subtle "#"
+   appended to each heading, revealed on heading hover or keyboard focus. The
+   anchor's accessible name comes from its aria-label; the "#" is aria-hidden.
+   scroll-margin-top clears the sticky site header when jumping to an anchor. */
+.prose-mnm :is(h1, h2, h3, h4) { scroll-margin-top: 6rem; }
+.prose-mnm a.heading-anchor {
+  margin-left: 0.4em;
+  padding: 0 0.15em;
+  color: var(--muted);
+  font-weight: 400;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+.prose-mnm a.heading-anchor:hover { color: var(--teal); }
+.prose-mnm :is(h1, h2, h3, h4):hover a.heading-anchor,
+.prose-mnm a.heading-anchor:focus-visible { opacity: 1; }
+.prose-mnm a.heading-anchor:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
 .prose-mnm code {
   font-family: 'JetBrains Mono', 'Consolas', monospace;
   font-size: 12px;

@@ -4,6 +4,8 @@ import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import { headingAutolinkOptions } from '@/lib/mdxRehype';
 import { listContent, listSlugs, loadContent } from '@/lib/content';
 import { mdxComponents } from '@/components/mdx/components';
 import { PageHeader } from '@/components/layout/PageScaffold';
@@ -98,7 +100,7 @@ export default async function FoundationPage({
             options={{
               mdxOptions: {
                 remarkPlugins: [remarkMath, remarkGfm],
-                rehypePlugins: [rehypeKatex, rehypeSlug],
+                rehypePlugins: [rehypeKatex, rehypeSlug, [rehypeAutolinkHeadings, headingAutolinkOptions]],
               },
               // First-party MDX only (never untrusted): blockJS:false re-enables JS
               // expression props like <Quiz questions={[...]} />; blockDangerousJS:true
