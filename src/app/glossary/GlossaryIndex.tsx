@@ -68,7 +68,7 @@ export function GlossaryIndex() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search terms, definitions, related…"
           aria-label="Search the glossary"
-          className="w-full rounded-md border border-line bg-surface-card px-9 py-2.5 text-[14px] text-ink placeholder:text-ink-dim focus:border-brand-teal focus:outline-none focus:ring-1 focus:ring-brand-teal"
+          className="w-full rounded-md border border-line bg-surface-card px-9 py-2.5 text-[14px] text-ink placeholder:text-ink-dim focus:border-brand-teal focus:outline-hidden focus:ring-1 focus:ring-brand-teal"
         />
         {query && (
           <button
@@ -101,7 +101,7 @@ export function GlossaryIndex() {
                   className={cn(
                     'h-7 w-7 rounded-md text-[11px] font-bold transition-colors',
                     active
-                      ? 'bg-surface-card text-ink hover:bg-brand-teal hover:text-surface-darker focus:outline-none focus:ring-2 focus:ring-brand-teal'
+                      ? 'bg-surface-card text-ink hover:bg-brand-teal hover:text-surface-darker focus:outline-hidden focus:ring-2 focus:ring-brand-teal'
                       : 'cursor-not-allowed text-ink-dim/40',
                   )}
                   aria-label={`Jump to ${l}${active ? '' : ', no entries'}`}

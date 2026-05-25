@@ -50,7 +50,7 @@ export function LectureSection({
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
         className={cn(
-          'flex items-center gap-1.5 rounded px-2 py-1 text-[11px] font-bold uppercase tracking-wider',
+          'flex items-center gap-1.5 rounded-sm px-2 py-1 text-[11px] font-bold uppercase tracking-wider',
           'text-brand-purple hover:bg-surface-card',
         )}
         data-no-print
@@ -60,7 +60,7 @@ export function LectureSection({
       </button>
 
       {notesOpen && (
-        <div className="mt-2 rounded border-l-[3px] border-l-brand-purple bg-surface-card p-3 text-[12.5px] leading-[1.65] text-ink whitespace-pre-line">
+        <div className="mt-2 rounded-sm border-l-[3px] border-l-brand-purple bg-surface-card p-3 text-[12.5px] leading-[1.65] text-ink whitespace-pre-line">
           {speakerNotes}
         </div>
       )}

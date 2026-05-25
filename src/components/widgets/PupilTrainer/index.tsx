@@ -87,7 +87,7 @@ export default function PupilTrainer() {
       </div>
 
       <div className={
-        'mb-2.5 rounded-md border-l-[3px] px-3 py-2 text-[12px] leading-[1.5] ' +
+        'mb-2.5 rounded-md border-l-[3px] px-3 py-2 text-[12px] leading-normal ' +
         (asym.significant
           ? 'border-l-status-danger bg-status-danger/10 text-status-dangerText'
           : 'border-l-status-good bg-surface-deeper text-ink/85')
@@ -107,11 +107,11 @@ export default function PupilTrainer() {
               {shining ? 'Stop light' : '▶ Shine light'}
             </Button>
           </div>
-          <p className="mt-3 text-[12.5px] text-ink/85 leading-[1.5]">
+          <p className="mt-3 text-[12.5px] text-ink/85 leading-normal">
             <strong>Description:</strong> {pattern.description}
           </p>
           {pattern.action && (
-            <p className="mt-2 text-[12.5px] text-brand-amber leading-[1.5]">
+            <p className="mt-2 text-[12.5px] text-brand-amber leading-normal">
               <strong>Action:</strong> {pattern.action}
             </p>
           )}
@@ -144,7 +144,7 @@ export default function PupilTrainer() {
               </div>
             </div>
           </div>
-          <p className="mt-3 text-[11.5px] text-ink-muted leading-[1.5]">
+          <p className="mt-3 text-[11.5px] text-ink-muted leading-normal">
             Sedation symmetrically depresses both NPis, but doesn&apos;t cause anisocoria. If you see a
             real L/R difference under sedation, suspect a structural lesion, not the drugs.
           </p>

@@ -66,14 +66,14 @@ export function FoundationsEntry() {
             <li key={c.slug}>
               <Link
                 href={`/foundations/${c.slug}/`}
-                className="group block h-full rounded-md border border-line border-l-2 border-l-brand-teal bg-surface-card p-4 transition-colors hover:border-brand-teal hover:bg-surface-deeper focus:outline-none focus:ring-2 focus:ring-brand-teal"
+                className="group block h-full rounded-md border border-line border-l-2 border-l-brand-teal bg-surface-card p-4 transition-colors hover:border-brand-teal hover:bg-surface-deeper focus:outline-hidden focus:ring-2 focus:ring-brand-teal"
               >
                 <div className="flex items-start gap-3">
                   <Thumbnail
                     kind={thumb.kind}
                     tone={thumb.tone}
                     aspect="1/1"
-                    className="h-14 w-14 flex-shrink-0"
+                    className="h-14 w-14 shrink-0"
                   />
                   <div className="min-w-0 flex-1">
                     <p className="m-0 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-dim">

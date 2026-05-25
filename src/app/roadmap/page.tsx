@@ -258,7 +258,7 @@ export default function RoadmapPage() {
 
             <div className="mt-3 space-y-3">
               {section.items.map((item) => (
-                <Card key={item.title} className="!my-0">
+                <Card key={item.title} className="my-0!">
                   <div className="flex items-start gap-3">
                     <span
                       className={

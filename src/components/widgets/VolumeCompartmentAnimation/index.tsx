@@ -107,7 +107,7 @@ function CompartmentBar({ comps, total }: { comps: Compartments; total: number }
 function Legend({ color, label, v }: { color: string; label: string; v: number }) {
   return (
     <div className="flex items-center gap-2">
-      <span className={`inline-block h-3 w-3 rounded-sm bg-${color}`} aria-hidden />
+      <span className={`inline-block h-3 w-3 rounded-xs bg-${color}`} aria-hidden />
       <span className="text-ink-muted">{label}</span>
       <span className="ml-auto font-mono text-ink">{v.toFixed(0)} mL</span>
     </div>

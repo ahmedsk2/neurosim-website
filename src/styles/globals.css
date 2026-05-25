@@ -1,6 +1,84 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-surface-darker: var(--bg-darker);
+  --color-surface-dark: var(--bg-dark);
+  --color-surface-card: var(--bg-card);
+  --color-surface-deeper: var(--bg-deeper);
+
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+
+  --color-brand-teal: var(--teal);
+  --color-brand-tealLight: var(--teal-light);
+  --color-brand-tealDark: var(--teal-dark);
+  --color-brand-amber: var(--amber);
+  --color-brand-amberLight: var(--amber-light);
+  --color-brand-purple: var(--purple);
+  --color-brand-blue: var(--blue);
+
+  --color-status-good: var(--green);
+  --color-status-warn: var(--amber);
+  --color-status-danger: var(--red-strong);
+  --color-status-dangerText: var(--red);
+
+  --color-ink: var(--text);
+  --color-ink-muted: var(--muted);
+  --color-ink-dim: var(--muted-dark);
+
+  --font-sans: -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: JetBrains Mono, Consolas, monospace;
+
+  --container-page: 1500px;
+
+  --tracking-eyebrow: 0.2em;
+
+  --animate-demo-pulse: demo-pulse 2s ease-out infinite;
+
+  @keyframes demo-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/*
+  Tailwind v4 preflight sets interactive buttons to `cursor: default` (the
+  browser default), whereas v3 used `cursor: pointer`. Restore the v3 pointer
+  cursor so every button on the site keeps it.
+*/
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
 
 /* ---------------------------------------------------------- */
 /* Design tokens, dark-first theme                            */

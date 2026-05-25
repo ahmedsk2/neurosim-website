@@ -144,20 +144,20 @@ export function ModalityGridTeaser() {
             <li key={m.slug}>
               <Link
                 href={`/modalities/${m.slug}/`}
-                className="group flex h-full flex-col rounded-lg border border-line bg-surface-card p-4 transition-colors hover:border-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal"
+                className="group flex h-full flex-col rounded-lg border border-line bg-surface-card p-4 transition-colors hover:border-brand-teal focus:outline-hidden focus:ring-2 focus:ring-brand-teal"
               >
                 <div className="flex items-start gap-3">
                   <Thumbnail
                     kind={thumb.kind}
                     tone={thumb.tone}
                     aspect="1/1"
-                    className="h-12 w-12 flex-shrink-0"
+                    className="h-12 w-12 shrink-0"
                   />
                   <h3 className="m-0 text-[14.5px] font-bold text-ink group-hover:text-brand-tealLight">
                     {m.short}
                   </h3>
                 </div>
-                <p className="m-0 mt-2 flex-grow text-[12.5px] leading-[1.55] text-ink/80">
+                <p className="m-0 mt-2 grow text-[12.5px] leading-[1.55] text-ink/80">
                   {m.summary}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1 text-[10px]">
@@ -219,7 +219,7 @@ function FilterRow<T extends string>({
 function Chip({ color, children }: { color: string; children: React.ReactNode }) {
   return (
     <span
-      className="rounded-full border px-1.5 py-[1px] font-semibold tracking-wide"
+      className="rounded-full border px-1.5 py-px font-semibold tracking-wide"
       style={{ borderColor: color, color }}
     >
       {children}

@@ -34,7 +34,7 @@ export function Definition({
           <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-brand-tealLight mb-1">
             {entry.term}
           </div>
-          <div className="leading-[1.5]">{entry.definition}</div>
+          <div className="leading-normal">{entry.definition}</div>
           <Popover.Arrow className="fill-surface-card" />
         </Popover.Content>
       </Popover.Portal>

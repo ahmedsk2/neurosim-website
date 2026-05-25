@@ -322,7 +322,7 @@ function Legend({ dot, label }: { dot: string; label: string }) {
   return (
     <span className="inline-flex items-center gap-1">
       <span
-        className="inline-block h-[3px] w-2.5 rounded-sm"
+        className="inline-block h-[3px] w-2.5 rounded-xs"
         style={{ background: dot }}
         aria-hidden
       />

@@ -156,7 +156,7 @@ export function EvidenceLibrary() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search title, author, key, journal, year…"
           aria-label="Search the reference library"
-          className="w-full rounded-md border border-line bg-surface-card px-9 py-2.5 text-[14px] text-ink placeholder:text-ink-dim focus:border-brand-teal focus:outline-none focus:ring-1 focus:ring-brand-teal"
+          className="w-full rounded-md border border-line bg-surface-card px-9 py-2.5 text-[14px] text-ink placeholder:text-ink-dim focus:border-brand-teal focus:outline-hidden focus:ring-1 focus:ring-brand-teal"
         />
         {query && (
           <button

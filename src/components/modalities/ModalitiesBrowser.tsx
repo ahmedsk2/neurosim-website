@@ -144,7 +144,7 @@ export function ModalitiesBrowser({ modalities }: { modalities: ModalityMeta[] }
               <button
                 type="button"
                 onClick={clearAll}
-                className="rounded-md border border-line bg-surface-deeper px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em] text-ink hover:border-brand-teal hover:text-brand-tealLight"
+                className="rounded-md border border-line bg-surface-deeper px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-ink hover:border-brand-teal hover:text-brand-tealLight"
               >
                 Clear all ({activeCount})
               </button>
@@ -206,7 +206,7 @@ export function ModalitiesBrowser({ modalities }: { modalities: ModalityMeta[] }
                   {grouped[g].length} modalit{grouped[g].length === 1 ? 'y' : 'ies'}
                 </span>
               </div>
-              <p className="m-0 mb-3 text-[12px] text-ink-dim leading-[1.5]">{GROUP_DESC[g]}</p>
+              <p className="m-0 mb-3 text-[12px] text-ink-dim leading-normal">{GROUP_DESC[g]}</p>
               <ul className="grid gap-3 list-none p-0 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {grouped[g].map((m) => {
                   const thumb = thumbForModality(m);
@@ -219,7 +219,7 @@ export function ModalitiesBrowser({ modalities }: { modalities: ModalityMeta[] }
                               kind={thumb.kind}
                               tone={thumb.tone}
                               aspect="1/1"
-                              className="h-14 w-14 flex-shrink-0"
+                              className="h-14 w-14 shrink-0"
                             />
                             <div className="min-w-0 flex-1">
                               <div className="flex items-start justify-between gap-2">

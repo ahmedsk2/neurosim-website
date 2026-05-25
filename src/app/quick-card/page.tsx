@@ -103,7 +103,7 @@ export default function QuickCardPage() {
 
       <div className="my-3 max-w-none">
         <Card>
-          <ol className="m-0 pl-5 text-[13px] leading-[1.7] !max-w-none">
+          <ol className="m-0 pl-5 text-[13px] leading-[1.7] max-w-none!">
             <li><strong>Tier 0, confirm signal.</strong> Transducer level (foramen of Monro), no damping, clean cardiac waveform. Re-zero. Verify ICP &gt; threshold sustained &gt; 5 min before escalating.</li>
             <li><strong>Tier 1, first-line.</strong> Head-up 30° (neck neutral, no jugular compression), adequate analgesia + sedation, normocapnia (PaCO₂ 35–40 mmHg), normoxia (SpO₂ 94–98%), normothermia (core 36–37 °C, treat fever aggressively), Na⁺ 145–150 mmol/L, glucose 5–10 mmol/L. Drain CSF if EVD in situ.</li>
             <li><strong>Tier 2, hyperosmolar.</strong> <strong>3% NaCl 3–5 mL/kg over 10–20 min</strong> (preferred first-line in most pediatric TBI guidelines) <em>or</em> <strong>mannitol 0.25–1 g/kg over 20–30 min</strong>. Re-dose for ICP &gt; threshold. Ceilings: Na⁺ 155–160 mmol/L (HTS), serum osmolality 320 mOsm/kg or osmolar gap &lt; 20 (mannitol).</li>
@@ -184,8 +184,8 @@ export default function QuickCardPage() {
 
       <div className="my-3 max-w-none">
         <Card>
-          <p className="m-0 text-[13px] mb-2 !max-w-none"><strong>Suspect NCSE if any of:</strong></p>
-          <ul className="m-0 pl-5 text-[13px] !max-w-none">
+          <p className="m-0 text-[13px] mb-2 max-w-none!"><strong>Suspect NCSE if any of:</strong></p>
+          <ul className="m-0 pl-5 text-[13px] max-w-none!">
             <li>Unexplained altered consciousness lasting &gt; 30 min.</li>
             <li>Subtle motor signs: face / hand twitching, gaze deviation, nystagmus, automatisms.</li>
             <li>aEEG bandwidth narrowing without explanation.</li>
@@ -193,8 +193,8 @@ export default function QuickCardPage() {
             <li>Acute ischaemic / haemorrhagic injury with new neurology.</li>
             <li>Post-arrest, encephalitis / autoimmune encephalopathy, severe TBI.</li>
           </ul>
-          <p className="m-0 mt-4 text-[13px] mb-2 !max-w-none"><strong>Pediatric SE pathway (timed from seizure onset):</strong></p>
-          <ol className="m-0 pl-5 text-[13px] !max-w-none">
+          <p className="m-0 mt-4 text-[13px] mb-2 max-w-none!"><strong>Pediatric SE pathway (timed from seizure onset):</strong></p>
+          <ol className="m-0 pl-5 text-[13px] max-w-none!">
             <li><strong>0–5 min · stabilisation.</strong> Airway, breathing, circulation. IV access. Glucose, electrolytes, ABG. Pulse oximetry, end-tidal CO₂. Time the seizure.</li>
             <li><strong>5–20 min · first-line benzodiazepine.</strong> <strong>Midazolam</strong> 0.2 mg/kg IM (max 10 mg) or 0.1 mg/kg IV (max 4 mg per dose). Alternatives: lorazepam 0.1 mg/kg IV (max 4 mg) or diazepam 0.2–0.5 mg/kg IV/PR. May repeat ×1 if seizure persists at 5 min.</li>
             <li><strong>20–40 min · second-line (established SE).</strong> Choose one and load: <strong>levetiracetam 60 mg/kg IV</strong> (max 4500 mg) over 5–15 min, <strong>fosphenytoin 20 mg PE/kg IV</strong> (max 1500 mg PE) at ≤ 150 mg PE/min with cardiac monitoring, or <strong>valproate 40 mg/kg IV</strong> (max 3000 mg) over 10 min. <em>Avoid valproate in known/suspected mitochondrial disease (POLG).</em> ESETT showed all three roughly equivalent at first second-line attempt.</li>
@@ -202,8 +202,8 @@ export default function QuickCardPage() {
             <li><strong>&gt; 24 h refractory or recurrent on weaning · super-refractory SE.</strong> Repeat workup for cause: encephalitis (HSV PCR, autoimmune panel, NMDAR, LGI1, GAD), CNS infection, metabolic, structural (MRI). Add adjuncts: <strong>pyridoxine</strong> trial in young children, <strong>methylprednisolone + IVIG</strong> if autoimmune suspected, <strong>ketogenic diet</strong> (1/3 response in super-refractory pediatric SE), <strong>plasma exchange</strong>, <strong>therapeutic hypothermia 33–34 °C</strong> (research-grade), <strong>inhalational anaesthetic</strong> (last-line, requires ICU-OR setup).</li>
             <li><strong>Wean criteria.</strong> 24 h of seizure freedom on cEEG before reducing infusion. Wean adjuncts first (ketamine), then primary infusion (midazolam) over 12–24 h with cEEG vigilance for breakthrough.</li>
           </ol>
-          <p className="m-0 mt-4 text-[13px] mb-2 !max-w-none"><strong>Critical points:</strong></p>
-          <ul className="m-0 pl-5 text-[12.5px] !max-w-none">
+          <p className="m-0 mt-4 text-[13px] mb-2 max-w-none!"><strong>Critical points:</strong></p>
+          <ul className="m-0 pl-5 text-[12.5px] max-w-none!">
             <li><strong>aEEG cannot diagnose NCSE</strong>, it can flag (envelope narrowing) but full-montage cEEG is the only diagnostic.</li>
             <li><strong>Time-to-cEEG &lt; 60 min</strong> is the pediatric refractoriness target.</li>
             <li><strong>Avoid prolonged propofol infusion in patients &lt; 16 yr</strong>, PRIS risk; midazolam, ketamine, or pentobarbital preferred.</li>

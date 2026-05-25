@@ -37,7 +37,7 @@ export function Hero() {
             <br />
             The second injury takes <span className="text-brand-tealLight">hours</span>.
           </h1>
-          <p className="m-0 mb-7 max-w-prose text-[15px] md:text-[16px] text-ink/85 leading-[1.6]">
+          <p className="m-0 mb-7 max-w-[70ch] text-[15px] md:text-[16px] text-ink/85 leading-[1.6]">
             Multimodal neuromonitoring catches the secondary injury cascade that bedside exam
             misses. Five signal streams, pressure, flow, oxygen, metabolism, electrical activity,
             layered on the same pediatric patient, interpreted together.
@@ -45,13 +45,13 @@ export function Hero() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/foundations/"
-              className="inline-flex items-center gap-2 rounded-md bg-brand-teal px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-surface-darker hover:bg-brand-tealLight focus:outline-none focus:ring-2 focus:ring-brand-tealLight"
+              className="inline-flex items-center gap-2 rounded-md bg-brand-teal px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-surface-darker hover:bg-brand-tealLight focus:outline-hidden focus:ring-2 focus:ring-brand-tealLight"
             >
               Start with foundations <span aria-hidden>→</span>
             </Link>
             <Link
               href="/modalities/"
-              className="inline-flex items-center gap-2 rounded-md border border-brand-tealDark px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-brand-tealLight hover:bg-surface-deeper hover:border-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal"
+              className="inline-flex items-center gap-2 rounded-md border border-brand-tealDark px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-brand-tealLight hover:bg-surface-deeper hover:border-brand-teal focus:outline-hidden focus:ring-2 focus:ring-brand-teal"
             >
               Browse 24 modalities <span aria-hidden>→</span>
             </Link>
