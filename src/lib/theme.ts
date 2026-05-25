@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 export type Theme = 'dark' | 'light';
 
@@ -30,18 +30,18 @@ export function toggleTheme(): Theme {
   return next;
 }
 
+function subscribeTheme(onStoreChange: () => void): () => void {
+  window.addEventListener(EVENT_NAME, onStoreChange);
+  return () => window.removeEventListener(EVENT_NAME, onStoreChange);
+}
+
+// The theme lives in the DOM (the data-theme attribute, set by the no-flash
+// bootstrap script and by setTheme), i.e. an external store, so it is read with
+// useSyncExternalStore. getTheme is SSR-safe (returns 'dark' when there is no
+// document), so it serves as both the client snapshot and the server snapshot,
+// which keeps SSR consistent with the dark default and avoids a hydration mismatch.
 export function useTheme(): Theme {
-  const [t, setT] = useState<Theme>(() => getTheme());
-  useEffect(() => {
-    setT(getTheme());
-    const handler = (e: Event) => {
-      const ce = e as CustomEvent<Theme>;
-      setT(ce.detail ?? getTheme());
-    };
-    window.addEventListener(EVENT_NAME, handler);
-    return () => window.removeEventListener(EVENT_NAME, handler);
-  }, []);
-  return t;
+  return useSyncExternalStore(subscribeTheme, getTheme, getTheme);
 }
 
 export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{var t=localStorage.getItem('${STORAGE_KEY}')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;

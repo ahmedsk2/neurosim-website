@@ -43,6 +43,8 @@ export function LectureTimer() {
   }, [running]);
 
   useEffect(() => {
+    // Stop the timer once it reaches the end. Intentional derived stop in an effect.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (elapsed >= TOTAL_SECONDS) setRunning(false);
   }, [elapsed]);
 

@@ -10,6 +10,10 @@ export function ThemeToggle({ className }: { className?: string }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    // Intentional one-time SSR hydration: the no-flash bootstrap script already set
+    // data-theme before paint; here we sync the toggle's local state and mark
+    // hydrated so the icon and aria-label switch from their SSR default.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setT(getTheme());
     setHydrated(true);
   }, []);

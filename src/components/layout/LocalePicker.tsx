@@ -11,6 +11,10 @@ export function LocalePicker({ className }: { className?: string }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    // Intentional one-time SSR hydration: the no-flash bootstrap script already set
+    // the lang/dir attributes before paint; here we sync the picker's local state
+    // and mark hydrated so the displayed locale switches from the SSR default.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setL(getLocale());
     setHydrated(true);
   }, []);

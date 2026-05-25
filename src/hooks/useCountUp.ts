@@ -32,6 +32,10 @@ export function useCountUp({
       window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reducedMotion) {
+      // Reduced motion: skip the animation and show the final value immediately.
+      // matchMedia is client-only, so this must run in an effect rather than a lazy
+      // initializer; the synchronous set here is intentional.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setValue(target);
       return;
     }
