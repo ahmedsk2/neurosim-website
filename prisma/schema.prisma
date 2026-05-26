@@ -113,6 +113,11 @@ model Finding {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Timestamp of the most recent admin->reviewer notification email. Denormalized convenience
+  // for the list/detail "last notified" display; the authoritative history is the append-only
+  // FindingAudit email_sent rows. null = the reviewer has never been emailed about this finding.
+  lastNotifiedAt DateTime?
+
   comments    FindingComment[]
   audit       FindingAudit[]
   attachments FindingAttachment[]
@@ -162,4 +167,21 @@ model FindingAttachment {
   createdAt    DateTime @default(now())
 
   @@index([findingId])
+}
+
+// Editable email templates for admin->reviewer status notifications (Console-owned, never
+// touched by the content mirror). Seeded with defaults (scripts/seed-email-templates.mjs) so
+// the feature works out of the box; the admin edits the prefilled copy before each send.
+model EmailTemplate {
+  id String @id @default(cuid())
+  // key: a FindingStatus value (the target status this template prefills for) OR the literal
+  // "general" (the standalone/ad-hoc send). Validated by EmailTemplateKey in lib/enums.ts;
+  // @unique so the per-status default lookup is a single findUnique.
+  key       String  @unique
+  label     String // human label shown in the compose-panel picker
+  subject   String // may contain {{placeholders}}; resolved at compose time, not at send time
+  body      String // may contain {{placeholders}}; resolved at compose time, not at send time
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
