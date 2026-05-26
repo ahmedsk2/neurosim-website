@@ -4,6 +4,7 @@ import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import { prisma } from '@/lib/prisma';
 import { requireReviewer } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +29,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const finding = await prisma.finding.findUnique({ where: { id: findingId } });
   if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  // Owner-or-admin: a reviewer can only attach to a finding they authored (the author uploads
+  // right after filing); 404 to not reveal another reviewer's finding.
+  if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
 
   const m = /^data:image\/png;base64,(.+)$/.exec(parsed.data.dataUrl);
   if (!m || !m[1]) return NextResponse.json({ error: 'Expected a PNG data URL' }, { status: 400 });

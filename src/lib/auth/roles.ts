@@ -11,3 +11,12 @@ import { REVIEWER_ROLES } from '@/lib/enums';
 export function isReviewerRole(role: string | null | undefined): boolean {
   return !!role && (REVIEWER_ROLES as readonly string[]).includes(role);
 }
+
+/**
+ * Admin-only gate. Only the 'admin' role gets full triage + status transitions + access to
+ * every finding; validator/implementer/observer are scoped to their own tickets. Enforced
+ * server-side (requireAdmin in apiAuth.ts and the scoped queries), not just in the UI.
+ */
+export function isAdminRole(role: string | null | undefined): boolean {
+  return role === 'admin';
+}

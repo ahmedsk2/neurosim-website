@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { requireReviewer } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +21,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const finding = await prisma.finding.findUnique({ where: { id: findingId } });
   if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  // Owner-or-admin: a reviewer can only comment on a finding they authored (404, do not reveal).
+  if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
 
   const comment = await prisma.$transaction(async (tx) => {
     const c = await tx.findingComment.create({
@@ -39,6 +44,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const { id } = await params;
   const findingId = Number(id);
   if (!Number.isInteger(findingId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
+
+  const finding = await prisma.finding.findUnique({ where: { id: findingId } });
+  if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
 
   const comments = await prisma.findingComment.findMany({
     where: { findingId },

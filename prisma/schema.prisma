@@ -121,6 +121,7 @@ model Finding {
   @@index([status])
   @@index([severity])
   @@index([status, pageId])
+  @@index([authorId]) // reviewer scoping: every non-admin finding query filters by author
 }
 
 model FindingComment {

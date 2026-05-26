@@ -1,15 +1,21 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { requireReviewerPage } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 import { REVIEWED_STATUSES } from '@/lib/enums';
 
 export const dynamic = 'force-dynamic';
 
 export default async function NeedsReverify() {
-  await requireReviewerPage();
+  const me = await requireReviewerPage();
+  const admin = isAdminRole(me.role);
 
   const candidates = await prisma.finding.findMany({
-    where: { status: { in: [...REVIEWED_STATUSES] }, reviewedContentHash: { not: null } },
+    where: {
+      status: { in: [...REVIEWED_STATUSES] },
+      reviewedContentHash: { not: null },
+      ...(admin ? {} : { authorId: me.id }),
+    },
     include: { page: { select: { kind: true, slug: true, contentHash: true } } },
     orderBy: { updatedAt: 'desc' },
   });

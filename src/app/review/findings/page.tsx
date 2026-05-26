@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { requireReviewerPage } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 import { needsReverification } from '@/lib/findings';
 
 export const dynamic = 'force-dynamic';
@@ -10,7 +11,8 @@ export default async function FindingsList({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  await requireReviewerPage();
+  const me = await requireReviewerPage();
+  const admin = isAdminRole(me.role);
   const sp = await searchParams;
   const get = (k: string): string | undefined => (typeof sp[k] === 'string' ? sp[k] : undefined);
   const status = get('status');
@@ -21,6 +23,7 @@ export default async function FindingsList({
 
   const findings = await prisma.finding.findMany({
     where: {
+      ...(admin ? {} : { authorId: me.id }),
       ...(status ? { status } : {}),
       ...(severity ? { severity } : {}),
       ...(kind || slug ? { page: { ...(kind ? { kind } : {}), ...(slug ? { slug } : {}) } } : {}),
@@ -39,12 +42,16 @@ export default async function FindingsList({
 
   return (
     <div>
-      <h1 className="mb-1 text-[15px] font-bold text-[#5eead4]">Findings ({rows.length})</h1>
+      <h1 className="mb-1 text-[15px] font-bold text-[#5eead4]">{admin ? 'Findings' : 'My tickets'} ({rows.length})</h1>
       <p className="mb-3 text-[#94a3b8]">
         {filters || 'all'} {filters && <Link href="/review/findings" className="ml-2 text-[#5eead4] hover:underline">clear</Link>}
       </p>
       {rows.length === 0 ? (
-        <p className="text-[#94a3b8]">No findings. Reviewers file findings from the in-context overlay (Step 3e); this is the triage view.</p>
+        <p className="text-[#94a3b8]">
+          {admin
+            ? 'No findings yet. Reviewers file findings from the in-context + overlay on content pages; this is the full triage of all reviewers.'
+            : 'You have not filed any findings yet. Use the + overlay on a content page to file one.'}
+        </p>
       ) : (
         <table className="w-full border-collapse">
           <thead>

@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth/options';
-import { isReviewerRole } from '@/lib/auth/roles';
+import { isReviewerRole, isAdminRole } from '@/lib/auth/roles';
 
 export interface AuthUser {
   id: string;
@@ -34,4 +34,15 @@ export async function requireReviewerPage(): Promise<AuthUser> {
   const user = await getAuthedReviewer();
   if (!user) redirect('/review/login');
   return user;
+}
+
+/**
+ * API-route gate for admin-only actions (status transitions). 401 if not signed in, 403 if
+ * signed in but not an admin (so a non-admin reviewer cannot transition a finding).
+ */
+export async function requireAdmin(): Promise<AuthResult> {
+  const auth = await requireReviewer();
+  if (!auth.ok) return auth;
+  if (!isAdminRole(auth.user.role)) return { ok: false, status: 403, body: { error: 'Forbidden' } };
+  return auth;
 }

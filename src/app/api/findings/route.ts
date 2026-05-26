@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { requireReviewer } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 import { FindingSeverity, FindingCategory } from '@/lib/enums';
 import { needsReverification } from '@/lib/findings';
 
@@ -82,8 +83,13 @@ export async function GET(req: Request) {
   const severity = sp.get('severity') ?? undefined;
   const needsReverify = sp.get('needsReverify') === 'true';
 
+  // Role scope: admins see all findings; every other reviewer is restricted to the findings
+  // they authored. This filter is server-side and unconditional - a reviewer cannot widen it.
+  const admin = isAdminRole(auth.user.role);
+
   const findings = await prisma.finding.findMany({
     where: {
+      ...(admin ? {} : { authorId: auth.user.id }),
       ...(status ? { status } : {}),
       ...(severity ? { severity } : {}),
       ...(kind || slug ? { page: { ...(kind ? { kind } : {}), ...(slug ? { slug } : {}) } } : {}),
