@@ -136,6 +136,37 @@ async function main() {
     }
   }
 
+  // ---- Phase B: drift reconciliation (console-owned FindingAudit ONLY; never touches
+  // Page/Heading or any Finding field). For reviewed findings (resolved/verified/closed)
+  // whose page contentHash changed since review, append an idempotent drift_detected
+  // audit row (PHASE3_SCHEMA_PROPOSAL.md D.5). No findings yet => no-op.
+  const REVIEWED = ['resolved', 'verified', 'closed'];
+  let driftEventsWritten = 0;
+  const reviewed = await prisma.finding.findMany({
+    where: { status: { in: REVIEWED }, reviewedContentHash: { not: null } },
+    include: { page: { select: { contentHash: true } } },
+  });
+  for (const f of reviewed) {
+    if (f.reviewedContentHash && f.page.contentHash !== f.reviewedContentHash) {
+      const existing = await prisma.findingAudit.findFirst({
+        where: { findingId: f.id, action: 'drift_detected', detail: { contains: f.page.contentHash } },
+      });
+      if (!existing) {
+        await prisma.findingAudit.create({
+          data: {
+            findingId: f.id,
+            actorId: null,
+            action: 'drift_detected',
+            fromStatus: f.status,
+            toStatus: f.status,
+            detail: JSON.stringify({ reviewedContentHash: f.reviewedContentHash, pageContentHash: f.page.contentHash }),
+          },
+        });
+        driftEventsWritten++;
+      }
+    }
+  }
+
   const [pages, headings, findings, comments, audits, attachments, reviewers] = await Promise.all([
     prisma.page.count(),
     prisma.heading.count(),
@@ -151,6 +182,7 @@ async function main() {
       {
         gitSha,
         mirror: { pagesSynced, headingsUpserted, headingsPruned, missing },
+        reconciliation: { driftEventsWritten },
         totals: { pages, headings, findings, comments, audits, attachments, reviewers },
       },
       null,
