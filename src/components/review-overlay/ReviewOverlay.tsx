@@ -6,7 +6,7 @@ import { getSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { isReviewerRole } from '@/lib/auth/roles';
 
-// Lazy-load the heavy composer (form + html2canvas + draw canvas) only when a reviewer
+// Lazy-load the heavy composer (form + capture + draw canvas) only when a reviewer
 // opens it, so it is never in the public content-page bundle's critical path.
 const FindingComposer = dynamic(() => import('./FindingComposer').then((m) => m.FindingComposer), {
   ssr: false,

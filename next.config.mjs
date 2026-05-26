@@ -16,6 +16,9 @@ const nextConfig = {
   images: { unoptimized: true },
   pageExtensions: ['ts', 'tsx'],
   reactStrictMode: true,
+  // Keep Playwright (used by the reviewer-only /api/snapshot screenshot route) out of the
+  // server bundle; it is required from node_modules at runtime, not webpack-bundled.
+  serverExternalPackages: ['@playwright/test', 'playwright', 'playwright-core'],
 };
 
 export default nextConfig;

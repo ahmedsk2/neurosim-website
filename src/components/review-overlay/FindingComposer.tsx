@@ -52,40 +52,77 @@ export function FindingComposer({
   const [suggestedCitation, setSuggestedCitation] = useState('');
   const [snapshot, setSnapshot] = useState<string | null>(null);
   const [capturing, setCapturing] = useState(false);
+  // Briefly hide this overlay panel while grabbing a getDisplayMedia frame, so "Capture my
+  // current view" shows the page (and the reviewer's widget state), not the composer itself.
+  const [hidden, setHidden] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
   const drawRef = useRef<DrawCanvasHandle>(null);
 
-  async function capture() {
+  // OPTION 1 (default): server-side full-page screenshot via headless Chromium (the e2e
+  // Playwright). Headless Chromium renders the canvas/WebGL widgets that html2canvas could
+  // not, so widget-heavy pages capture completely. Captures the page in its DEFAULT state.
+  async function capturePage() {
     setCapturing(true);
     setMsg('');
     try {
-      const html2canvas = (await import('html2canvas')).default;
-      // Defer a frame so the panel has its data-review-overlay markers before capture.
-      await new Promise((r) => requestAnimationFrame(() => r(null)));
-      const canvas = await html2canvas(document.body, {
-        backgroundColor: getComputedStyle(document.body).backgroundColor || '#0b1220',
-        logging: false,
-        useCORS: true,
-        ignoreElements: (el) => el.hasAttribute('data-review-overlay'),
+      const res = await fetch('/api/snapshot/', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ kind, slug }),
       });
-      let target = canvas;
-      const longEdge = Math.max(canvas.width, canvas.height);
-      if (longEdge > 1600) {
-        const scale = 1600 / longEdge;
-        const s = document.createElement('canvas');
-        s.width = Math.round(canvas.width * scale);
-        s.height = Math.round(canvas.height * scale);
-        const ctx = s.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(canvas, 0, 0, s.width, s.height);
-          target = s;
-        }
+      if (!res.ok) {
+        setMsg('Page capture failed. Try "Capture my current view", or submit without an image.');
+        return;
       }
-      setSnapshot(target.toDataURL('image/png'));
+      const data = await res.json();
+      if (typeof data?.dataUrl === 'string') setSnapshot(data.dataUrl);
+      else setMsg('Page capture returned no image. You can still submit.');
     } catch {
-      setMsg('Snapshot failed (canvas/WebGL widgets may not capture). You can still submit.');
+      setMsg('Page capture failed (network). You can still submit.');
     } finally {
+      setCapturing(false);
+    }
+  }
+
+  // OPTION 2: native screen capture of the visible tab as the reviewer currently sees it
+  // (their scroll + exact widget state). Triggers the browser's share-tab prompt each time.
+  async function captureView() {
+    setCapturing(true);
+    setMsg('');
+    let stream: MediaStream | null = null;
+    try {
+      stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      await new Promise<void>((resolve) => {
+        video.onloadedmetadata = () => resolve();
+      });
+      await video.play();
+      // Hide this panel and let the capture stream repaint so the frame shows the page, not
+      // the composer; then grab one frame and restore.
+      setHidden(true);
+      await new Promise((r) => setTimeout(r, 250));
+      const w = video.videoWidth || 1280;
+      const h = video.videoHeight || 720;
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      let dataUrl: string | null = null;
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, w, h);
+        dataUrl = canvas.toDataURL('image/png');
+      }
+      setHidden(false);
+      video.pause();
+      if (dataUrl) setSnapshot(dataUrl);
+      else setMsg('Could not read the captured frame. You can still submit.');
+    } catch {
+      setHidden(false);
+      setMsg('Screen capture was cancelled or unavailable. You can still submit.');
+    } finally {
+      if (stream) stream.getTracks().forEach((t) => t.stop());
       setCapturing(false);
     }
   }
@@ -146,7 +183,11 @@ export function FindingComposer({
   }
 
   return (
-    <div data-review-overlay="" className="fixed inset-0 z-[70] flex justify-end font-mono text-[13px]">
+    <div
+      data-review-overlay=""
+      style={{ visibility: hidden ? 'hidden' : 'visible' }}
+      className="fixed inset-0 z-[70] flex justify-end font-mono text-[13px]"
+    >
       <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden />
       <div className="relative h-full w-[min(560px,100vw)] space-y-3 overflow-y-auto border-l border-[#1e293b] bg-[#081224] p-4 text-[#e2e8f0]">
         <div className="flex items-center justify-between">
@@ -206,14 +247,31 @@ export function FindingComposer({
 
         <div className="border-t border-[#1e293b] pt-3">
           {!snapshot ? (
-            <button
-              type="button"
-              onClick={capture}
-              disabled={capturing}
-              className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
-            >
-              {capturing ? 'Capturing…' : 'Capture page snapshot'}
-            </button>
+            <div className="space-y-2">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={capturePage}
+                  disabled={capturing}
+                  className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
+                >
+                  {capturing ? 'Capturing…' : 'Capture page'}
+                </button>
+                <button
+                  type="button"
+                  onClick={captureView}
+                  disabled={capturing}
+                  className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
+                >
+                  Capture my current view
+                </button>
+              </div>
+              <p className="text-[#64748b]">
+                "Capture page" shoots the full page with widgets rendered (default state).
+                "Capture my current view" grabs this tab exactly as you see it now, including
+                your current widget state (you'll be asked to share the tab).
+              </p>
+            </div>
           ) : (
             <DrawCanvas ref={drawRef} src={snapshot} />
           )}
