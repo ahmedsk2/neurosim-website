@@ -8,7 +8,10 @@ export default defineConfig({
   use: { baseURL: 'http://localhost:3050', trace: 'on-first-retry' },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npx serve out -p 3050 -L',
+    // Phase 3a: the site is a running server now, not a static export. Run
+    // `next build` first (CI does this in the prior step; locally run `npm run
+    // build`), then Playwright starts `next start` against the .next/ build.
+    command: 'npx next start -p 3050',
     url: 'http://localhost:3050',
     timeout: 120_000,
     reuseExistingServer: true,

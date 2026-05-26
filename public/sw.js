@@ -3,8 +3,12 @@
 // - Static assets (_next/static, images): cache-first.
 // - search-index.json: network-first with fallback.
 
-const CACHE = 'mnm-edu-v1';
-const HTML_CACHE = 'mnm-edu-html-v1';
+// Phase 3a: bumped to v2 so static-export-era caches are dropped once the site
+// serves from a Next server. Full auth-aware exclusion (never cache authed/reviewer
+// pages or /api responses) is owed to the overlay step (Phase 3e); there is no auth
+// yet, so every response here is public.
+const CACHE = 'mnm-edu-v2';
+const HTML_CACHE = 'mnm-edu-html-v2';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
