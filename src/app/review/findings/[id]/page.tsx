@@ -9,6 +9,7 @@ import { REVIEWED_STATUSES } from '@/lib/enums';
 import { reviewerTicketLink } from '@/lib/email/templates';
 import { AdminLifecycle } from '../../_components/AdminLifecycle';
 import { CommentForm } from '../../_components/CommentForm';
+import { DeleteFindingButton } from '../../_components/DeleteFindingButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -187,6 +188,10 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
           ))}
         </ul>
         <CommentForm findingId={finding.id} />
+      </div>
+
+      <div className="border-t border-[#1e293b] pt-3">
+        <DeleteFindingButton findingId={finding.id} />
       </div>
     </div>
   );

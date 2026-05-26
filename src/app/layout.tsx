@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   },
   description:
     'An interactive, evidence-anchored educational resource for pediatric multimodal neuromonitoring (MNM).',
+  // Declare the site icon (the existing public/icons/icon.svg) so browsers use it instead of
+  // probing /favicon.ico (which 404s when no icon is declared).
+  icons: { icon: [{ url: '/icons/icon.svg', type: 'image/svg+xml' }] },
   openGraph: {
     type: 'website',
     title: 'MNM-Edu, Pediatric Multimodal Neuromonitoring',
