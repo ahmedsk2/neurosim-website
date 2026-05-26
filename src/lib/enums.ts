@@ -45,7 +45,16 @@ export const AuditAction = z.enum([
   'commented',
   'drift_detected', // system event: a reviewed page's contentHash changed (D.5)
   'reverified', // reviewer re-attested a stale finding against the new contentHash (D.5)
+  'email_sent', // admin sent a notification email to the finding's author (Reviewer.email)
 ]);
+
+/**
+ * EmailTemplate.key: a target FindingStatus value (the template prefilled when the admin
+ * moves a finding into that status) plus the literal "general" for the standalone/ad-hoc
+ * send. Derived from FINDING_STATUSES so a new status cannot drift out of sync.
+ */
+export const EMAIL_TEMPLATE_KEYS = [...FindingStatus.options, 'general'] as const;
+export const EmailTemplateKey = z.enum(EMAIL_TEMPLATE_KEYS);
 
 // Value arrays (derived from the schemas, so there is exactly one definition each).
 export const FINDING_SEVERITIES = FindingSeverity.options;
@@ -59,6 +68,7 @@ export type FindingCategory = z.infer<typeof FindingCategory>;
 export type FindingStatus = z.infer<typeof FindingStatus>;
 export type ReviewerRole = z.infer<typeof ReviewerRole>;
 export type AuditAction = z.infer<typeof AuditAction>;
+export type EmailTemplateKey = z.infer<typeof EmailTemplateKey>;
 
 /**
  * Statuses whose terminal/resolved state is invalidated when the page content changes

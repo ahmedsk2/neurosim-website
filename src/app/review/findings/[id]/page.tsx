@@ -5,10 +5,26 @@ import { requireReviewerPage } from '@/lib/auth/apiAuth';
 import { isAdminRole } from '@/lib/auth/roles';
 import { needsReverification, ALLOWED_TRANSITIONS } from '@/lib/findings';
 import { REVIEWED_STATUSES } from '@/lib/enums';
-import { TransitionControls } from '../../_components/TransitionControls';
+import { reviewerTicketLink } from '@/lib/email/templates';
+import { AdminLifecycle } from '../../_components/AdminLifecycle';
 import { CommentForm } from '../../_components/CommentForm';
 
 export const dynamic = 'force-dynamic';
+
+// Compact one-line summary of an email_sent audit row for the trail (the email body is never stored).
+function emailSummary(detail: string | null): string | null {
+  if (!detail) return null;
+  try {
+    const d = JSON.parse(detail) as { to?: unknown; subject?: unknown; edited?: unknown };
+    if (typeof d.subject === 'string') {
+      const to = typeof d.to === 'string' ? d.to : 'reviewer';
+      return `to ${to}: "${d.subject}"${d.edited ? ' (edited)' : ''}`;
+    }
+  } catch {
+    // ignore malformed detail
+  }
+  return null;
+}
 
 export default async function FindingDetail({ params }: { params: Promise<{ id: string }> }) {
   const me = await requireReviewerPage();
@@ -35,6 +51,25 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
   const stale = needsReverification(finding.status, finding.reviewedContentHash, finding.page.contentHash);
   const targets = [...(ALLOWED_TRANSITIONS[finding.status] ?? [])];
   const reattest = (REVIEWED_STATUSES as readonly string[]).includes(finding.status);
+
+  // Admin-only: active email templates + the placeholder context, built server-side. The
+  // {{link}} base is NEXTAUTH_URL (same source as the snapshot route) and points at the
+  // reviewer's own scoped ticket. Reviewers never receive any of this.
+  const emailTemplates = admin
+    ? await prisma.emailTemplate.findMany({
+        where: { isActive: true },
+        orderBy: { key: 'asc' },
+        select: { key: true, label: true, subject: true, body: true },
+      })
+    : [];
+  const emailCtx = {
+    reviewerName: finding.author.name ?? 'reviewer',
+    ticketTitle: finding.title,
+    page: `${finding.page.kind}/${finding.page.slug}`,
+    status: finding.status,
+    link: reviewerTicketLink(finding.id, (process.env.NEXTAUTH_URL ?? '').trim()),
+  };
+  const recipientLabel = `${finding.author.name ?? 'reviewer'} <${finding.author.email}>`;
 
   return (
     <div className="max-w-3xl space-y-5">
@@ -75,8 +110,21 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
 
       <div className="space-y-2">
         <div className="text-[#94a3b8]">lifecycle</div>
+        {finding.lastNotifiedAt && (
+          <div className="text-[#64748b]">
+            reviewer last notified {finding.lastNotifiedAt.toISOString().slice(0, 16).replace('T', ' ')}
+          </div>
+        )}
         {admin ? (
-          <TransitionControls findingId={finding.id} current={finding.status} targets={targets} reattest={reattest} />
+          <AdminLifecycle
+            findingId={finding.id}
+            current={finding.status}
+            targets={targets}
+            reattest={reattest}
+            templates={emailTemplates}
+            ctx={emailCtx}
+            recipientLabel={recipientLabel}
+          />
         ) : (
           <p className="text-[#64748b]">
             Status is <span className="text-[#e2e8f0]">{finding.status}</span>; status changes are handled by an admin.
@@ -98,15 +146,19 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
       <div>
         <div className="mb-1 text-[#94a3b8]">audit trail (append-only)</div>
         <ul className="space-y-1">
-          {finding.audit.map((a) => (
-            <li key={a.id} className="text-[#94a3b8]">
-              <span className="text-[#64748b]">{a.at.toISOString().slice(0, 19).replace('T', ' ')}</span>{' '}
-              <span className="text-[#e2e8f0]">{a.action}</span>
-              {a.fromStatus && a.toStatus && <> {a.fromStatus} &rarr; {a.toStatus}</>}
-              {' · '}
-              {a.actor?.name ?? 'system'}
-            </li>
-          ))}
+          {finding.audit.map((a) => {
+            const email = a.action === 'email_sent' ? emailSummary(a.detail) : null;
+            return (
+              <li key={a.id} className="text-[#94a3b8]">
+                <span className="text-[#64748b]">{a.at.toISOString().slice(0, 19).replace('T', ' ')}</span>{' '}
+                <span className="text-[#e2e8f0]">{a.action}</span>
+                {a.fromStatus && a.toStatus && <> {a.fromStatus} &rarr; {a.toStatus}</>}
+                {email && <span> {email}</span>}
+                {' · '}
+                {a.actor?.name ?? 'system'}
+              </li>
+            );
+          })}
         </ul>
       </div>
 
