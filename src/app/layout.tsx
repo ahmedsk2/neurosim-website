@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/Footer';
 import { ScrollProgress } from '@/components/layout/ScrollProgress';
 import { BackToTop } from '@/components/layout/BackToTop';
 import { ServiceWorkerRegister } from '@/components/layout/ServiceWorkerRegister';
+import { ReviewOverlay } from '@/components/review-overlay/ReviewOverlay';
 import { THEME_BOOTSTRAP_SCRIPT } from '@/lib/theme';
 
 export const metadata: Metadata = {
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <BackToTop />
         <ServiceWorkerRegister />
+        <ReviewOverlay />
       </body>
     </html>
   );

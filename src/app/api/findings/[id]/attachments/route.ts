@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import path from 'node:path';
+import { promises as fs } from 'node:fs';
 import { prisma } from '@/lib/prisma';
 import { requireReviewer } from '@/lib/auth/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-// Stub for Step C: accept a filePath reference (the real snapshot capture + draw canvas
-// is Step D/E). Stores a FindingAttachment row pointing at a local path.
-const AttachmentBody = z.object({ filePath: z.string().min(1) });
+// Accepts a PNG data URL (the original snapshot or the flattened annotated image),
+// writes it to a Console-managed, gitignored uploads/ folder, and records a
+// FindingAttachment row pointing at the relative path. Local app => server fs write.
+const Body = z.object({
+  variant: z.enum(['original', 'annotated']),
+  dataUrl: z.string().min(1),
+});
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireReviewer();
@@ -17,14 +23,24 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const findingId = Number(id);
   if (!Number.isInteger(findingId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
 
-  const parsed = AttachmentBody.safeParse(await req.json().catch(() => null));
+  const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 
   const finding = await prisma.finding.findUnique({ where: { id: findingId } });
   if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
+  const m = /^data:image\/png;base64,(.+)$/.exec(parsed.data.dataUrl);
+  if (!m || !m[1]) return NextResponse.json({ error: 'Expected a PNG data URL' }, { status: 400 });
+  const buf = Buffer.from(m[1], 'base64');
+
+  const dir = path.join(process.cwd(), 'uploads', 'findings', String(findingId));
+  await fs.mkdir(dir, { recursive: true });
+  const abs = path.join(dir, `${parsed.data.variant}-${Date.now()}.png`);
+  await fs.writeFile(abs, buf);
+  const relPath = path.relative(process.cwd(), abs).split(path.sep).join('/');
+
   const attachment = await prisma.findingAttachment.create({
-    data: { findingId, uploadedById: auth.user.id, filePath: parsed.data.filePath },
+    data: { findingId, uploadedById: auth.user.id, filePath: relPath },
   });
   return NextResponse.json({ attachment }, { status: 201 });
 }
