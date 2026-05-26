@@ -1,0 +1,162 @@
+// Review Console schema (locked proposal: docs/_audit/PHASE3_SCHEMA_PROPOSAL.md, MNM-Edu).
+// Prisma 7 + SQLite (NeuroSim pattern). severity/category/status/role/audit-action are
+// String here (SQLite has no native enum) and validated by lib/enums.ts (Zod). The
+// Postgres flip adds native enum blocks + retypes these columns (proposal Section E).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  // Prisma 7+: url + the better-sqlite3 adapter live in prisma.config.ts
+  // (PrismaBetterSqlite3, file:./prisma/dev.db). Flip provider to "postgresql"
+  // and swap the adapter in prisma.config.ts to go hosted.
+}
+
+// ===== SYNC-OWNED: mirrored from MNM-Edu out/content-versions.json =====
+
+model Page {
+  id           String    @id @default(cuid())
+  kind         String // VERBATIM literal: "foundations" | "modalities" | "integration" (sync join key)
+  slug         String
+  title        String
+  gitSha       String // current synced build SHA
+  contentHash  String // current synced body hash
+  lastSyncedAt DateTime  @default(now())
+  headings     Heading[]
+  findings     Finding[]
+
+  @@unique([kind, slug])
+}
+
+model Heading {
+  id       String @id @default(cuid())
+  page     Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId   String
+  anchorId String // rehype-slug heading id; Finding.sectionAnchor matches this
+  text     String // clean visible heading text (post the emit autolink-strip fix)
+  level    Int // 2..6
+  order    Int // document order within the page
+
+  @@unique([pageId, anchorId])
+}
+
+// ===== CONSOLE-OWNED: authored in the Console; the content mirror never touches these =====
+
+model Reviewer {
+  id                 String   @id @default(cuid())
+  name               String
+  role               String   @default("validator") // role value (Zod-validated)
+  specialty          String?
+  credentials        String?
+  conflictOfInterest String?
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+
+  authoredFindings Finding[]           @relation("FindingAuthor")
+  assignedFindings Finding[]           @relation("FindingAssignee")
+  resolvedFindings Finding[]           @relation("FindingResolver")
+  verifiedFindings Finding[]           @relation("FindingVerifier")
+  comments         FindingComment[]
+  auditEntries     FindingAudit[]
+  attachments      FindingAttachment[]
+}
+
+model Finding {
+  id     Int    @id @default(autoincrement())
+  page   Page   @relation(fields: [pageId], references: [id])
+  pageId String
+
+  // anchor: denormalized snapshot, NOT a Heading FK, so a finding survives heading deletion
+  sectionAnchor       String? // heading anchorId; null = whole-page finding
+  sectionTextSnapshot String? // heading text at file time, for text-based relocation on drift
+  quotedText          String? // exact passage flagged
+
+  // classification (Zod-validated String on SQLite; native enum on Postgres)
+  severity String
+  category String
+  status   String @default("open")
+
+  title             String
+  detail            String // what is wrong and why (the body)
+  suggestedFix      String?
+  suggestedCitation String?
+
+  // version pin
+  filedGitSha         String // page_git_sha when filed (reference)
+  filedContentHash    String // page contentHash WHEN FILED (relevance for open findings)
+  reviewedContentHash String? // page contentHash the current resolved/verified/closed state was
+  // established against; set on each entry into resolved/verified, carried through closed.
+
+  // ownership (kept for additive multi-user; FK to local Reviewer)
+  author       Reviewer  @relation("FindingAuthor", fields: [authorId], references: [id])
+  authorId     String
+  assignedTo   Reviewer? @relation("FindingAssignee", fields: [assignedToId], references: [id])
+  assignedToId String?
+  priority     Int?
+
+  resolutionNote String?
+  resolvedBy     Reviewer? @relation("FindingResolver", fields: [resolvedById], references: [id])
+  resolvedById   String?
+  resolvedAt     DateTime?
+  verifiedBy     Reviewer? @relation("FindingVerifier", fields: [verifiedById], references: [id])
+  verifiedById   String?
+  verifiedAt     DateTime?
+
+  duplicateOf   Finding?  @relation("FindingDuplicate", fields: [duplicateOfId], references: [id])
+  duplicateOfId Int?
+  duplicates    Finding[] @relation("FindingDuplicate")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments    FindingComment[]
+  audit       FindingAudit[]
+  attachments FindingAttachment[]
+
+  @@index([pageId])
+  @@index([status])
+  @@index([severity])
+  @@index([status, pageId])
+}
+
+model FindingComment {
+  id        Int      @id @default(autoincrement())
+  finding   Finding  @relation(fields: [findingId], references: [id], onDelete: Cascade)
+  findingId Int
+  author    Reviewer @relation(fields: [authorId], references: [id])
+  authorId  String
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([findingId])
+}
+
+model FindingAudit {
+  id         Int       @id @default(autoincrement())
+  finding    Finding   @relation(fields: [findingId], references: [id]) // no cascade: history outlives edits
+  findingId  Int
+  // actorId is nullable so SYSTEM events (drift_detected) need no Reviewer; human actions always set it.
+  actor      Reviewer? @relation(fields: [actorId], references: [id])
+  actorId    String?
+  action     String // see lib/enums.ts AUDIT_ACTIONS
+  fromStatus String?
+  toStatus   String?
+  detail     String? // JSON-encoded text on SQLite; native Json on Postgres. APPEND-ONLY in v1.
+  at         DateTime  @default(now())
+
+  @@index([findingId])
+}
+
+model FindingAttachment {
+  id           Int      @id @default(autoincrement())
+  finding      Finding  @relation(fields: [findingId], references: [id], onDelete: Cascade)
+  findingId    Int
+  filePath     String // local filesystem path (no object storage locally)
+  uploadedBy   Reviewer @relation(fields: [uploadedById], references: [id])
+  uploadedById String
+  createdAt    DateTime @default(now())
+
+  @@index([findingId])
+}
