@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { requireReviewerPage } from '@/lib/auth/apiAuth';
 import { isAdminRole } from '@/lib/auth/roles';
@@ -62,12 +63,19 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
         select: { key: true, label: true, subject: true, body: true },
       })
     : [];
+  // Build the {{link}} base from the CURRENT request host (x-forwarded-* behind the tunnel) so
+  // the reviewer link matches the domain the admin opened (e.g. web.towardpcc.com), not a fixed
+  // NEXTAUTH_URL. Falls back to the Host header, then NEXTAUTH_URL.
+  const hdrs = await headers();
+  const proto = hdrs.get('x-forwarded-proto') ?? 'http';
+  const hostHeader = hdrs.get('x-forwarded-host') ?? hdrs.get('host') ?? '';
+  const linkBase = hostHeader ? `${proto}://${hostHeader}` : (process.env.NEXTAUTH_URL ?? '').trim();
   const emailCtx = {
     reviewerName: finding.author.name ?? 'reviewer',
     ticketTitle: finding.title,
     page: `${finding.page.kind}/${finding.page.slug}`,
     status: finding.status,
-    link: reviewerTicketLink(finding.id, (process.env.NEXTAUTH_URL ?? '').trim()),
+    link: reviewerTicketLink(finding.id, linkBase),
   };
   const recipientLabel = `${finding.author.name ?? 'reviewer'} <${finding.author.email}>`;
 
@@ -134,12 +142,18 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
 
       {finding.attachments.length > 0 && (
         <div>
-          <div className="text-[#94a3b8]">attachments</div>
-          <ul className="list-disc pl-5 text-[#cbd5e1]">
-            {finding.attachments.map((a) => (
-              <li key={a.id}>{a.filePath}</li>
-            ))}
-          </ul>
+          <div className="mb-1 text-[#94a3b8]">attachments ({finding.attachments.length})</div>
+          <div className="flex flex-wrap gap-2">
+            {finding.attachments.map((a) => {
+              const src = `/api/findings/${finding.id}/attachments/${a.id}/`;
+              return (
+                <a key={a.id} href={src} target="_blank" rel="noreferrer" title={a.filePath.split('/').pop() ?? 'attachment'}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- auth-gated image; the next/image optimizer would refetch without the session cookie */}
+                  <img src={src} alt="finding attachment" className="h-28 w-auto rounded border border-[#1e293b] hover:border-[#5eead4]" />
+                </a>
+              );
+            })}
+          </div>
         </div>
       )}
 

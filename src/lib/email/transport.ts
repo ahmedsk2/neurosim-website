@@ -1,53 +1,68 @@
 import nodemailer, { type Transporter } from 'nodemailer';
+import { prisma } from '@/lib/prisma';
 
 /**
- * Lazy, env-configured SMTP transport. This is the only piece of the Console that reaches
- * outside the PC (to a mail server), so the account lives entirely in env and is never
- * committed. If SMTP_HOST or SMTP_FROM is missing the transport reports
- * { configured: false } and the send service surfaces that gracefully (it never throws at
- * import time), so the rest of the Console keeps working when email is not set up.
+ * SMTP transport, resolved per send from the admin-editable SmtpSetting row (id="default")
+ * merged over the SMTP_ env vars: a non-empty DB field overrides env, a blank field falls back
+ * to env. There is intentionally NO cache, so saving settings in the Review Console takes
+ * effect on the next send with no server restart. This is the only piece of the Console that
+ * reaches outside the PC; when neither source supplies a host + from it reports
+ * { configured: false } and the send service surfaces that gracefully (never throws).
  */
 export type TransportResult =
   | { configured: true; transporter: Transporter; from: string }
   | { configured: false; reason: string };
 
-let cached: TransportResult | null = null;
-
-function build(): TransportResult {
-  const host = process.env.SMTP_HOST?.trim();
-  const from = process.env.SMTP_FROM?.trim();
-  if (!host || !from) {
-    return {
-      configured: false,
-      reason:
-        'SMTP is not configured. Set SMTP_HOST and SMTP_FROM (and SMTP_USER/SMTP_PASS if the server requires auth) in .env to enable reviewer emails.',
-    };
-  }
-  const portRaw = Number(process.env.SMTP_PORT ?? '587');
-  const port = Number.isFinite(portRaw) ? portRaw : 587;
-  const secure = process.env.SMTP_SECURE === 'true'; // true => implicit TLS (465); false => STARTTLS (587)
-  const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASS;
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    ...(user ? { auth: { user, pass } } : {}),
-  });
-  return { configured: true, transporter, from };
+export interface ResolvedSmtpConfig {
+  host?: string;
+  port: number;
+  secure: boolean;
+  user?: string;
+  pass?: string;
+  from?: string;
 }
 
-/** Returns the cached transport result, building it from env on first use. */
-export function getTransport(): TransportResult {
-  if (cached === null) cached = build();
-  return cached;
-}
+let testOverride: TransportResult | null = null;
 
 /**
- * Test seam: override the cached transport (e.g. inject a nodemailer jsonTransport so unit
- * tests send no real mail) or pass null to clear it and force a rebuild from env. Not used in
+ * Test seam: override what getTransport() returns (e.g. inject a nodemailer jsonTransport so
+ * unit tests send no real mail, or a not-configured result). Pass null to clear. Not used in
  * application code.
  */
 export function __setTransportForTests(result: TransportResult | null): void {
-  cached = result;
+  testOverride = result;
+}
+
+/** DB row (id="default") merged over env, per field. DB wins when non-empty, else env. */
+export async function loadSmtpConfig(): Promise<ResolvedSmtpConfig> {
+  const row = await prisma.smtpSetting.findUnique({ where: { id: 'default' } }).catch(() => null);
+  const envPort = Number(process.env.SMTP_PORT ?? '');
+  return {
+    host: row?.host?.trim() || process.env.SMTP_HOST?.trim() || undefined,
+    port: row?.port ?? (Number.isFinite(envPort) && envPort > 0 ? envPort : 587),
+    secure: row?.secure ?? process.env.SMTP_SECURE === 'true',
+    user: row?.user?.trim() || process.env.SMTP_USER?.trim() || undefined,
+    pass: row?.pass || process.env.SMTP_PASS || undefined,
+    from: row?.from?.trim() || process.env.SMTP_FROM?.trim() || undefined,
+  };
+}
+
+/** Build the transport from the resolved config, or report not-configured. */
+export async function getTransport(): Promise<TransportResult> {
+  if (testOverride) return testOverride;
+  const cfg = await loadSmtpConfig();
+  if (!cfg.host || !cfg.from) {
+    return {
+      configured: false,
+      reason:
+        'SMTP is not configured. Set the host and from address in Review Console settings (/review/settings) or via SMTP_HOST/SMTP_FROM in .env to enable reviewer emails.',
+    };
+  }
+  const transporter = nodemailer.createTransport({
+    host: cfg.host,
+    port: cfg.port,
+    secure: cfg.secure,
+    ...(cfg.user ? { auth: { user: cfg.user, pass: cfg.pass } } : {}),
+  });
+  return { configured: true, transporter, from: cfg.from };
 }

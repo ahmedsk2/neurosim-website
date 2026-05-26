@@ -1,11 +1,18 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/options';
+import { isAdminRole } from '@/lib/auth/roles';
 import { ReviewProviders } from './providers';
 import { SignOutButton } from './_components/SignOutButton';
 
 // Utilitarian internal-tool chrome (not the MNM-Edu design system). Renders inside the
 // root layout's <main>; the root layout is untouched so public content stays identical.
-export default function ReviewLayout({ children }: { children: ReactNode }) {
+export default async function ReviewLayout({ children }: { children: ReactNode }) {
+  // Read the role without redirecting (this layout also wraps /review/login, which must stay
+  // reachable while signed out). The Settings link is admin-only; the page itself also gates.
+  const session = await getServerSession(authOptions);
+  const admin = isAdminRole(session?.user?.role);
   return (
     <ReviewProviders>
       <div className="min-h-[60vh] font-mono text-[13px] text-[#e2e8f0]">
@@ -14,6 +21,7 @@ export default function ReviewLayout({ children }: { children: ReactNode }) {
           <Link href="/review" className="hover:underline">Pages</Link>
           <Link href="/review/findings" className="hover:underline">Findings</Link>
           <Link href="/review/needs-reverification" className="hover:underline">Needs re-verify</Link>
+          {admin && <Link href="/review/settings" className="hover:underline">Settings</Link>}
           <span className="ml-auto">
             <SignOutButton />
           </span>

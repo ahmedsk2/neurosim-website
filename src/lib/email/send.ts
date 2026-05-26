@@ -23,7 +23,7 @@ export type SendFindingEmailResult = { ok: true } | { ok: false; status: number;
  * surfaces the reason to the caller, writes NO audit row, and never touches the finding status.
  */
 export async function sendFindingEmail(input: SendFindingEmailInput): Promise<SendFindingEmailResult> {
-  const transport = getTransport();
+  const transport = await getTransport();
   if (!transport.configured) return { ok: false, status: 503, error: transport.reason };
 
   const finding = await prisma.finding.findUnique({

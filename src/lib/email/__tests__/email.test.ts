@@ -2,20 +2,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nodemailer, { type Transporter } from 'nodemailer';
 import { resolvePlaceholders, renderTemplate, reviewerTicketLink, type TemplateContext } from '../templates';
-import { getTransport, __setTransportForTests, type TransportResult } from '../transport';
+import { getTransport, loadSmtpConfig, __setTransportForTests, type TransportResult } from '../transport';
 
-// Mock the Prisma singleton so sendFindingEmail can be unit-tested with no real DB. vi.hoisted
+// Mock the Prisma singleton so the email lib can be unit-tested with no real DB. vi.hoisted
 // gives the spies to the hoisted vi.mock factory.
 const db = vi.hoisted(() => ({
   findUnique: vi.fn(),
   auditCreate: vi.fn(),
   findingUpdate: vi.fn(),
+  smtpFindUnique: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     finding: { findUnique: db.findUnique, update: db.findingUpdate },
     findingAudit: { create: db.auditCreate },
+    smtpSetting: { findUnique: db.smtpFindUnique },
     $transaction: async (cb: (tx: unknown) => unknown) =>
       cb({ finding: { update: db.findingUpdate }, findingAudit: { create: db.auditCreate } }),
   },
@@ -59,28 +61,50 @@ describe('template placeholder resolution', () => {
   });
 });
 
-describe('transport configuration', () => {
-  const saved = { host: process.env.SMTP_HOST, from: process.env.SMTP_FROM };
+describe('transport configuration (DB row over env)', () => {
+  const saved = { host: process.env.SMTP_HOST, from: process.env.SMTP_FROM, port: process.env.SMTP_PORT };
+  beforeEach(() => db.smtpFindUnique.mockResolvedValue(null)); // default: no DB row -> env only
   afterEach(() => {
     process.env.SMTP_HOST = saved.host;
     process.env.SMTP_FROM = saved.from;
+    process.env.SMTP_PORT = saved.port;
     __setTransportForTests(null);
   });
 
-  it('reports not-configured when SMTP_HOST / SMTP_FROM are unset', () => {
+  it('reports not-configured when neither the DB row nor env supply host/from', async () => {
     delete process.env.SMTP_HOST;
     delete process.env.SMTP_FROM;
-    __setTransportForTests(null); // force a rebuild from env
-    const t = getTransport();
+    __setTransportForTests(null);
+    const t = await getTransport();
     expect(t.configured).toBe(false);
     if (!t.configured) expect(t.reason).toMatch(/not configured/i);
   });
 
-  it('reports configured when SMTP_HOST + SMTP_FROM are set', () => {
+  it('reports configured when env supplies host + from (no DB row)', async () => {
     process.env.SMTP_HOST = 'smtp.example';
     process.env.SMTP_FROM = 'noreply@example';
     __setTransportForTests(null);
-    expect(getTransport().configured).toBe(true);
+    expect((await getTransport()).configured).toBe(true);
+  });
+
+  it('loadSmtpConfig: a non-empty DB field overrides env; a blank DB field falls back to env', async () => {
+    process.env.SMTP_HOST = 'env.example';
+    process.env.SMTP_FROM = 'env@example';
+    process.env.SMTP_PORT = '25';
+    db.smtpFindUnique.mockResolvedValue({
+      host: 'db.example',
+      port: 2525,
+      secure: true,
+      user: 'dbuser',
+      pass: 'dbpass',
+      from: null, // blank -> env fallback
+    });
+    const cfg = await loadSmtpConfig();
+    expect(cfg.host).toBe('db.example');
+    expect(cfg.port).toBe(2525);
+    expect(cfg.secure).toBe(true);
+    expect(cfg.user).toBe('dbuser');
+    expect(cfg.from).toBe('env@example');
   });
 });
 
