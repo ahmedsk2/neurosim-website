@@ -26,6 +26,7 @@ export async function POST() {
       text: 'This is a test message from the MNM-Edu Review Console. If you received it, SMTP is configured correctly.',
     });
   } catch (err) {
+    console.error('[settings/smtp/test] send failed:', err instanceof Error ? (err.stack ?? err.message) : err);
     return NextResponse.json({ error: err instanceof Error ? err.message : 'SMTP send failed' }, { status: 502 });
   }
   return NextResponse.json({ ok: true, to });

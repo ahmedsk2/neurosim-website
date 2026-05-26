@@ -44,6 +44,7 @@ export async function sendFindingEmail(input: SendFindingEmailInput): Promise<Se
     });
   } catch (err) {
     // Surface the real SMTP error to the caller; write no audit row, leave status untouched.
+    console.error('[email/send] SMTP send failed:', err instanceof Error ? (err.stack ?? err.message) : err);
     return { ok: false, status: 502, error: err instanceof Error ? err.message : 'SMTP send failed' };
   }
 

@@ -62,6 +62,12 @@ export async function getTransport(): Promise<TransportResult> {
     host: cfg.host,
     port: cfg.port,
     secure: cfg.secure,
+    // Fail fast instead of hanging: an unreachable host or a blocked port would otherwise
+    // stall the request until the Cloudflare tunnel times out (502). With these the send
+    // rejects in ~12s and the real reason (auth rejected, connection timeout, ...) is surfaced.
+    connectionTimeout: 12_000,
+    greetingTimeout: 12_000,
+    socketTimeout: 20_000,
     ...(cfg.user ? { auth: { user: cfg.user, pass: cfg.pass } } : {}),
   });
   return { configured: true, transporter, from: cfg.from };
