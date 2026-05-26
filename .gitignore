@@ -17,3 +17,9 @@ test-results/
 *.tsbuildinfo
 .claude/
 modalities-for-review.md
+
+# Prisma local SQLite DB (schema + migrations ARE committed; the DB is NOT)
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.db
+prisma/*.db-*
