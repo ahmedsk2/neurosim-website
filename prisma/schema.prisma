@@ -47,6 +47,8 @@ model Heading {
 model Reviewer {
   id                 String   @id @default(cuid())
   name               String
+  email              String   @unique // login identity (NextAuth Credentials; no public signup)
+  passwordHash       String // bcrypt hash; a Reviewer IS the login user (JWT sessions, no adapter tables)
   role               String   @default("validator") // role value (Zod-validated)
   specialty          String?
   credentials        String?
