@@ -180,7 +180,7 @@ export function DrawCanvas({
   function onMove(e: React.PointerEvent<HTMLCanvasElement>) {
     if (panRef.current) {
       const pr = panRef.current;
-      setView((v) => ({ ...v, ox: pr.ox + (e.nativeEvent.offsetX - pr.sx), oy: pr.oy + (e.nativeEvent.offsetY - pr.sy) }));
+      setView((v) => clampView({ ...v, ox: pr.ox + (e.nativeEvent.offsetX - pr.sx), oy: pr.oy + (e.nativeEvent.offsetY - pr.sy) }));
       return;
     }
     const d = draftRef.current;
@@ -201,21 +201,34 @@ export function DrawCanvas({
     if (d) setOps((o) => [...o, d]);
   }
 
+  // Keep the image positioned sensibly: centered when it fits the viewport, otherwise clamped
+  // so it cannot be panned/scrolled out of view.
+  function clampView(v: View): View {
+    const vp = viewportSize();
+    const imgW = natural.w * v.scale;
+    const imgH = natural.h * v.scale;
+    const ox = imgW <= vp.w ? (vp.w - imgW) / 2 : Math.min(0, Math.max(vp.w - imgW, v.ox));
+    const oy = imgH <= vp.h ? (vp.h - imgH) / 2 : Math.min(0, Math.max(vp.h - imgH, v.oy));
+    return { scale: v.scale, ox, oy };
+  }
+
   function zoomAt(factor: number, cx: number, cy: number) {
     setView((v) => {
       const ns = Math.max(0.05, Math.min(8, v.scale * factor));
       const ix = (cx - v.ox) / v.scale;
       const iy = (cy - v.oy) / v.scale;
-      return { scale: ns, ox: cx - ix * ns, oy: cy - iy * ns };
+      return clampView({ scale: ns, ox: cx - ix * ns, oy: cy - iy * ns });
     });
   }
 
+  // Wheel SCROLLS (pans) the image; zooming is on the zoom buttons. For tall captures this
+  // scrolls through the page, clamped so it cannot be scrolled out of view.
   function onWheel(e: React.WheelEvent<HTMLCanvasElement>) {
-    zoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    setView((v) => clampView({ ...v, ox: v.ox - e.nativeEvent.deltaX, oy: v.oy - e.nativeEvent.deltaY }));
   }
 
   function fitWidth() {
-    setView({ scale: viewportSize().w / natural.w, ox: 0, oy: 0 });
+    setView(clampView({ scale: viewportSize().w / natural.w, ox: 0, oy: 0 }));
   }
 
   // Flatten annotations onto the FULL-resolution image (render source 1:1, replay ops in
@@ -303,7 +316,7 @@ export function DrawCanvas({
         />
       </div>
       <p className="text-[#64748b]">
-        Pick the "pan" tool to move around; use the wheel or zoom buttons to zoom. "Done" flattens your annotations onto the full-resolution image.
+        Scroll (or use the "pan" tool) to move around; use the zoom buttons to zoom. "Done" flattens your annotations onto the full-resolution image.
       </p>
     </div>
   );

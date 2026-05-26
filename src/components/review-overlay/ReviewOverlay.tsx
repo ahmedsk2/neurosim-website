@@ -74,7 +74,7 @@ export function ReviewOverlay() {
         onClick={() => setOpen(true)}
         aria-label="File a review finding"
         title="File a review finding"
-        className="fixed bottom-6 right-6 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#0d9488] text-2xl font-bold text-white shadow-2xl hover:bg-[#14b8a6]"
+        className="fixed bottom-24 right-6 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-[#0d9488] text-2xl font-bold text-white shadow-2xl hover:bg-[#14b8a6]"
       >
         <span aria-hidden>+</span>
       </button>
