@@ -17,6 +17,20 @@ const Body = z.object({
   slug: z.string().min(1).max(128),
 });
 
+// The screenshot target's scheme+host+port come from the configured LOCAL base (NEXTAUTH_URL),
+// NOT from req.url. Behind the Cloudflare tunnel req.url is https://localhost:3041 (the proxy
+// sets x-forwarded-proto: https) but the server only speaks http on 3041, so navigating to the
+// request's own origin throws net::ERR_SSL_PROTOCOL_ERROR. Using NEXTAUTH_URL makes the server
+// screenshot itself over local http and bypass the tunnel.
+function localBase(req: Request): string {
+  const env = process.env.NEXTAUTH_URL?.trim();
+  if (env) return env.replace(/\/+$/, '');
+  // Fallback (NEXTAUTH_URL unset): same host:port as the request but forced to http, so the
+  // scheme is never inherited from req.url's (possibly https) value.
+  const port = new URL(req.url).port || process.env.PORT || '3000';
+  return `http://localhost:${port}`;
+}
+
 export async function POST(req: Request) {
   const auth = await requireReviewer();
   if (!auth.ok) return NextResponse.json(auth.body, { status: auth.status });
@@ -25,9 +39,8 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
   const { kind, slug } = parsed.data;
 
-  // Hit the same running server via this request's own origin (localhost in local use).
-  const origin = new URL(req.url).origin;
-  const target = `${origin}/${encodeURIComponent(kind)}/${encodeURIComponent(slug)}/`;
+  const target = `${localBase(req)}/${encodeURIComponent(kind)}/${encodeURIComponent(slug)}/`;
+  console.log('[api/snapshot] navigating to %s', target);
 
   let browser: import('@playwright/test').Browser | null = null;
   try {
@@ -42,7 +55,10 @@ export async function POST(req: Request) {
     await page.waitForTimeout(1_800);
     const buf = await page.screenshot({ fullPage: true, type: 'png' });
     return NextResponse.json({ dataUrl: `data:image/png;base64,${buf.toString('base64')}` });
-  } catch {
+  } catch (err) {
+    // Log the real cause server-side (a bare catch previously hid the ERR_SSL_PROTOCOL_ERROR);
+    // the client still gets a graceful 500.
+    console.error('[api/snapshot] capture failed for %s\n', target, err instanceof Error ? (err.stack ?? err.message) : err);
     return NextResponse.json({ error: 'Capture failed' }, { status: 500 });
   } finally {
     if (browser) await browser.close().catch(() => {});

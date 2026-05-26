@@ -55,6 +55,9 @@ export function FindingComposer({
   // Briefly hide this overlay panel while grabbing a getDisplayMedia frame, so "Capture my
   // current view" shows the page (and the reviewer's widget state), not the composer itself.
   const [hidden, setHidden] = useState(false);
+  // Two-step "Capture my current view": show a one-line instruction before the browser's
+  // share-tab prompt, so reviewers know to pick "This Tab".
+  const [viewPrompt, setViewPrompt] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
   const drawRef = useRef<DrawCanvasHandle>(null);
@@ -92,7 +95,13 @@ export function FindingComposer({
     setMsg('');
     let stream: MediaStream | null = null;
     try {
-      stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+      // preferCurrentTab makes the current tab the default/highlighted choice in the picker.
+      const displayOpts = {
+        video: true,
+        audio: false,
+        preferCurrentTab: true,
+      } satisfies DisplayMediaStreamOptions & { preferCurrentTab?: boolean };
+      stream = await navigator.mediaDevices.getDisplayMedia(displayOpts);
       const video = document.createElement('video');
       video.srcObject = stream;
       await new Promise<void>((resolve) => {
@@ -246,7 +255,32 @@ export function FindingComposer({
         </label>
 
         <div className="border-t border-[#1e293b] pt-3">
-          {!snapshot ? (
+          {snapshot ? (
+            <DrawCanvas ref={drawRef} src={snapshot} />
+          ) : viewPrompt ? (
+            <div className="space-y-2 rounded border border-[#334155] bg-[#0b1220] p-3">
+              <p className="text-[#e2e8f0]">
+                Next, your browser will ask what to share. Choose{' '}
+                <b className="text-[#5eead4]">This Tab</b>, then click <b className="text-[#5eead4]">Share</b>.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setViewPrompt(false);
+                    captureView();
+                  }}
+                  disabled={capturing}
+                  className="rounded bg-[#0d9488] px-3 py-1.5 font-bold text-white hover:bg-[#14b8a6] disabled:opacity-50"
+                >
+                  {capturing ? 'Capturing…' : 'Continue'}
+                </button>
+                <button type="button" onClick={() => setViewPrompt(false)} className="text-[#94a3b8] hover:text-white">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
                 <button
@@ -259,7 +293,7 @@ export function FindingComposer({
                 </button>
                 <button
                   type="button"
-                  onClick={captureView}
+                  onClick={() => setViewPrompt(true)}
                   disabled={capturing}
                   className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
                 >
@@ -269,11 +303,9 @@ export function FindingComposer({
               <p className="text-[#64748b]">
                 "Capture page" shoots the full page with widgets rendered (default state).
                 "Capture my current view" grabs this tab exactly as you see it now, including
-                your current widget state (you'll be asked to share the tab).
+                your current widget state.
               </p>
             </div>
-          ) : (
-            <DrawCanvas ref={drawRef} src={snapshot} />
           )}
         </div>
 
