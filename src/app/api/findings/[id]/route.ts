@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { requireReviewer } from '@/lib/auth/apiAuth';
+import { requireAdmin } from '@/lib/auth/apiAuth';
 import { FindingStatus } from '@/lib/enums';
 import { canTransition, isReattest, stampsReviewedHash } from '@/lib/findings';
 
@@ -18,7 +18,9 @@ const PatchBody = z.object({
 // stamps reviewedContentHash on entry to resolved/verified/closed, and writes an
 // append-only FindingAudit row (status_change or reverified).
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const auth = await requireReviewer();
+  // Status transitions are ADMIN-ONLY: a non-admin reviewer gets 403 here, so "reviewers
+  // cannot change status" holds even against a hand-crafted PATCH (not just a hidden button).
+  const auth = await requireAdmin();
   if (!auth.ok) return NextResponse.json(auth.body, { status: auth.status });
 
   const { id } = await params;

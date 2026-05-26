@@ -1,16 +1,22 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { requireReviewerPage } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 import { needsReverification } from '@/lib/findings';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ReviewPageList() {
-  await requireReviewerPage();
+  const me = await requireReviewerPage();
+  const admin = isAdminRole(me.role);
 
+  // Per-page finding counts: admins see all findings; reviewers see only the ones they
+  // authored (the included relation is filtered server-side).
   const pages = await prisma.page.findMany({
     orderBy: [{ kind: 'asc' }, { slug: 'asc' }],
-    include: { findings: { select: { status: true, reviewedContentHash: true } } },
+    include: {
+      findings: { where: admin ? {} : { authorId: me.id }, select: { status: true, reviewedContentHash: true } },
+    },
   });
 
   const byKind: Record<string, number> = {};
@@ -24,6 +30,7 @@ export default async function ReviewPageList() {
           .map(([k, n]) => `${k} ${n}`)
           .join('  ·  ')}
       </p>
+      {!admin && <p className="mb-3 text-[#64748b]">Finding counts shown are your own tickets.</p>}
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-[#1e293b] text-left text-[#94a3b8]">

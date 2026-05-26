@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireReviewerPage } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 import { needsReverification, ALLOWED_TRANSITIONS } from '@/lib/findings';
 import { REVIEWED_STATUSES } from '@/lib/enums';
 import { TransitionControls } from '../../_components/TransitionControls';
@@ -10,7 +11,8 @@ import { CommentForm } from '../../_components/CommentForm';
 export const dynamic = 'force-dynamic';
 
 export default async function FindingDetail({ params }: { params: Promise<{ id: string }> }) {
-  await requireReviewerPage();
+  const me = await requireReviewerPage();
+  const admin = isAdminRole(me.role);
   const { id } = await params;
   const findingId = Number(id);
   if (!Number.isInteger(findingId)) notFound();
@@ -26,6 +28,9 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
     },
   });
   if (!finding) notFound();
+  // A reviewer may only open a finding they authored; a deep link to another reviewer's id
+  // returns 404 (scoped at the data layer, not just hidden nav). Admins may open any.
+  if (!admin && finding.authorId !== me.id) notFound();
 
   const stale = needsReverification(finding.status, finding.reviewedContentHash, finding.page.contentHash);
   const targets = [...(ALLOWED_TRANSITIONS[finding.status] ?? [])];
@@ -70,7 +75,13 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
 
       <div className="space-y-2">
         <div className="text-[#94a3b8]">lifecycle</div>
-        <TransitionControls findingId={finding.id} current={finding.status} targets={targets} reattest={reattest} />
+        {admin ? (
+          <TransitionControls findingId={finding.id} current={finding.status} targets={targets} reattest={reattest} />
+        ) : (
+          <p className="text-[#64748b]">
+            Status is <span className="text-[#e2e8f0]">{finding.status}</span>; status changes are handled by an admin.
+          </p>
+        )}
       </div>
 
       {finding.attachments.length > 0 && (
