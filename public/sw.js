@@ -1,5 +1,5 @@
 // MNM-Edu service worker — minimal cache strategy.
-// - HTML pages: stale-while-revalidate (works offline once visited).
+// - HTML pages: network-first (fresh on every load; falls back to cache offline).
 // - Static assets (_next/static, images): cache-first.
 // - search-index.json: network-first with fallback.
 
@@ -7,9 +7,9 @@
 // handler early-return). HTML caching is scoped to public content only; because the
 // reviewer overlay is client-only (renders null at SSR and for anonymous), the cached
 // page HTML carries no authed/overlay variant and cannot leak to another session.
-// Bumped to v3 so older (v1/v2) caches are evicted on activate.
-const CACHE = 'mnm-edu-v3';
-const HTML_CACHE = 'mnm-edu-html-v3';
+// Bumped to v4 so older (v1/v2/v3) caches are evicted on activate.
+const CACHE = 'mnm-edu-v4';
+const HTML_CACHE = 'mnm-edu-html-v4';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -87,18 +87,19 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // HTML pages: stale-while-revalidate
+  // HTML pages: NETWORK-FIRST. A new deploy shows on the first load (never a stale cached
+  // page - important for a review tool where findings pin the page's contentHash). Falls
+  // back to the cache only when the network is unavailable (offline).
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith(
       caches.open(HTML_CACHE).then(async (c) => {
-        const cached = await c.match(req);
-        const networkPromise = fetch(req)
-          .then((res) => {
-            if (res.ok) c.put(req, res.clone());
-            return res;
-          })
-          .catch(() => undefined);
-        return cached || (await networkPromise) || Response.error();
+        try {
+          const res = await fetch(req);
+          if (res.ok) c.put(req, res.clone());
+          return res;
+        } catch {
+          return (await c.match(req)) || Response.error();
+        }
       }),
     );
   }
