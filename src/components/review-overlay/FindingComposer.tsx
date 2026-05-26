@@ -1,12 +1,19 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { FINDING_SEVERITIES, FINDING_CATEGORIES } from '@/lib/enums';
-import { DrawCanvas, type DrawCanvasHandle } from './DrawCanvas';
+import { DrawCanvas } from './DrawCanvas';
 
 interface HeadingOpt {
   id: string;
   text: string;
+}
+
+// One captured screenshot: the original capture plus, once the reviewer annotates it in the
+// full-screen modal, a flattened annotated version. Both are saved as attachments on submit.
+interface Shot {
+  original: string;
+  annotated?: string;
 }
 
 // Read the page's headings straight from the rendered DOM (no API needed). The
@@ -50,7 +57,9 @@ export function FindingComposer({
   const [detail, setDetail] = useState('');
   const [suggestedFix, setSuggestedFix] = useState('');
   const [suggestedCitation, setSuggestedCitation] = useState('');
-  const [snapshot, setSnapshot] = useState<string | null>(null);
+  // One or more captured screenshots, shown as thumbnails; annotation happens in a modal.
+  const [shots, setShots] = useState<Shot[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [capturing, setCapturing] = useState(false);
   // Briefly hide this overlay panel while grabbing a getDisplayMedia frame, so "Capture my
   // current view" shows the page (and the reviewer's widget state), not the composer itself.
@@ -60,11 +69,9 @@ export function FindingComposer({
   const [viewPrompt, setViewPrompt] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
-  const drawRef = useRef<DrawCanvasHandle>(null);
 
   // OPTION 1 (default): server-side full-page screenshot via headless Chromium (the e2e
-  // Playwright). Headless Chromium renders the canvas/WebGL widgets that html2canvas could
-  // not, so widget-heavy pages capture completely. Captures the page in its DEFAULT state.
+  // Playwright), which renders the canvas/WebGL widgets html2canvas could not. Appends a shot.
   async function capturePage() {
     setCapturing(true);
     setMsg('');
@@ -79,7 +86,7 @@ export function FindingComposer({
         return;
       }
       const data = await res.json();
-      if (typeof data?.dataUrl === 'string') setSnapshot(data.dataUrl);
+      if (typeof data?.dataUrl === 'string') setShots((s) => [...s, { original: data.dataUrl }]);
       else setMsg('Page capture returned no image. You can still submit.');
     } catch {
       setMsg('Page capture failed (network). You can still submit.');
@@ -89,7 +96,7 @@ export function FindingComposer({
   }
 
   // OPTION 2: native screen capture of the visible tab as the reviewer currently sees it
-  // (their scroll + exact widget state). Triggers the browser's share-tab prompt each time.
+  // (their scroll + exact widget state). Triggers the browser's share-tab prompt. Appends a shot.
   async function captureView() {
     setCapturing(true);
     setMsg('');
@@ -125,7 +132,7 @@ export function FindingComposer({
       }
       setHidden(false);
       video.pause();
-      if (dataUrl) setSnapshot(dataUrl);
+      if (dataUrl) setShots((s) => [...s, { original: dataUrl }]);
       else setMsg('Could not read the captured frame. You can still submit.');
     } catch {
       setHidden(false);
@@ -167,19 +174,21 @@ export function FindingComposer({
       }
       const data = await res.json();
       const findingId: number | undefined = data?.finding?.id;
-      if (findingId && snapshot) {
-        await fetch(`/api/findings/${findingId}/attachments/`, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ variant: 'original', dataUrl: snapshot }),
-        });
-        const annotated = drawRef.current?.exportPng();
-        if (annotated && annotated !== snapshot) {
+      if (findingId) {
+        // Upload each screenshot's original, plus its annotated version if it was annotated.
+        for (const shot of shots) {
           await fetch(`/api/findings/${findingId}/attachments/`, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ variant: 'annotated', dataUrl: annotated }),
+            body: JSON.stringify({ variant: 'original', dataUrl: shot.original }),
           });
+          if (shot.annotated && shot.annotated !== shot.original) {
+            await fetch(`/api/findings/${findingId}/attachments/`, {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ variant: 'annotated', dataUrl: shot.annotated }),
+            });
+          }
         }
       }
       setMsg(`Filed finding #${findingId}. It is now in /review.`);
@@ -190,6 +199,8 @@ export function FindingComposer({
       setBusy(false);
     }
   }
+
+  const editing = editingIndex !== null ? shots[editingIndex] : undefined;
 
   return (
     <div
@@ -254,10 +265,40 @@ export function FindingComposer({
           <input value={suggestedCitation} onChange={(e) => setSuggestedCitation(e.target.value)} className={fieldCls} />
         </label>
 
-        <div className="border-t border-[#1e293b] pt-3">
-          {snapshot ? (
-            <DrawCanvas ref={drawRef} src={snapshot} />
-          ) : viewPrompt ? (
+        <div className="space-y-2 border-t border-[#1e293b] pt-3">
+          <span className="text-[#94a3b8]">Screenshots ({shots.length})</span>
+
+          {shots.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {shots.map((shot, i) => (
+                <div key={i} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setEditingIndex(i)}
+                    title="Click to open full-screen and annotate"
+                    className="block overflow-hidden rounded border border-[#334155] hover:border-[#5eead4]"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element -- local data-URL screenshot preview; next/image adds nothing for a data URI */}
+                    <img src={shot.annotated ?? shot.original} alt={`screenshot ${i + 1}`} className="h-24 w-20 object-cover object-top" />
+                  </button>
+                  <span className="pointer-events-none absolute bottom-0 left-0 bg-black/70 px-1 text-[11px] text-[#e2e8f0]">
+                    {i + 1}
+                    {shot.annotated ? ' ✎' : ''}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShots((s) => s.filter((_, j) => j !== i))}
+                    aria-label={`Remove screenshot ${i + 1}`}
+                    className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#7f1d1d] text-[11px] leading-none text-white"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {viewPrompt ? (
             <div className="space-y-2 rounded border border-[#334155] bg-[#0b1220] p-3">
               <p className="text-[#e2e8f0]">
                 Next, your browser will ask what to share. Choose{' '}
@@ -289,7 +330,7 @@ export function FindingComposer({
                   disabled={capturing}
                   className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
                 >
-                  {capturing ? 'Capturing…' : 'Capture page'}
+                  {capturing ? 'Capturing…' : shots.length ? 'Capture another page' : 'Capture page'}
                 </button>
                 <button
                   type="button"
@@ -301,9 +342,8 @@ export function FindingComposer({
                 </button>
               </div>
               <p className="text-[#64748b]">
-                "Capture page" shoots the full page with widgets rendered (default state).
-                "Capture my current view" grabs this tab exactly as you see it now, including
-                your current widget state.
+                Capture one or more screenshots; click a thumbnail to open it full-screen and annotate. "Capture page"
+                shoots the full page with widgets; "Capture my current view" grabs this tab as you see it.
               </p>
             </div>
           )}
@@ -325,6 +365,17 @@ export function FindingComposer({
           </button>
         </div>
       </div>
+
+      {editing && (
+        <DrawCanvas
+          src={editing.annotated ?? editing.original}
+          onDone={(dataUrl) => {
+            setShots((s) => s.map((sh, i) => (i === editingIndex ? { ...sh, annotated: dataUrl } : sh)));
+            setEditingIndex(null);
+          }}
+          onCancel={() => setEditingIndex(null)}
+        />
+      )}
     </div>
   );
 }
