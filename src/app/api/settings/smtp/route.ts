@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth/apiAuth';
+import { encryptSecret, SmtpCryptoError } from '@/lib/email/crypto';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -30,11 +31,26 @@ export async function POST(req: Request) {
   }
   const { host, port, secure, user, from, password, clearPassword } = parsed.data;
 
-  const passUpdate = clearPassword
-    ? { pass: null }
-    : password && password.length > 0
-      ? { pass: password }
-      : {};
+  // The password is ENCRYPTED (AES-256-GCM) before it touches the DB, so dev.db never holds it
+  // in plaintext. clearPassword removes it; omitting password leaves the stored ciphertext.
+  let passUpdate: { pass?: string | null } = {};
+  if (clearPassword) {
+    passUpdate = { pass: null };
+  } else if (password && password.length > 0) {
+    try {
+      passUpdate = { pass: encryptSecret(password) };
+    } catch (e) {
+      return NextResponse.json(
+        {
+          error:
+            e instanceof SmtpCryptoError
+              ? `${e.message} Set SMTP_ENCRYPTION_KEY in .env before saving a password.`
+              : 'Could not encrypt the password.',
+        },
+        { status: 500 },
+      );
+    }
+  }
 
   const data = {
     host: host || null,
