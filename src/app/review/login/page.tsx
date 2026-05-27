@@ -21,7 +21,9 @@ function LoginInner() {
     setError('');
     const res = await signIn('credentials', { email, password, redirect: false });
     setLoading(false);
-    if (res?.error) setError('Invalid email or password');
+    // NextAuth returns 'CredentialsSignin' for a returned-null authorize (bad email/password);
+    // a thrown authorize error (deactivated / not-activated) surfaces its message here.
+    if (res?.error) setError(res.error === 'CredentialsSignin' ? 'Invalid email or password' : res.error);
     else router.push(callbackUrl);
   }
 

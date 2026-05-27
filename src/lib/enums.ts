@@ -55,8 +55,12 @@ export const AuditAction = z.enum([
  * moves a finding into that status) plus the literal "general" for the standalone/ad-hoc
  * send. Derived from FINDING_STATUSES so a new status cannot drift out of sync.
  */
-export const EMAIL_TEMPLATE_KEYS = [...FindingStatus.options, 'general'] as const;
+export const EMAIL_TEMPLATE_KEYS = [...FindingStatus.options, 'general', 'invite', 'password_reset'] as const;
 export const EmailTemplateKey = z.enum(EMAIL_TEMPLATE_KEYS);
+
+/** InviteToken.purpose: a one-time invite link, or a password-reset link. */
+export const InvitePurpose = z.enum(['invite', 'password_reset']);
+export type InvitePurpose = z.infer<typeof InvitePurpose>;
 
 // Value arrays (derived from the schemas, so there is exactly one definition each).
 export const FINDING_SEVERITIES = FindingSeverity.options;

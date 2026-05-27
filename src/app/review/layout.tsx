@@ -21,6 +21,7 @@ export default async function ReviewLayout({ children }: { children: ReactNode }
           <Link href="/review" className="hover:underline">Pages</Link>
           <Link href="/review/findings" className="hover:underline">Findings</Link>
           <Link href="/review/needs-reverification" className="hover:underline">Needs re-verify</Link>
+          {admin && <Link href="/review/reviewers" className="hover:underline">Reviewers</Link>}
           {admin && <Link href="/review/deleted" className="hover:underline">Deleted</Link>}
           {admin && <Link href="/review/settings" className="hover:underline">Settings</Link>}
           <span className="ml-auto">

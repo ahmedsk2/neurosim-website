@@ -35,6 +35,17 @@ export function renderTemplate(
 }
 
 /**
+ * Generic {{key}} resolver for SYSTEM templates (invite / password reset), whose variables
+ * differ from the finding TemplateContext (e.g. {{inviterName}}, {{expiresAt}}). Same regex;
+ * unknown tokens are left intact.
+ */
+export function resolveVars(text: string, vars: Record<string, string>): string {
+  return text.replace(PLACEHOLDER, (whole, key: string) =>
+    Object.prototype.hasOwnProperty.call(vars, key) ? String(vars[key]) : whole,
+  );
+}
+
+/**
  * The reviewer's own scoped ticket URL, used for the {{link}} placeholder. Built from the
  * configured base (NEXTAUTH_URL, the same source the snapshot route uses) so the link is
  * absolute and points at the role-split "my tickets" detail the author is authorized to see;
