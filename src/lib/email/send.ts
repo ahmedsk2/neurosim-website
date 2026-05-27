@@ -23,7 +23,7 @@ export type SendFindingEmailResult = { ok: true } | { ok: false; status: number;
  * surfaces the reason to the caller, writes NO audit row, and never touches the finding status.
  */
 export async function sendFindingEmail(input: SendFindingEmailInput): Promise<SendFindingEmailResult> {
-  const transport = getTransport();
+  const transport = await getTransport();
   if (!transport.configured) return { ok: false, status: 503, error: transport.reason };
 
   const finding = await prisma.finding.findUnique({
@@ -44,6 +44,7 @@ export async function sendFindingEmail(input: SendFindingEmailInput): Promise<Se
     });
   } catch (err) {
     // Surface the real SMTP error to the caller; write no audit row, leave status untouched.
+    console.error('[email/send] SMTP send failed:', err instanceof Error ? (err.stack ?? err.message) : err);
     return { ok: false, status: 502, error: err instanceof Error ? err.message : 'SMTP send failed' };
   }
 

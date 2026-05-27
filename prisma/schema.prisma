@@ -185,3 +185,20 @@ model EmailTemplate {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Admin-editable SMTP settings (Console-owned, single row keyed id="default"). Edited from the
+// admin-only /review/settings page so the operator does not need shell access to .env. A
+// non-empty field here OVERRIDES the matching SMTP_ env var (see lib/email/transport.ts); a
+// blank field falls back to env. Stored in the local gitignored dev.db (the same at-rest
+// exposure as .env). The password is write-only in the UI (never returned to the browser).
+model SmtpSetting {
+  id          String   @id @default("default")
+  host        String?
+  port        Int      @default(587)
+  secure      Boolean  @default(false) // true = implicit TLS (465); false = STARTTLS (587)
+  user        String?
+  pass        String? // stored as-is for SMTP AUTH; local gitignored DB; never sent to the client
+  from        String?
+  updatedAt   DateTime @updatedAt
+  updatedById String? // reviewer id that last saved
+}
