@@ -17,6 +17,7 @@
     "sync-content": "node scripts/sync-content.mjs",
     "create-reviewer": "node scripts/create-reviewer.mjs",
     "seed-email-templates": "node scripts/seed-email-templates.mjs",
+    "backup": "node scripts/backup-db.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

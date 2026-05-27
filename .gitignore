@@ -32,3 +32,6 @@ uploads/
 # so a committed copy only drifts stale on slug renames. Not tracked; the build always
 # (re)creates it in public/.
 public/search-index.json
+
+# Local dev.db backups (npm run backup -> ./backups/dev-*.db); never commit
+backups/
