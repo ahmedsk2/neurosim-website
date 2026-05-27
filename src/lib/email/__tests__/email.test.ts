@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nodemailer, { type Transporter } from 'nodemailer';
 import { resolvePlaceholders, renderTemplate, reviewerTicketLink, type TemplateContext } from '../templates';
 import { getTransport, loadSmtpConfig, __setTransportForTests, type TransportResult } from '../transport';
+import { encryptSecret } from '../crypto';
 
 // Mock the Prisma singleton so the email lib can be unit-tested with no real DB. vi.hoisted
 // gives the spies to the hoisted vi.mock factory.
@@ -61,13 +62,27 @@ describe('template placeholder resolution', () => {
   });
 });
 
-describe('transport configuration (DB row over env)', () => {
-  const saved = { host: process.env.SMTP_HOST, from: process.env.SMTP_FROM, port: process.env.SMTP_PORT };
+describe('transport configuration (DB row over env, encrypted password)', () => {
+  const saved = {
+    host: process.env.SMTP_HOST,
+    from: process.env.SMTP_FROM,
+    port: process.env.SMTP_PORT,
+    pass: process.env.SMTP_PASS,
+    key: process.env.SMTP_ENCRYPTION_KEY,
+  };
+  const KEY = Buffer.alloc(32, 9).toString('base64');
   beforeEach(() => db.smtpFindUnique.mockResolvedValue(null)); // default: no DB row -> env only
   afterEach(() => {
-    process.env.SMTP_HOST = saved.host;
-    process.env.SMTP_FROM = saved.from;
-    process.env.SMTP_PORT = saved.port;
+    if (saved.host === undefined) delete process.env.SMTP_HOST;
+    else process.env.SMTP_HOST = saved.host;
+    if (saved.from === undefined) delete process.env.SMTP_FROM;
+    else process.env.SMTP_FROM = saved.from;
+    if (saved.port === undefined) delete process.env.SMTP_PORT;
+    else process.env.SMTP_PORT = saved.port;
+    if (saved.pass === undefined) delete process.env.SMTP_PASS;
+    else process.env.SMTP_PASS = saved.pass;
+    if (saved.key === undefined) delete process.env.SMTP_ENCRYPTION_KEY;
+    else process.env.SMTP_ENCRYPTION_KEY = saved.key;
     __setTransportForTests(null);
   });
 
@@ -91,12 +106,13 @@ describe('transport configuration (DB row over env)', () => {
     process.env.SMTP_HOST = 'env.example';
     process.env.SMTP_FROM = 'env@example';
     process.env.SMTP_PORT = '25';
+    process.env.SMTP_PASS = 'envpass';
     db.smtpFindUnique.mockResolvedValue({
       host: 'db.example',
       port: 2525,
       secure: true,
       user: 'dbuser',
-      pass: 'dbpass',
+      pass: null, // blank -> env SMTP_PASS fallback (plaintext, env-only by design)
       from: null, // blank -> env fallback
     });
     const cfg = await loadSmtpConfig();
@@ -105,6 +121,37 @@ describe('transport configuration (DB row over env)', () => {
     expect(cfg.secure).toBe(true);
     expect(cfg.user).toBe('dbuser');
     expect(cfg.from).toBe('env@example');
+    expect(cfg.pass).toBe('envpass');
+  });
+
+  it('loadSmtpConfig: decrypts the stored (encrypted) DB password when a key is set', async () => {
+    process.env.SMTP_ENCRYPTION_KEY = KEY;
+    db.smtpFindUnique.mockResolvedValue({
+      host: 'db.example',
+      port: 587,
+      secure: false,
+      user: 'u',
+      pass: encryptSecret('db-secret'),
+      from: 'db@example',
+    });
+    const cfg = await loadSmtpConfig();
+    expect(cfg.pass).toBe('db-secret'); // ciphertext decrypted just-in-time
+  });
+
+  it('getTransport: degrades to misconfigured (no crash) when the stored password cannot be decrypted', async () => {
+    delete process.env.SMTP_ENCRYPTION_KEY; // missing key -> decrypt fails
+    db.smtpFindUnique.mockResolvedValue({
+      host: 'db.example',
+      port: 587,
+      secure: false,
+      user: 'u',
+      pass: 'not-valid-ciphertext',
+      from: 'db@example',
+    });
+    __setTransportForTests(null);
+    const t = await getTransport();
+    expect(t.configured).toBe(false);
+    if (!t.configured) expect(t.reason).toMatch(/misconfigured/i);
   });
 });
 

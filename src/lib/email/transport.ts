@@ -1,5 +1,6 @@
 import nodemailer, { type Transporter } from 'nodemailer';
 import { prisma } from '@/lib/prisma';
+import { decryptSecret, SmtpCryptoError } from '@/lib/email/crypto';
 
 /**
  * SMTP transport, resolved per send from the admin-editable SmtpSetting row (id="default")
@@ -37,12 +38,15 @@ export function __setTransportForTests(result: TransportResult | null): void {
 export async function loadSmtpConfig(): Promise<ResolvedSmtpConfig> {
   const row = await prisma.smtpSetting.findUnique({ where: { id: 'default' } }).catch(() => null);
   const envPort = Number(process.env.SMTP_PORT ?? '');
+  // The DB password is ciphertext: decrypt it just-in-time (throws SmtpCryptoError on a bad or
+  // missing key, caught by getTransport). The env SMTP_PASS fallback is plaintext by design.
+  const pass = row?.pass ? decryptSecret(row.pass) : process.env.SMTP_PASS || undefined;
   return {
     host: row?.host?.trim() || process.env.SMTP_HOST?.trim() || undefined,
     port: row?.port ?? (Number.isFinite(envPort) && envPort > 0 ? envPort : 587),
     secure: row?.secure ?? process.env.SMTP_SECURE === 'true',
     user: row?.user?.trim() || process.env.SMTP_USER?.trim() || undefined,
-    pass: row?.pass || process.env.SMTP_PASS || undefined,
+    pass,
     from: row?.from?.trim() || process.env.SMTP_FROM?.trim() || undefined,
   };
 }
@@ -50,7 +54,20 @@ export async function loadSmtpConfig(): Promise<ResolvedSmtpConfig> {
 /** Build the transport from the resolved config, or report not-configured. */
 export async function getTransport(): Promise<TransportResult> {
   if (testOverride) return testOverride;
-  const cfg = await loadSmtpConfig();
+  let cfg: ResolvedSmtpConfig;
+  try {
+    cfg = await loadSmtpConfig();
+  } catch (e) {
+    // Bad/missing SMTP_ENCRYPTION_KEY or an undecryptable stored password: degrade gracefully to
+    // not-configured (the 503 path) instead of crashing or sending unauthenticated.
+    return {
+      configured: false,
+      reason:
+        e instanceof SmtpCryptoError
+          ? `SMTP is misconfigured: ${e.message} Re-enter the password in /review/settings and set SMTP_ENCRYPTION_KEY in .env.`
+          : 'SMTP is misconfigured.',
+    };
+  }
   if (!cfg.host || !cfg.from) {
     return {
       configured: false,
