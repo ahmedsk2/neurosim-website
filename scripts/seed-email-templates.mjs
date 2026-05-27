@@ -133,6 +133,34 @@ You can view the ticket here:
 
 ${SIGNOFF}`,
   },
+  {
+    key: 'invite',
+    label: 'Reviewer invite (system)',
+    subject: 'You are invited to the MNM-Edu Review Console',
+    body: `Hi {{reviewerName}},
+
+{{inviterName}} has invited you to the MNM-Edu Review Console.
+
+Set your password and activate your account using this one-time link:
+{{link}}
+
+The link expires {{expiresAt}} and can be used once. If it expires, ask an admin to send a fresh invite.
+
+${SIGNOFF}`,
+  },
+  {
+    key: 'password_reset',
+    label: 'Password reset (system)',
+    subject: 'Reset your MNM-Edu Review Console password',
+    body: `Hi {{reviewerName}},
+
+A password reset was requested for your MNM-Edu Review Console account. Set a new password using this one-time link:
+{{link}}
+
+The link expires {{expiresAt}} and can be used once. If you did not request this, you can ignore this email.
+
+${SIGNOFF}`,
+  },
 ];
 
 const dbPath = path.join(process.cwd(), 'prisma', 'dev.db');

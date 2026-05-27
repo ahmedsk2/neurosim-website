@@ -48,7 +48,7 @@ model Reviewer {
   id                 String   @id @default(cuid())
   name               String
   email              String   @unique // login identity (NextAuth Credentials; no public signup)
-  passwordHash       String // bcrypt hash; a Reviewer IS the login user (JWT sessions, no adapter tables)
+  passwordHash       String? // bcrypt hash; a Reviewer IS the login user. null until an invited reviewer sets it via their invite link (login is rejected while null)
   role               String   @default("validator") // role value (Zod-validated)
   specialty          String?
   credentials        String?
@@ -63,6 +63,22 @@ model Reviewer {
   comments         FindingComment[]
   auditEntries     FindingAudit[]
   attachments      FindingAttachment[]
+  invites          InviteToken[]
+}
+
+// One-time token for invite onboarding and password reset. The DB stores only sha256(token);
+// the plaintext token lives only in the emailed link, so a DB read never reveals a valid token.
+model InviteToken {
+  id         String    @id @default(cuid())
+  reviewer   Reviewer  @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewerId String
+  tokenHash  String    @unique // sha256(token) hex
+  purpose    String // 'invite' | 'password_reset' (Zod InvitePurpose in lib/enums.ts)
+  expiresAt  DateTime
+  consumedAt DateTime? // single-use: set when the token is redeemed
+  createdAt  DateTime  @default(now())
+
+  @@index([reviewerId])
 }
 
 model Finding {

@@ -19,7 +19,13 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
         const reviewer = await prisma.reviewer.findUnique({ where: { email: credentials.email } });
-        if (!reviewer || !reviewer.isActive) return null;
+        if (!reviewer) return null; // unknown email -> generic failure (no account enumeration)
+        // Clear, distinguishable messages for the two admin-managed states (the spec accepts the
+        // minor enumeration here: these are admin-created accounts, not public signups).
+        if (!reviewer.isActive) throw new Error('Your account has been deactivated. Contact an administrator.');
+        if (!reviewer.passwordHash) {
+          throw new Error('Your account is not active yet. Open the invite link from your email to set a password.');
+        }
         const valid = await bcrypt.compare(credentials.password, reviewer.passwordHash);
         if (!valid) return null;
         return { id: reviewer.id, email: reviewer.email, name: reviewer.name, role: reviewer.role };
