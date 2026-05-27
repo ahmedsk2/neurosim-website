@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import path from 'node:path';
-import { promises as fs } from 'node:fs';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin, requireReviewer } from '@/lib/auth/apiAuth';
@@ -10,7 +8,7 @@ import { FindingStatus } from '@/lib/enums';
 import { canTransition, isReattest, stampsReviewedHash } from '@/lib/findings';
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs'; // fs cleanup of uploads/ needs the Node runtime
+export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
 
 const PatchBody = z.object({
   toStatus: FindingStatus,
@@ -42,6 +40,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     include: { page: { select: { contentHash: true } } },
   });
   if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (finding.deletedAt) return NextResponse.json({ error: 'Finding is deleted' }, { status: 409 });
 
   const from = finding.status;
   const reattest = isReattest(from, toStatus);
@@ -83,11 +82,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   return NextResponse.json({ finding: updated });
 }
 
-// DELETE /api/findings/[id] - remove a finding. An admin may delete ANY finding; a reviewer may
+// DELETE /api/findings/[id] - SOFT delete. An admin may delete ANY finding; a reviewer may
 // delete only one they authored (404 otherwise, so another reviewer's finding is not revealed).
-// Hard delete: comments + attachments cascade, FindingAudit (no cascade) is cleared explicitly,
-// any finding marked a duplicate of this one is detached, and the on-disk attachment files are
-// removed best-effort.
+// Nothing is removed: the finding, its append-only FindingAudit, comments, attachments, and
+// on-disk files are PRESERVED. It is marked with deletedAt/deletedById (hiding it from every
+// normal view via the deletedAt filter) and a 'deleted' audit row is appended.
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireReviewer();
   if (!auth.ok) return NextResponse.json(auth.body, { status: auth.status });
@@ -96,28 +95,30 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const findingId = Number(id);
   if (!Number.isInteger(findingId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
 
-  const finding = await prisma.finding.findUnique({ where: { id: findingId }, select: { id: true, authorId: true } });
+  const finding = await prisma.finding.findUnique({
+    where: { id: findingId },
+    select: { id: true, authorId: true, deletedAt: true },
+  });
   if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
-
-  const hasAttachments = (await prisma.findingAttachment.count({ where: { findingId } })) > 0;
+  if (finding.deletedAt) return NextResponse.json({ ok: true }); // already deleted (idempotent)
 
   await prisma.$transaction(async (tx) => {
-    // Detach findings that point at this one as their duplicate target (duplicateOfId FK, no cascade).
-    await tx.finding.updateMany({ where: { duplicateOfId: findingId }, data: { duplicateOfId: null } });
-    // FindingAudit has no cascade; clear it explicitly. Comments + attachments cascade with the finding.
-    await tx.findingAudit.deleteMany({ where: { findingId } });
-    await tx.finding.delete({ where: { id: findingId } });
+    await tx.finding.update({
+      where: { id: findingId },
+      data: { deletedAt: new Date(), deletedById: auth.user.id },
+    });
+    await tx.findingAudit.create({
+      data: {
+        findingId,
+        actorId: auth.user.id,
+        action: 'deleted',
+        detail: JSON.stringify({ deletedBy: auth.user.id }),
+      },
+    });
   });
-
-  // Best-effort: remove the on-disk attachment folder (fs is not transactional).
-  if (hasAttachments) {
-    await fs
-      .rm(path.join(process.cwd(), 'uploads', 'findings', String(findingId)), { recursive: true, force: true })
-      .catch(() => {});
-  }
 
   return NextResponse.json({ ok: true });
 }

@@ -46,6 +46,7 @@ export const AuditAction = z.enum([
   'drift_detected', // system event: a reviewed page's contentHash changed (D.5)
   'reverified', // reviewer re-attested a stale finding against the new contentHash (D.5)
   'email_sent', // admin sent a notification email to the finding's author (Reviewer.email)
+  'deleted', // finding soft-deleted (deletedAt set); the row and its audit trail are preserved
 ]);
 
 /**

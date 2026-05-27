@@ -118,6 +118,14 @@ model Finding {
   // FindingAudit email_sent rows. null = the reviewer has never been emailed about this finding.
   lastNotifiedAt DateTime?
 
+  // Soft delete: a non-null deletedAt hides the finding from all normal views/queries while
+  // PRESERVING the row plus its append-only FindingAudit, comments, and attachments (clinical
+  // governance: the history is the point). Orthogonal to the workflow status (no "deleted"
+  // status value). deletedById is the reviewer who deleted it; the authoritative record of the
+  // deletion is the 'deleted' FindingAudit row.
+  deletedAt   DateTime?
+  deletedById String?
+
   comments    FindingComment[]
   audit       FindingAudit[]
   attachments FindingAttachment[]

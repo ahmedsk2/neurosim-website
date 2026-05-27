@@ -34,6 +34,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
+  if (finding.deletedAt) return NextResponse.json({ error: 'Not found' }, { status: 404 }); // no attachments on a deleted finding
 
   const m = /^data:image\/png;base64,(.+)$/.exec(parsed.data.dataUrl);
   if (!m || !m[1]) return NextResponse.json({ error: 'Expected a PNG data URL' }, { status: 400 });

@@ -49,6 +49,10 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
   // A reviewer may only open a finding they authored; a deep link to another reviewer's id
   // returns 404 (scoped at the data layer, not just hidden nav). Admins may open any.
   if (!admin && finding.authorId !== me.id) notFound();
+  // Reviewers never see a soft-deleted finding (even their own); an admin can still open it to
+  // review the preserved history, read-only.
+  if (!admin && finding.deletedAt) notFound();
+  const deleted = finding.deletedAt != null;
 
   const stale = needsReverification(finding.status, finding.reviewedContentHash, finding.page.contentHash);
   const targets = [...(ALLOWED_TRANSITIONS[finding.status] ?? [])];
@@ -90,6 +94,7 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
         <p className="text-[#94a3b8]">
           {finding.severity} · {finding.category} · status <span className="text-[#e2e8f0]">{finding.status}</span>
           {stale && <span className="ml-2 text-[#fbbf24]">NEEDS RE-VERIFICATION (page changed since review)</span>}
+          {deleted && <span className="ml-2 text-[#fca5a5]">DELETED (soft; preserved for governance)</span>}
         </p>
       </div>
 
@@ -124,7 +129,9 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
             reviewer last notified {finding.lastNotifiedAt.toISOString().slice(0, 16).replace('T', ' ')}
           </div>
         )}
-        {admin ? (
+        {deleted ? (
+          <p className="text-[#fca5a5]">This finding is deleted (read-only); its history is preserved below.</p>
+        ) : admin ? (
           <AdminLifecycle
             findingId={finding.id}
             current={finding.status}
@@ -187,12 +194,14 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
             </li>
           ))}
         </ul>
-        <CommentForm findingId={finding.id} />
+        {!deleted && <CommentForm findingId={finding.id} />}
       </div>
 
-      <div className="border-t border-[#1e293b] pt-3">
-        <DeleteFindingButton findingId={finding.id} />
-      </div>
+      {!deleted && (
+        <div className="border-t border-[#1e293b] pt-3">
+          <DeleteFindingButton findingId={finding.id} />
+        </div>
+      )}
     </div>
   );
 }

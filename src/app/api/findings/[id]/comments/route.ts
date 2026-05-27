@@ -25,6 +25,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
+  if (finding.deletedAt) return NextResponse.json({ error: 'Not found' }, { status: 404 }); // no comments on a deleted finding
 
   const comment = await prisma.$transaction(async (tx) => {
     const c = await tx.findingComment.create({
