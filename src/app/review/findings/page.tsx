@@ -23,6 +23,7 @@ export default async function FindingsList({
 
   const findings = await prisma.finding.findMany({
     where: {
+      deletedAt: null, // soft-deleted findings are excluded from the list
       ...(admin ? {} : { authorId: me.id }),
       ...(status ? { status } : {}),
       ...(severity ? { severity } : {}),

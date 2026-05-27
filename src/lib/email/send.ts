@@ -31,6 +31,7 @@ export async function sendFindingEmail(input: SendFindingEmailInput): Promise<Se
     include: { author: { select: { email: true } } },
   });
   if (!finding) return { ok: false, status: 404, error: 'Finding not found' };
+  if (finding.deletedAt) return { ok: false, status: 404, error: 'Finding not found' }; // no emails for a deleted finding
 
   const to = finding.author.email?.trim();
   if (!to) return { ok: false, status: 422, error: 'The reviewer who filed this finding has no email on file.' };

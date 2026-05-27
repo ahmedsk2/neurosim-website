@@ -12,6 +12,7 @@ export default async function NeedsReverify() {
 
   const candidates = await prisma.finding.findMany({
     where: {
+      deletedAt: null, // soft-deleted findings are excluded
       status: { in: [...REVIEWED_STATUSES] },
       reviewedContentHash: { not: null },
       ...(admin ? {} : { authorId: me.id }),

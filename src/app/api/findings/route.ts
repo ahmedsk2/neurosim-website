@@ -89,6 +89,7 @@ export async function GET(req: Request) {
 
   const findings = await prisma.finding.findMany({
     where: {
+      deletedAt: null, // soft-deleted findings are excluded from the list
       ...(admin ? {} : { authorId: auth.user.id }),
       ...(status ? { status } : {}),
       ...(severity ? { severity } : {}),

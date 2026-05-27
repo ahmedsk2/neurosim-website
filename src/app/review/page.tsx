@@ -15,7 +15,7 @@ export default async function ReviewPageList() {
   const pages = await prisma.page.findMany({
     orderBy: [{ kind: 'asc' }, { slug: 'asc' }],
     include: {
-      findings: { where: admin ? {} : { authorId: me.id }, select: { status: true, reviewedContentHash: true } },
+      findings: { where: { deletedAt: null, ...(admin ? {} : { authorId: me.id }) }, select: { status: true, reviewedContentHash: true } },
     },
   });
 

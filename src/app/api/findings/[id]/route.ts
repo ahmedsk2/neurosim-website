@@ -2,11 +2,13 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth/apiAuth';
+import { requireAdmin, requireReviewer } from '@/lib/auth/apiAuth';
+import { isAdminRole } from '@/lib/auth/roles';
 import { FindingStatus } from '@/lib/enums';
 import { canTransition, isReattest, stampsReviewedHash } from '@/lib/findings';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
 
 const PatchBody = z.object({
   toStatus: FindingStatus,
@@ -38,6 +40,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     include: { page: { select: { contentHash: true } } },
   });
   if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (finding.deletedAt) return NextResponse.json({ error: 'Finding is deleted' }, { status: 409 });
 
   const from = finding.status;
   const reattest = isReattest(from, toStatus);
@@ -77,4 +80,45 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   });
 
   return NextResponse.json({ finding: updated });
+}
+
+// DELETE /api/findings/[id] - SOFT delete. An admin may delete ANY finding; a reviewer may
+// delete only one they authored (404 otherwise, so another reviewer's finding is not revealed).
+// Nothing is removed: the finding, its append-only FindingAudit, comments, attachments, and
+// on-disk files are PRESERVED. It is marked with deletedAt/deletedById (hiding it from every
+// normal view via the deletedAt filter) and a 'deleted' audit row is appended.
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const auth = await requireReviewer();
+  if (!auth.ok) return NextResponse.json(auth.body, { status: auth.status });
+
+  const { id } = await params;
+  const findingId = Number(id);
+  if (!Number.isInteger(findingId)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
+
+  const finding = await prisma.finding.findUnique({
+    where: { id: findingId },
+    select: { id: true, authorId: true, deletedAt: true },
+  });
+  if (!finding) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (!isAdminRole(auth.user.role) && finding.authorId !== auth.user.id) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
+  if (finding.deletedAt) return NextResponse.json({ ok: true }); // already deleted (idempotent)
+
+  await prisma.$transaction(async (tx) => {
+    await tx.finding.update({
+      where: { id: findingId },
+      data: { deletedAt: new Date(), deletedById: auth.user.id },
+    });
+    await tx.findingAudit.create({
+      data: {
+        findingId,
+        actorId: auth.user.id,
+        action: 'deleted',
+        detail: JSON.stringify({ deletedBy: auth.user.id }),
+      },
+    });
+  });
+
+  return NextResponse.json({ ok: true });
 }
