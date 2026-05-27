@@ -26,3 +26,9 @@ prisma/*.db-*
 
 # Console-managed finding attachment uploads (snapshots + annotated PNGs)
 uploads/
+
+# Generated search index: rebuilt on every `next build` (the /search prerender runs
+# writeSearchIndexJSON -> public/search-index.json) and served fresh by the deployed server,
+# so a committed copy only drifts stale on slug renames. Not tracked; the build always
+# (re)creates it in public/.
+public/search-index.json
