@@ -10,6 +10,7 @@ import { reviewerTicketLink } from '@/lib/email/templates';
 import { AdminLifecycle } from '../../_components/AdminLifecycle';
 import { CommentForm } from '../../_components/CommentForm';
 import { DeleteFindingButton } from '../../_components/DeleteFindingButton';
+import { RestoreFindingButton } from '../../_components/RestoreFindingButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -130,7 +131,10 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
           </div>
         )}
         {deleted ? (
-          <p className="text-[#fca5a5]">This finding is deleted (read-only); its history is preserved below.</p>
+          <div className="space-y-2">
+            <p className="text-[#fca5a5]">This finding is deleted (read-only); its history is preserved below.</p>
+            <RestoreFindingButton findingId={finding.id} />
+          </div>
         ) : admin ? (
           <AdminLifecycle
             findingId={finding.id}
