@@ -47,6 +47,7 @@ export const AuditAction = z.enum([
   'reverified', // reviewer re-attested a stale finding against the new contentHash (D.5)
   'email_sent', // admin sent a notification email to the finding's author (Reviewer.email)
   'deleted', // finding soft-deleted (deletedAt set); the row and its audit trail are preserved
+  'restored', // admin un-deleted a soft-deleted finding (deletedAt cleared); status unchanged
 ]);
 
 /**
