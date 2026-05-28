@@ -52,6 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: doc.frontmatter.description,
       images: [`/og/foundations/${slug}.svg`],
     },
+    alternates: { canonical: `/foundations/${slug}/` },
   };
 }
 

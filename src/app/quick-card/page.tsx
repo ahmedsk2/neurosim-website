@@ -8,6 +8,7 @@ export const metadata = {
   title: 'Pediatric MNM bedside quick-card',
   description:
     'Single-page pediatric multimodal neuromonitoring reference, age-band CPP, NIRS, NPi, TCD, ICP norms; HTS / mannitol / sedation doses; raised-ICP escalation; PbtO₂ algorithm.',
+  alternates: { canonical: '/quick-card/' },
 };
 
 export default function QuickCardPage() {

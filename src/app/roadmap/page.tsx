@@ -6,6 +6,7 @@ export const metadata = {
   title: 'Roadmap and future work',
   description:
     'Future work items planned for MNM-Edu, author tooling, content gaps, infrastructure, and clinical features. A living list.',
+  alternates: { canonical: '/roadmap/' },
 };
 
 interface RoadmapItem {

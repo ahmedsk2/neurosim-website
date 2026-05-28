@@ -37,6 +37,7 @@ export async function generateMetadata({
     description,
     openGraph: { title, description, images: [`/og/integration/${scenario}.svg`] },
     twitter: { card: 'summary_large_image', title, description, images: [`/og/integration/${scenario}.svg`] },
+    alternates: { canonical: `/integration/${scenario}/` },
   };
 }
 

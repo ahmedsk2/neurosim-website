@@ -8,6 +8,7 @@ export const metadata = {
   title: '45-minute fellow lecture',
   description:
     'Presenter-mode walkthrough, pediatric multimodal neuromonitoring at the bedside, designed to replace slides for a 45-minute teaching session.',
+  alternates: { canonical: '/teach/fellow-lecture/' },
 };
 
 export default function FellowLecturePage() {

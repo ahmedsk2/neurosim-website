@@ -4,7 +4,7 @@ import { AGE_BANDS, NORMS } from '@/data/pediatric-norms';
 import { Card, EvidenceLevel } from '@/components/ui';
 import { Pediatric } from '@/components/content/Pearl';
 
-export const metadata = { title: 'Pediatrics' };
+export const metadata = { title: 'Pediatrics', alternates: { canonical: '/pediatrics/' } };
 
 export default function PediatricsHub() {
   return (

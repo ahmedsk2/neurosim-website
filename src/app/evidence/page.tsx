@@ -2,7 +2,7 @@ import { PageHeader } from '@/components/layout/PageScaffold';
 import { REFERENCE_LIST, REFERENCES_VERSION } from '@/data/references';
 import { EvidenceLibrary } from './EvidenceLibrary';
 
-export const metadata = { title: 'Evidence library' };
+export const metadata = { title: 'Evidence library', alternates: { canonical: '/evidence/' } };
 
 export default function EvidencePage() {
   return (
