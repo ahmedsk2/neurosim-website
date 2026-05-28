@@ -251,3 +251,22 @@ every request. No Google Analytics allowance in the CSP yet; that lands with the
 Cloudflare feature) to be OFF on the production zone, or widgets fail to hydrate under the strict
 CSP. See `OPERATIONS.md` section 7 "Cloudflare settings required for the strict CSP" for the full
 checklist and cache-purge step.
+
+## 2026-05 - Privacy-respecting GA, consent-gated (default-deny)
+
+**What:** Google Analytics (GA4) loads ONLY after affirmative consent (default-deny consent mode),
+configured with `anonymize_ip: true`, Google Signals off, and ad personalization off. Consent
+persists in `localStorage`; withdrawal via a footer "Cookie settings" link stops GA and clears its
+cookies. **Double kill-switch:** GA requires BOTH user consent AND `NEXT_PUBLIC_GA_ID` set in the
+build; absent the env var, the public site is fully cookie-free and the CSP carries no Google
+hosts. Implementation in `src/components/consent/` (provider + banner + GA loader + footer link)
+and `src/middleware.ts` (CSP conditionally extended when GA_ID is set).
+
+**Why:** Compliance (PIPEDA / Quebec Law 25 / GDPR) requires GA not load before consent and that
+reject be as easy as accept. The privacy-respecting config matches what the draft privacy policy
+(PR #50) describes - policy and implementation must agree. The env-var kill-switch lets this merge
+WITHOUT turning GA on before the privacy policy is lawyer-cleared and published.
+
+**Tradeoff / dependency:** GA goes live in production ONLY when **both** (1) the lawyer-cleared
+privacy policy is published AND (2) `NEXT_PUBLIC_GA_ID` is set in the production environment.
+Until both, GA is dark.
