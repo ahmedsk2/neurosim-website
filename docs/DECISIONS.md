@@ -159,6 +159,8 @@ resource. Not indexing would defeat the educational reach.
 
 ## 2026-05 - Unified-host architecture (one managed host for everything)
 
+**Reworded (2026-05) as [PaaS hosting (one host for everything)](#2026-05---paas-hosting-one-host-for-everything) - the same one-host decision, restated with precise PaaS terminology (managed runtime + managed Postgres + zero OS-ops) and an expanded candidate list (adds DigitalOcean App Platform and Vercel). See that entry for the current form.**
+
 **What:** Public site + reviewer system + Postgres + attachments all on ONE managed application
 platform (Railway/Fly/Render-style; selection deferred). The audit's recommended split (public to
 CDN, reviewer on a separate host) was considered and rejected.
@@ -208,3 +210,22 @@ with a best-effort response caveat.
 **Why:** A public clinical educational resource needs a named human taking responsibility for
 credibility; institutional affiliation deferred to keep liability and ownership clean. Alias email
 separates project contact from personal correspondence.
+
+## 2026-05 - PaaS hosting (one host for everything)
+
+**What:** Public site + reviewer system + Postgres + attachments deploy to ONE PaaS host
+(Platform-as-a-Service: managed runtime + managed Postgres + zero OS-ops). Specific PaaS platform
+(Railway / Fly.io / Render / DO App Platform / Vercel) selected at migration time, not now. The
+Phase 4 audit's recommended split (public to static CDN + reviewer to a separate host) was
+considered and rejected.
+
+**Why:** User preferred unified-management simplicity (one host, one bill, one deploy target) over
+the split's cost and performance advantages on the public side.
+
+**Tradeoffs accepted:** (1) Modestly higher cost than the split (~$15-30/month vs $0 + $15-25);
+(2) loss of free global edge caching on the public site; (3) loss of free CDN-grade DDoS protection
+on the public side (Cloudflare in front provides basic protection); (4) public-traffic spikes can
+affect the reviewer system because they share host capacity. Made knowingly with the costs surfaced.
+
+**Supersedes:** the earlier [Unified-host architecture](#2026-05---unified-host-architecture-one-managed-host-for-everything)
+entry - same decision, now stated with PaaS terminology.
