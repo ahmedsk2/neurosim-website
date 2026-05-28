@@ -35,15 +35,20 @@ and cutover is the **final** 4a step.
   and set `NEXTAUTH_URL` to match.
 - **Refs:** audit C.5, C.10, D.2; `src/app/layout.tsx:14`.
 
-### `[ ]` 2. Add security headers  -  PR: ___
-- **Why it matters:** The app sends no CSP, HSTS, X-Frame-Options, X-Content-Type-Options,
-  Referrer-Policy, or Permissions-Policy (verified live: only Cache-Control + Content-Type). No
-  clickjacking or MIME-sniffing protection, no script-origin constraint.
-- **Fix direction:** Add a `headers()` function in `next.config.mjs` (Next-server-side, not a CDN
-  `_headers` file, because the PaaS host serves both public and reviewer from one host).
-  CSP needs a nonce or hashes for the inline theme-bootstrap script and KaTeX/Mermaid inline styles.
-- **Refs:** audit C.1; `next.config.mjs:6-22` (no `headers()`), no `src/middleware.ts`,
-  `src/app/layout.tsx:40-42` (inline bootstrap script).
+### `[x]` 2. Add security headers  -  Done: PR #44 (`ab975d0`) - shipped as strict nonce-based CSP (Option B)
+- **Shipped as:** strict middleware-generated per-request nonces in `src/middleware.ts`
+  (`script-src 'self' 'nonce-<value>' 'strict-dynamic'`, no `'unsafe-inline'` for scripts). All six
+  security headers (CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy,
+  Permissions-Policy) come from the same middleware - single source. `style-src` keeps
+  `'unsafe-inline'` (KaTeX/Mermaid/React inline styles, documented). The pragmatic Option A
+  (`script-src 'unsafe-inline'`) was considered and rejected; see `DECISIONS.md`. Routes are now
+  dynamic - the SSG `s-maxage` cache was the accepted tradeoff.
+- **Operational dependency:** the strict CSP requires Cloudflare Rocket Loader (and other
+  script-injecting features) to be OFF on the production zone, or widgets fail to hydrate. See
+  `OPERATIONS.md` section 7 "Cloudflare settings required for the strict CSP" for the full
+  checklist and the cache-purge step.
+- **Refs:** `src/middleware.ts`, `src/app/layout.tsx` (nonce threaded into the theme-bootstrap
+  `<Script>`), `DECISIONS.md` ("Strict nonce-based CSP (Option B)").
 
 ### `[ ]` 3. Add robots.txt + sitemap.xml  -  PR: ___
 - **Why it matters:** Both currently 404. Indexing is now welcomed (Decisions locked), so the site

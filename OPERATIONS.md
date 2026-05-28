@@ -107,7 +107,44 @@ npx next start -p 3041   # serve on http://localhost:3041
   `REVIEWER_PASSWORD=... npm run create-reviewer -- <email> <name> [role]`
   (role is one of validator, admin, implementer, observer).
 
-## 7. What this system is NOT
+## 7. Cloudflare settings required for the strict CSP
+
+The strict nonce-based Content-Security-Policy (Option B; see `docs/DECISIONS.md` and
+`src/middleware.ts`) trusts ONLY inline scripts that carry the per-request nonce Next emits. Any
+Cloudflare feature that auto-injects or rewrites scripts on the fly produces non-nonced inline
+scripts, which the browser refuses to execute, and the symptoms look like a broken site: widgets
+dead, console full of "Refused to execute inline script" CSP errors. This cost a debugging round at
+launch; it must be re-verified after every Cloudflare configuration change and whenever a new zone
+is set up.
+
+These Cloudflare features MUST stay OFF on the `web.towardpcc.com` zone:
+
+- **Rocket Loader** - this is the one that actually broke the launch. Rocket Loader replaces page
+  scripts with a Cloudflare loader script (non-nonced) and defers them, blocking essentially every
+  page script under strict CSP. Dashboard: Speed -> Optimization -> Content Optimization -> Rocket
+  Loader (must be OFF).
+- **Email Obfuscation** - rewrites `mailto:` links and injects an inline decoder script. Would
+  break the About page contact (`info@towardpcc.com`) and any other email link, with a CSP
+  violation on the decoder. Dashboard: Scrape Shield -> Email Address Obfuscation (must be OFF).
+- **Cloudflare Web Analytics auto-injection / Insights beacon** - if enabled, Cloudflare injects
+  `static.cloudflareinsights.com/beacon.min.js` on every page. The script is non-nonced and
+  cross-origin, so it would be blocked by both `script-src 'nonce-...' 'strict-dynamic'` and the
+  absence of `static.cloudflareinsights.com` from `connect-src`. Dashboard: Analytics & Logs ->
+  Web Analytics -> auto-injection (must be OFF). The cookie-banner PR will add Google Analytics
+  with consent gating; do not enable Cloudflare's beacon in parallel.
+- Any other "Auto Minify", "HTML rewrite", or "auto-inject" feature on the zone should be checked.
+  Rule of thumb: under strict CSP, the zone must not modify response HTML at all.
+
+**After changing any of these settings, purge the Cloudflare cache** (Caching -> Configuration ->
+Purge Everything), or the next request will replay a previously-rewritten HTML response from the
+edge cache and the symptoms will persist.
+
+**Setting up a NEW Cloudflare zone** (different domain, second site) requires re-doing these
+toggles. New zones default Rocket Loader OFF, but Email Obfuscation defaults ON in many account
+templates, and Web Analytics auto-injection varies. Treat this section as a checklist whenever the
+public origin moves.
+
+## 8. What this system is NOT
 
 This is an educational review tool, NOT a HIPAA-compliant clinical record system
 and NOT a medical device. Do not put patient-identifiable information in it. It is
