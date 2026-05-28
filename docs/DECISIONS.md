@@ -229,3 +229,25 @@ affect the reviewer system because they share host capacity. Made knowingly with
 
 **Supersedes:** the earlier [Unified-host architecture](#2026-05---unified-host-architecture-one-managed-host-for-everything)
 entry - same decision, now stated with PaaS terminology.
+
+## 2026-05 - Strict nonce-based CSP (Option B), SSG traded for security
+
+**What:** The CSP uses strict `script-src 'self' 'nonce-<per-request>' 'strict-dynamic'` (NOT
+`'unsafe-inline'`), via per-request middleware (`src/middleware.ts`). `style-src` keeps
+`'unsafe-inline'` (KaTeX / Mermaid / React inline styles; impractical to nonce). Every other
+directive is strict. The pragmatic `'unsafe-inline'` script-src (Option A) was considered and
+**rejected**.
+
+**Why:** The user chose maximum security hardening. Per-request nonces force every route dynamic,
+trading away the SSG `s-maxage` cache; accepted because at this site's modest traffic the cache's
+value is low, while the author's name and credentials are on the site, so the security margin is
+worth more. Content parity confirmed byte-identical (static vs dynamic) across the 7 canary pages;
+dynamic TTFB ~170 ms, acceptable.
+
+**Tradeoff accepted:** routes are dynamic (no SSG cache); per-request nonce middleware runs on
+every request. No Google Analytics allowance in the CSP yet; that lands with the cookie banner.
+
+**Implementation note:** requires Cloudflare Rocket Loader (and any other script-injecting
+Cloudflare feature) to be OFF on the production zone, or widgets fail to hydrate under the strict
+CSP. See `OPERATIONS.md` section 7 "Cloudflare settings required for the strict CSP" for the full
+checklist and cache-purge step.
