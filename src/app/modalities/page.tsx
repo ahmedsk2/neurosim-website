@@ -2,7 +2,7 @@ import { MODALITIES } from '@/data/modalities';
 import { PageHeader } from '@/components/layout/PageScaffold';
 import { ModalitiesBrowser } from '@/components/modalities/ModalitiesBrowser';
 
-export const metadata = { title: 'Modalities' };
+export const metadata = { title: 'Modalities', alternates: { canonical: '/modalities/' } };
 
 export default function ModalitiesIndex() {
   return (

@@ -1,7 +1,7 @@
 import { PageHeader } from '@/components/layout/PageScaffold';
 import { GlossaryIndex } from './GlossaryIndex';
 
-export const metadata = { title: 'Glossary' };
+export const metadata = { title: 'Glossary', alternates: { canonical: '/glossary/' } };
 
 export default function GlossaryPage() {
   return (

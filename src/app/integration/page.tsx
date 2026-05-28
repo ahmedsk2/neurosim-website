@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/layout/PageScaffold';
 import { Card, Thumbnail } from '@/components/ui';
 import { thumbForIntegration } from '@/lib/thumbnails';
 
-export const metadata = { title: 'Integration scenarios' };
+export const metadata = { title: 'Integration scenarios', alternates: { canonical: '/integration/' } };
 
 export default function IntegrationIndex() {
   return (

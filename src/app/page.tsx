@@ -12,6 +12,7 @@ import { MODALITIES } from '@/data/modalities';
 export const metadata = {
   title: 'Pediatric Multimodal Neuromonitoring, MNM-Edu',
   description: `An evidence-anchored educational resource on pediatric multimodal neuromonitoring: ${MODALITIES.length} modalities, foundations curriculum, interactive widgets, and case library.`,
+  alternates: { canonical: '/' },
 };
 
 export default function HomePage() {

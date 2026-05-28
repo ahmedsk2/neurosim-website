@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/layout/PageScaffold';
 import { Card, Thumbnail } from '@/components/ui';
 import { thumbForFoundation } from '@/lib/thumbnails';
 
-export const metadata = { title: 'Foundations' };
+export const metadata = { title: 'Foundations', alternates: { canonical: '/foundations/' } };
 
 export default function FoundationsIndex() {
   const docs = listContent('foundations');

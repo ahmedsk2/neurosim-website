@@ -2,7 +2,7 @@ import { PageHeader } from '@/components/layout/PageScaffold';
 import SearchClient from './SearchClient';
 import { writeSearchIndexJSON } from '@/lib/search';
 
-export const metadata = { title: 'Search' };
+export const metadata = { title: 'Search', alternates: { canonical: '/search/' } };
 
 export default function SearchPage() {
   // Side-effect: build search index at static-export time.

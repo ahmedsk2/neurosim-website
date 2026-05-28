@@ -5,6 +5,7 @@ export const metadata = {
   title: 'Figure credits and curation guide',
   description:
     'Open-licence sources for medical figures, attribution standards used on this site, and a how-to guide for adding new images.',
+  alternates: { canonical: '/figure-credits/' },
 };
 
 export default function FigureCreditsPage() {
