@@ -28,7 +28,7 @@ The blocking and launch-gating items. The architecture is now decided (Decisions
 most items are code/content work that can land on the current setup; the actual platform migration
 and cutover is the **final** 4a step.
 
-### `[ ]` 1. Set the production domain in metadata  -  PR: ___
+### `[x]` 1. Set the production domain in metadata  -  Done: PR #41 (`59a6ca0`)
 - **Why it matters:** `metadataBase` is the placeholder `https://mnm-edu.example`, so every absolute
   OG URL and the derived canonical point at a non-existent domain.
 - **Fix direction:** Set `metadataBase` in `src/app/layout.tsx:14` to `https://web.towardpcc.com`,
