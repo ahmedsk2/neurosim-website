@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Script from 'next/script';
 import 'katex/dist/katex.min.css';
 import '@/styles/globals.css';
@@ -35,11 +36,16 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', images: ['/og/default.svg'] },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // The nonce is set by src/middleware.ts on every request. Reading it makes the route dynamic,
+  // which is intended: Phase 4a item 2 (Option B) traded SSG for strict nonce-based CSP. We pass
+  // it to the inline theme-bootstrap <Script>; Next 16 applies the same nonce to its own inline
+  // framework scripts because middleware also set the x-nonce request header.
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
   return (
     <html lang="en" dir="ltr" data-theme="dark" suppressHydrationWarning>
       <head>
-        <Script id="theme-bootstrap" strategy="beforeInteractive">
+        <Script id="theme-bootstrap" strategy="beforeInteractive" nonce={nonce}>
           {THEME_BOOTSTRAP_SCRIPT}
         </Script>
         <link rel="manifest" href="/manifest.webmanifest" />
