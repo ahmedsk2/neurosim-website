@@ -125,6 +125,8 @@ larger security and operational undertaking disproportionate to actual need.
 
 ## 2026-05 - Public/reviewer hosting split (Phase 4 architecture)
 
+**Superseded (2026-05) by [Unified-host architecture (one managed host for everything)](#2026-05---unified-host-architecture-one-managed-host-for-everything).** The split was reconsidered and rejected in favor of one managed host for everything; the original rationale is retained below for history.
+
 **What:** The public layer (all SSG) deploys to a static CDN; the reviewer system stays on the PC
 behind the Cloudflare Tunnel.
 
@@ -135,3 +137,74 @@ reviewer system on the PC preserves the zero-hosted-services posture for the dyn
 **Tradeoff accepted:** Two deploy targets to reason about instead of one; the public and reviewer
 experiences are served from different origins (the reviewer overlay's client-side session check
 already tolerates this).
+
+## 2026-05 - Public launch domain: web.towardpcc.com
+
+**What:** Launching the public site at the existing subdomain web.towardpcc.com rather than
+acquiring a dedicated domain.
+
+**Why:** The user chose the existing URL knowingly for the launch.
+
+**Tradeoff accepted:** If the URL is ever changed later, the cost is broken citations, lost search
+ranking, broken bookmarks, and a re-indexing period estimated at 6-12 months. Recorded so future-you
+understands the choice was deliberate, not defaulted; revisit before any external promotion if a
+better domain becomes available.
+
+## 2026-05 - Public site indexed by search engines
+
+**What:** robots.txt + sitemap.xml will welcome general search-engine indexing.
+
+**Why:** The point of going public is for clinicians searching for relevant topics to find the
+resource. Not indexing would defeat the educational reach.
+
+## 2026-05 - Unified-host architecture (one managed host for everything)
+
+**What:** Public site + reviewer system + Postgres + attachments all on ONE managed application
+platform (Railway/Fly/Render-style; selection deferred). The audit's recommended split (public to
+CDN, reviewer on a separate host) was considered and rejected.
+
+**Why:** The user preferred unified-management simplicity (one host, one bill, one deploy target)
+over the split's cost and performance advantages on the public side.
+
+**Tradeoffs accepted:** (1) Modestly higher cost than the split (~$15-30/month vs $0 + $15-25);
+(2) loss of free global edge caching on the public site; (3) loss of free CDN-grade DDoS protection
+on the public side (Cloudflare in front still provides basic protection); (4) public-traffic spikes
+can affect the reviewer system since they share host capacity. The choice was made knowingly with
+the costs surfaced explicitly.
+
+## 2026-05 - Cloudflare Access in front of reviewer routes
+
+**What:** /review/* paths and reviewer-side APIs are gated by Cloudflare Access with an email
+allow-list at the edge, before traffic reaches the unified host.
+
+**Why:** With reviewer login on a public-facing host (no longer behind the personal tunnel), the
+login route would otherwise be a public attack surface subject to brute-force probing and bot abuse.
+Cloudflare Access closes that surface entirely at the edge - only allow-listed reviewer emails can
+reach the login page; everyone else gets a Cloudflare-served "not authorized" response. Reviewers
+retain "access from anywhere" through the Cloudflare Access challenge. Free for small allow-lists.
+The existing application-level rate-limit remains as defense-in-depth.
+
+## 2026-05 - Google Analytics over privacy-friendly alternatives
+
+**What:** GA chosen for visitor analytics, despite Cloudflare Web Analytics and Plausible being
+recommended privacy-friendly alternatives.
+
+**Why:** User preference; the recommendation against GA (twice) was heard and overridden.
+
+**Tradeoffs accepted:** (1) A cookie consent banner becomes legally required under PIPEDA and GDPR;
+(2) the privacy policy must explicitly disclose GA's data collection, that data flows to Google's ad
+business, retention policies, and opt-out instructions; (3) some compliance complexity (GA-EU
+data-transfer rulings); (4) visitor data flowing to a third-party ad business from a clinical
+educational resource. These costs are accepted in exchange for the user's preference for the
+familiar tool.
+
+## 2026-05 - Named author, independent personal project, alias contact
+
+**What:** The About page identifies the author as Ahmed S. Alkhalifah, MD, MBBS, Pediatric
+Intensivist with subspecialty in Neurocritical Care. The project is framed as an independent
+personal educational project with no institutional affiliation. Contact alias: info@towardpcc.com,
+with a best-effort response caveat.
+
+**Why:** A public clinical educational resource needs a named human taking responsibility for
+credibility; institutional affiliation deferred to keep liability and ownership clean. Alias email
+separates project contact from personal correspondence.
