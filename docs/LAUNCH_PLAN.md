@@ -76,13 +76,13 @@ and cutover is the **final** 4a step.
   emails can even reach the login page; everyone else gets a Cloudflare "not authorized" response.
 - **Fix direction:** Set up a Cloudflare Access application over `/review/*` and the reviewer-side
   APIs with an email allow-list. Reviewers pass the Cloudflare Access challenge first, then the
-  existing NextAuth login (access-from-anywhere preserved). Gates the migration (item 9).
+  existing NextAuth login (access-from-anywhere preserved). Gates the migration (item 8).
 - **Refs:** DECISIONS.md (Cloudflare Access in front of reviewer routes).
 
 ### `[ ]` 6. Legal pages + public accountability  -  PR: ___
 - **Why it matters:** No privacy policy, no terms of use, no public contact, and the About page names
   no responsible author - a credibility and compliance gap for a public clinical educational resource
-  (and Google Analytics raises the privacy-disclosure bar; see item 7-8).
+  (and Google Analytics raises the privacy-disclosure bar; see item 7).
 - **Fix direction (concrete sub-items, you supply the wording):**
   - (a) **About page** with the locked author details (Ahmed S. Alkhalifah, MD MBBS, Pediatric
     Intensivist with subspecialty in Neurocritical Care; framed as an independent personal
@@ -97,21 +97,25 @@ and cutover is the **final** 4a step.
     (it currently lives in the footer + About + home).
 - **Refs:** audit C.6, C.7, D.6; `src/app/about/page.tsx`, `src/components/layout/Footer.tsx:45-54`.
 
-### `[ ]` 7. Cookie consent banner  -  PR: ___
-- **Why it matters:** **Launch-blocking.** Google Analytics sets cookies, which under PIPEDA/GDPR
-  require prior consent. GA without a consent banner is a legal violation, not an oversight.
-- **Fix direction:** Proper consent implementation: block GA until the visitor consents, persist the
-  choice across visits, and allow withdrawal. Wired to the GA gating (item 8).
-- **Refs:** DECISIONS.md (Google Analytics; consent banner is a consequence).
+### `[x]` 7. Cookie consent banner + GA with consent gating  -  Done: PR #51 (`edefabf`)
+- **Shipped as:** default-deny cookie consent banner with Accept and Decline equally styled and
+  equally accessible (GDPR / Quebec Law 25 / UK ICO requirement), consent persisted in
+  `localStorage`, footer "Cookie settings" link to change or withdraw at any time (withdrawal
+  clears `_ga*` cookies and stops GA on next load). GA4 loads ONLY when BOTH
+  `NEXT_PUBLIC_GA_ID` is set AND consent is granted; config matches the privacy policy exactly
+  (consent-mode default-deny, `anonymize_ip:true`, `allow_google_signals:false`,
+  `allow_ad_personalization_signals:false`). The strict nonce CSP is extended for the GA
+  endpoints **only when** the env var is set; absent it, the public site is fully cookie-free
+  and the CSP carries no Google hosts. Verified A-G in a real Chromium across both build states.
+- **Production dependency (recorded in `DECISIONS.md`):** GA goes live ONLY when **both** the
+  lawyer-cleared privacy policy is published AND `NEXT_PUBLIC_GA_ID` is set in the production
+  environment. Until both, GA stays dark.
+- **Refs:** `src/components/consent/{ConsentProvider,CookieBanner,GoogleAnalytics,CookieSettingsLink}.tsx`,
+  `src/middleware.ts` (conditional CSP), `src/app/layout.tsx`,
+  `src/components/layout/Footer.tsx`, `.env.example` (kill-switch documentation),
+  `DECISIONS.md` ("Privacy-respecting GA, consent-gated").
 
-### `[ ]` 8. Google Analytics with consent gating  -  PR: ___
-- **Why it matters:** The GA script must not load before consent; first visit is default-deny.
-- **Fix direction:** Load the GA script ONLY after consent is given (default-deny on first visit),
-  with consent state persisted across visits. Not a one-line script-tag drop-in; it is driven by the
-  consent banner (item 7).
-- **Refs:** DECISIONS.md (Google Analytics over privacy-friendly alternatives).
-
-### `[ ]` 9. Migrate to PaaS host  -  PR: ___
+### `[ ]` 8. Migrate to PaaS host  -  PR: ___
 - **Why it matters:** The current single-PC + SQLite + personal-tunnel setup cannot back a published
   site; the PaaS-host decision is the production target. This is the **final** 4a step - the code
   and content items above can land on the current setup first, then cut over.
