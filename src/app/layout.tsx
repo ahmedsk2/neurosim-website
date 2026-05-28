@@ -9,6 +9,9 @@ import { ScrollProgress } from '@/components/layout/ScrollProgress';
 import { BackToTop } from '@/components/layout/BackToTop';
 import { ServiceWorkerRegister } from '@/components/layout/ServiceWorkerRegister';
 import { ReviewOverlay } from '@/components/review-overlay/ReviewOverlay';
+import { ConsentProvider } from '@/components/consent/ConsentProvider';
+import { CookieBanner } from '@/components/consent/CookieBanner';
+import { GoogleAnalytics } from '@/components/consent/GoogleAnalytics';
 import { THEME_BOOTSTRAP_SCRIPT } from '@/lib/theme';
 
 export const metadata: Metadata = {
@@ -56,15 +59,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <ScrollProgress />
-        <Header />
-        <main id="main" className="mx-auto max-w-page px-4 py-6 md:px-6 md:py-8">
-          {children}
-        </main>
-        <Footer />
-        <BackToTop />
-        <ServiceWorkerRegister />
-        <ReviewOverlay />
+        <ConsentProvider>
+          <ScrollProgress />
+          <Header />
+          <main id="main" className="mx-auto max-w-page px-4 py-6 md:px-6 md:py-8">
+            {children}
+          </main>
+          <Footer />
+          <BackToTop />
+          <ServiceWorkerRegister />
+          <ReviewOverlay />
+          {/* Consent surface. CookieBanner self-hides when NEXT_PUBLIC_GA_ID is unset or after a
+              choice is made. GoogleAnalytics loads only when the env var is set AND the visitor
+              has granted consent (default-deny). */}
+          <CookieBanner />
+          <GoogleAnalytics nonce={nonce} />
+        </ConsentProvider>
       </body>
     </html>
   );
