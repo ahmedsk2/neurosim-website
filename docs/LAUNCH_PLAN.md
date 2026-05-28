@@ -7,7 +7,7 @@ update), so this file should always answer: "what would I do next if I sat down 
 
 **Scope reminder.** The architecture is now settled (see "Decisions locked" below and
 `DECISIONS.md`): the public read-only educational layer and the closed, invite-only reviewer system
-run together on **one managed host**, fronted by Cloudflare. The public site is openly readable and
+run together on **one PaaS host** (Platform-as-a-Service), fronted by Cloudflare. The public site is openly readable and
 search-indexed at **web.towardpcc.com**; the reviewer routes (`/review/*`) sit behind **Cloudflare
 Access** (email allow-list). The reviewer registration model is unchanged (admin-invite only).
 
@@ -40,7 +40,7 @@ and cutover is the **final** 4a step.
   Referrer-Policy, or Permissions-Policy (verified live: only Cache-Control + Content-Type). No
   clickjacking or MIME-sniffing protection, no script-origin constraint.
 - **Fix direction:** Add a `headers()` function in `next.config.mjs` (Next-server-side, not a CDN
-  `_headers` file, because the unified-host architecture serves public and reviewer from one host).
+  `_headers` file, because the PaaS host serves both public and reviewer from one host).
   CSP needs a nonce or hashes for the inline theme-bootstrap script and KaTeX/Mermaid inline styles.
 - **Refs:** audit C.1; `next.config.mjs:6-22` (no `headers()`), no `src/middleware.ts`,
   `src/app/layout.tsx:40-42` (inline bootstrap script).
@@ -98,16 +98,18 @@ and cutover is the **final** 4a step.
   consent banner (item 7).
 - **Refs:** DECISIONS.md (Google Analytics over privacy-friendly alternatives).
 
-### `[ ]` 9. Migrate to the managed hosting platform  -  PR: ___
+### `[ ]` 9. Migrate to PaaS host  -  PR: ___
 - **Why it matters:** The current single-PC + SQLite + personal-tunnel setup cannot back a published
-  site; the unified-host decision is the production target. This is the **final** 4a step - the code
+  site; the PaaS-host decision is the production target. This is the **final** 4a step - the code
   and content items above can land on the current setup first, then cut over.
-- **Fix direction:** Select the platform (Railway / Fly / Render, TBD); migrate the data SQLite ->
-  Postgres (schema is already Postgres-compatible); move attachment storage to R2 or the platform
-  equivalent; configure all env vars (the encrypted-SMTP path's `SMTP_ENCRYPTION_KEY` + `SMTP_*`,
+- **Fix direction:** Select the PaaS platform (candidates: Railway / Fly.io / Render / DigitalOcean
+  App Platform / Vercel; final choice made at migration time, not now); migrate the data SQLite ->
+  Postgres (existing findings / audit / reviewers / encrypted-SMTP settings; schema is already
+  Postgres-compatible); move attachment storage to object storage (R2 or platform equivalent);
+  configure all env vars on the PaaS (the encrypted-SMTP path's `SMTP_ENCRYPTION_KEY` + `SMTP_*`,
   plus `NEXTAUTH_SECRET` / `NEXTAUTH_URL`); configure Cloudflare Access on `/review/*` (item 5);
-  plan and execute the cutover.
-- **Refs:** audit C.2, D.1; DECISIONS.md (unified-host architecture); `src/lib/prisma.ts`,
+  write the cutover plan and a rollback strategy.
+- **Refs:** audit C.2, D.1; DECISIONS.md (PaaS hosting); `src/lib/prisma.ts`,
   `src/app/api/snapshot/route.ts:47-48`, `uploads/`.
 
 ---
@@ -167,8 +169,8 @@ Clearly deferrable; no launch impact. Pick up opportunistically.
   are unmeasured. (audit C.3, B.4)
 - `[ ]` **Scope KaTeX CSS** - it loads globally (every page) though only content pages need it.
   (audit C.3; `src/app/layout.tsx:3`)
-- `[ ]` **Flip `images.unoptimized`** - the unified host means the Next image optimizer would run,
-  so it is no longer host-blocked; still a modest gain because the site is SVG-heavy. Deferred.
+- `[ ]` **Flip `images.unoptimized`** - the PaaS host can run the Next image optimizer, so it is no
+  longer host-blocked; still a modest gain because the site is SVG-heavy. Deferred.
   (audit C.3, D.15)
 - `[ ]` **Custom branded 404** - currently the Next default `/_not-found`. (audit D.12)
 
@@ -181,9 +183,9 @@ reasoning and tradeoffs live in [`DECISIONS.md`](./DECISIONS.md).
 
 1. **Domain** - launch at the existing subdomain `web.towardpcc.com` (no dedicated domain acquired).
 2. **Indexing** - search engines are welcomed (robots.txt allows, sitemap.xml aids).
-3. **Hosting architecture** - **unified host**: public site + reviewer system + Postgres + attachments
-   on one managed platform (Railway/Fly/Render, selection deferred). The audit's public/reviewer split
-   was considered and rejected.
+3. **Hosting architecture** - **PaaS host**: public site + reviewer system + Postgres + attachments
+   on one PaaS platform (Railway / Fly.io / Render / DO App Platform / Vercel, selection deferred). The
+   audit's public/reviewer split was considered and rejected.
 4. **Analytics** - **Google Analytics** (over the recommended privacy-friendly alternatives), which
    makes the cookie consent banner and a GA privacy disclosure legally required.
 5. **Reviewer access model** - **Cloudflare Access** email allow-list in front of `/review/*`;
