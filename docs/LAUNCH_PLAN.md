@@ -50,12 +50,18 @@ and cutover is the **final** 4a step.
 - **Refs:** `src/middleware.ts`, `src/app/layout.tsx` (nonce threaded into the theme-bootstrap
   `<Script>`), `DECISIONS.md` ("Strict nonce-based CSP (Option B)").
 
-### `[ ]` 3. Add robots.txt + sitemap.xml  -  PR: ___
-- **Why it matters:** Both currently 404. Indexing is now welcomed (Decisions locked), so the site
-  needs to both allow and aid crawlers.
-- **Fix direction:** Emit `app/robots.ts` (allow indexing) + `app/sitemap.ts` enumerating the SSG
-  routes (use the trailing-slash URL form to match `trailingSlash: true`).
-- **Refs:** audit C.5, D.5 (both 404 live; no `public/robots.txt`/`sitemap.xml`, no app routes).
+### `[x]` 3. Add robots.txt + sitemap.xml + canonical URLs  -  Done: PR #46 (`635c268`)
+- **Shipped as:** `src/app/robots.ts` (allows `/`, disallows `/review/` and `/api/`, references the
+  sitemap), `src/app/sitemap.ts` (**67 entries** = 13 static + 54 content (27 modalities + 9
+  foundations + 18 integration); generated from `listContent()` so it stays in sync with the MDX;
+  `lastReviewed` drives `<lastmod>`), and **`alternates.canonical` on every public page** via
+  metadata / `generateMetadata`. This also closes the canonical-link gap that item 1 (metadataBase)
+  surfaced - the site previously emitted no `<link rel="canonical">` at all.
+- **Consistency verified byte-identical:** canonical URL == sitemap entry == served URL form, all
+  `https://web.towardpcc.com/<path>/` with the trailing slash matching `trailingSlash: true`.
+  `/review/*` deliberately carries NO canonical and is disallowed in robots.
+- **Refs:** `src/app/robots.ts`, `src/app/sitemap.ts`; `alternates.canonical` added in each public
+  page's metadata / `generateMetadata`.
 
 ### `[ ]` 4. Reviewer login hardening (access model)  -  PR: ___
 - **Why it matters:** On a public-facing host the reviewer login (`POST /api/auth/callback/credentials`)
