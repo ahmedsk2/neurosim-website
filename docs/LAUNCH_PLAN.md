@@ -84,10 +84,12 @@ and cutover is the **final** 4a step.
   no responsible author - a credibility and compliance gap for a public clinical educational resource
   (and Google Analytics raises the privacy-disclosure bar; see item 7-8).
 - **Fix direction (concrete sub-items, you supply the wording):**
-  - (a) **About page** with the locked author details: Ahmed S. Alkhalifah, MD MBBS, Pediatric
+  - (a) **About page** with the locked author details (Ahmed S. Alkhalifah, MD MBBS, Pediatric
     Intensivist with subspecialty in Neurocritical Care; framed as an independent personal
-    educational project (no institutional affiliation); contact `info@towardpcc.com` (best-effort
-    response). (`src/app/about/page.tsx`)
+    educational project, no institutional affiliation; contact `info@towardpcc.com` with a
+    best-effort caveat; reinforced medical disclaimer in a `caveat`-styled Callout; plain
+    `<a href="mailto:...">` so no Cloudflare Email Obfuscation is needed). **`[x]` Done: PR #48
+    (`e11b235`).**
   - (b) **Privacy policy page**, expanded to disclose Google Analytics: what it collects, that data
     flows to Google's ad business, retention, and opt-out instructions.
   - (c) **Terms-of-use page.**
