@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CookieSettingsLink } from '@/components/consent/CookieSettingsLink';
 
 export function Footer() {
   return (
@@ -50,6 +51,9 @@ export function Footer() {
             <li className="text-ink/80">Educational content under CC BY-SA 4.0</li>
             <li className="text-ink/80">Code under MIT</li>
             <li className="text-ink/80">No PHI · no clinical advice</li>
+            <li>
+              <CookieSettingsLink />
+            </li>
           </ul>
         </div>
       </div>

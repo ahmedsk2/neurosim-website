@@ -35,6 +35,15 @@ const PERMISSIONS_POLICY =
   // explicitly denied; the site does not use those APIs.
   'camera=(), microphone=(), geolocation=(), payment=(), usb=(), display-capture=(self)';
 
+// Phase 4a item 7: when NEXT_PUBLIC_GA_ID is set in the build, the CSP extends connect-src and
+// img-src to allow Google Analytics endpoints. script-src is NOT broadened: 'strict-dynamic' plus
+// the nonced GA loader (rendered by src/components/consent/GoogleAnalytics.tsx) lets gtag.js
+// fetch dynamically without an explicit script-src host. The CSP allowance existing does not
+// load GA: that is gated on visitor consent in GoogleAnalytics.tsx. With the env var unset, the
+// CSP stays maximally strict and GA cannot load at all (the kill-switch).
+const GA_ENABLED = Boolean(process.env.NEXT_PUBLIC_GA_ID);
+const GA_HOSTS = 'https://*.google-analytics.com https://*.googletagmanager.com';
+
 export function middleware(request: NextRequest) {
   // 16 random bytes -> base64. Edge runtime has Web Crypto + btoa (no Node Buffer).
   const random = new Uint8Array(16);
@@ -47,9 +56,9 @@ export function middleware(request: NextRequest) {
     // already-trusted (nonced) script. Next's nonced chunk-loader then bootstraps everything else.
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
+    `img-src 'self' data: blob:${GA_ENABLED ? ' ' + GA_HOSTS : ''}`,
     "font-src 'self' data:",
-    "connect-src 'self'",
+    `connect-src 'self'${GA_ENABLED ? ' ' + GA_HOSTS : ''}`,
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",
