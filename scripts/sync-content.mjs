@@ -23,7 +23,7 @@ import { createHash } from 'node:crypto';
 import { execSync } from 'node:child_process';
 import jsdomPkg from 'jsdom';
 import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { mariadbAdapter } from './_dbAdapter.mjs';
 
 const { JSDOM } = jsdomPkg;
 const ROOT = process.cwd();
@@ -31,10 +31,9 @@ const CONTENT_DIR = path.join(ROOT, 'src', 'content');
 const PRERENDER_DIR = path.join(ROOT, '.next', 'server', 'app');
 const KINDS = ['foundations', 'modalities', 'integration'];
 
-const dbPath = path.join(ROOT, 'prisma', 'dev.db');
-// Same adapter + dev.db the app client (src/lib/prisma.ts) and prisma.config.ts use;
-// this is a build-time node script (like generate-og.mjs), so it owns its own instance.
-const prisma = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: `file:${dbPath}` }) });
+// Same adapter the app client (src/lib/prisma.ts) and prisma.config.ts use; this is a
+// build-time node script (like generate-og.mjs), so it owns its own instance.
+const prisma = new PrismaClient({ adapter: mariadbAdapter() });
 
 function gitShortSha() {
   try {

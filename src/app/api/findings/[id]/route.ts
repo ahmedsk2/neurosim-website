@@ -8,7 +8,7 @@ import { FindingStatus } from '@/lib/enums';
 import { canTransition, isReattest, stampsReviewedHash } from '@/lib/findings';
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
+export const runtime = 'nodejs'; // prisma (mariadb driver) needs the Node runtime
 
 const PatchBody = z.object({
   toStatus: FindingStatus,

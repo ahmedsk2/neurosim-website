@@ -1,17 +1,18 @@
 // Review Console schema (locked proposal: docs/_audit/PHASE3_SCHEMA_PROPOSAL.md, MNM-Edu).
-// Prisma 7 + SQLite (NeuroSim pattern). severity/category/status/role/audit-action are
-// String here (SQLite has no native enum) and validated by lib/enums.ts (Zod). The
-// Postgres flip adds native enum blocks + retypes these columns (proposal Section E).
+// Prisma 7 + MySQL/MariaDB (Stage A, item 8: migrated from SQLite). severity/category/status/
+// role/audit-action are String here (validated by lib/enums.ts, Zod); a later PR may retype them
+// to native MySQL enums (proposal Section E). Long free-text columns carry @db.Text so MySQL does
+// NOT silently truncate them at the VARCHAR(191) default (see docs/_audit/PAAS_MIGRATION_DISCOVERY.md).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  // Prisma 7+: url + the better-sqlite3 adapter live in prisma.config.ts
-  // (PrismaBetterSqlite3, file:./prisma/dev.db). Flip provider to "postgresql"
-  // and swap the adapter in prisma.config.ts to go hosted.
+  provider = "mysql"
+  // Prisma 7+: the connection URL + the mariadb driver adapter live in prisma.config.ts
+  // (PrismaMariaDb, reading process.env.DATABASE_URL). The mariadb driver speaks the MySQL wire
+  // protocol and connects to both MySQL and MariaDB (the Infomaniak managed target, 10.11.x).
 }
 
 // ===== SYNC-OWNED: mirrored from MNM-Edu out/content-versions.json =====
@@ -20,7 +21,7 @@ model Page {
   id           String    @id @default(cuid())
   kind         String // VERBATIM literal: "foundations" | "modalities" | "integration" (sync join key)
   slug         String
-  title        String
+  title        String    @db.Text
   gitSha       String // current synced build SHA
   contentHash  String // current synced body hash
   lastSyncedAt DateTime  @default(now())
@@ -35,7 +36,7 @@ model Heading {
   page     Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
   pageId   String
   anchorId String // rehype-slug heading id; Finding.sectionAnchor matches this
-  text     String // clean visible heading text (post the emit autolink-strip fix)
+  text     String @db.Text // clean visible heading text (post the emit autolink-strip fix)
   level    Int // 2..6
   order    Int // document order within the page
 
@@ -47,12 +48,12 @@ model Heading {
 model Reviewer {
   id                 String   @id @default(cuid())
   name               String
-  email              String   @unique // login identity (NextAuth Credentials; no public signup)
+  email              String   @unique // login identity (NextAuth Credentials; no public signup). Stored + looked up LOWERCASED (auth/options.ts, reviewers/route.ts, create-reviewer.mjs).
   passwordHash       String? // bcrypt hash; a Reviewer IS the login user. null until an invited reviewer sets it via their invite link (login is rejected while null)
   role               String   @default("validator") // role value (Zod-validated)
   specialty          String?
-  credentials        String?
-  conflictOfInterest String?
+  credentials        String?  @db.Text
+  conflictOfInterest String?  @db.Text
   isActive           Boolean  @default(true)
   createdAt          DateTime @default(now())
 
@@ -72,7 +73,7 @@ model InviteToken {
   id         String    @id @default(cuid())
   reviewer   Reviewer  @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
   reviewerId String
-  tokenHash  String    @unique // sha256(token) hex
+  tokenHash  String    @unique // sha256(token) hex (lowercase); 64 chars, fits VARCHAR(191)
   purpose    String // 'invite' | 'password_reset' (Zod InvitePurpose in lib/enums.ts)
   expiresAt  DateTime
   consumedAt DateTime? // single-use: set when the token is redeemed
@@ -88,18 +89,18 @@ model Finding {
 
   // anchor: denormalized snapshot, NOT a Heading FK, so a finding survives heading deletion
   sectionAnchor       String? // heading anchorId; null = whole-page finding
-  sectionTextSnapshot String? // heading text at file time, for text-based relocation on drift
-  quotedText          String? // exact passage flagged
+  sectionTextSnapshot String? @db.Text // heading text at file time, for text-based relocation on drift
+  quotedText          String? @db.Text // exact passage flagged
 
-  // classification (Zod-validated String on SQLite; native enum on Postgres)
+  // classification (Zod-validated String; a later PR may use a native MySQL enum)
   severity String
   category String
   status   String @default("open")
 
-  title             String
-  detail            String // what is wrong and why (the body)
-  suggestedFix      String?
-  suggestedCitation String?
+  title             String  @db.Text
+  detail            String  @db.Text // what is wrong and why (the body)
+  suggestedFix      String? @db.Text
+  suggestedCitation String? @db.Text
 
   // version pin
   filedGitSha         String // page_git_sha when filed (reference)
@@ -114,7 +115,7 @@ model Finding {
   assignedToId String?
   priority     Int?
 
-  resolutionNote String?
+  resolutionNote String?   @db.Text
   resolvedBy     Reviewer? @relation("FindingResolver", fields: [resolvedById], references: [id])
   resolvedById   String?
   resolvedAt     DateTime?
@@ -159,7 +160,7 @@ model FindingComment {
   findingId Int
   author    Reviewer @relation(fields: [authorId], references: [id])
   authorId  String
-  body      String
+  body      String   @db.Text
   createdAt DateTime @default(now())
 
   @@index([findingId])
@@ -175,7 +176,7 @@ model FindingAudit {
   action     String // see lib/enums.ts AUDIT_ACTIONS
   fromStatus String?
   toStatus   String?
-  detail     String? // JSON-encoded text on SQLite; native Json on Postgres. APPEND-ONLY in v1.
+  detail     String?   @db.Text // JSON-encoded text. APPEND-ONLY in v1.
   at         DateTime  @default(now())
 
   @@index([findingId])
@@ -185,7 +186,7 @@ model FindingAttachment {
   id           Int      @id @default(autoincrement())
   finding      Finding  @relation(fields: [findingId], references: [id], onDelete: Cascade)
   findingId    Int
-  filePath     String // local filesystem path (no object storage locally)
+  filePath     String // local filesystem path (no object storage locally); short, fits VARCHAR(191)
   uploadedBy   Reviewer @relation(fields: [uploadedById], references: [id])
   uploadedById String
   createdAt    DateTime @default(now())
@@ -197,15 +198,15 @@ model FindingAttachment {
 // touched by the content mirror). Seeded with defaults (scripts/seed-email-templates.mjs) so
 // the feature works out of the box; the admin edits the prefilled copy before each send.
 model EmailTemplate {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   // key: a FindingStatus value (the target status this template prefills for) OR the literal
   // "general" (the standalone/ad-hoc send). Validated by EmailTemplateKey in lib/enums.ts;
   // @unique so the per-status default lookup is a single findUnique.
-  key       String  @unique
+  key       String   @unique
   label     String // human label shown in the compose-panel picker
-  subject   String // may contain {{placeholders}}; resolved at compose time, not at send time
-  body      String // may contain {{placeholders}}; resolved at compose time, not at send time
-  isActive  Boolean @default(true)
+  subject   String   @db.Text // may contain {{placeholders}}; resolved at compose time, not at send time
+  body      String   @db.Text // may contain {{placeholders}}; resolved at compose time, not at send time
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -213,15 +214,15 @@ model EmailTemplate {
 // Admin-editable SMTP settings (Console-owned, single row keyed id="default"). Edited from the
 // admin-only /review/settings page so the operator does not need shell access to .env. A
 // non-empty field here OVERRIDES the matching SMTP_ env var (see lib/email/transport.ts); a
-// blank field falls back to env. Stored in the local gitignored dev.db (the same at-rest
-// exposure as .env). The password is write-only in the UI (never returned to the browser).
+// blank field falls back to env. Stored at rest in the database row (same at-rest exposure model
+// as .env). The password is write-only in the UI (never returned to the browser).
 model SmtpSetting {
   id          String   @id @default("default")
   host        String?
   port        Int      @default(587)
   secure      Boolean  @default(false) // true = implicit TLS (465); false = STARTTLS (587)
   user        String?
-  pass        String? // stored as-is for SMTP AUTH; local gitignored DB; never sent to the client
+  pass        String?  @db.Text // AES-256-GCM ciphertext (base64). @db.Text so MySQL never truncates it: truncation would destroy decryptability.
   from        String?
   updatedAt   DateTime @updatedAt
   updatedById String? // reviewer id that last saved

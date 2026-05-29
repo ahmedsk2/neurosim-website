@@ -121,8 +121,8 @@ and cutover is the **final** 4a step.
   and content items above can land on the current setup first, then cut over.
 - **Fix direction:** Select the PaaS platform (candidates: Railway / Fly.io / Render / DigitalOcean
   App Platform / Vercel; final choice made at migration time, not now); migrate the data SQLite ->
-  Postgres (existing findings / audit / reviewers / encrypted-SMTP settings; schema is already
-  Postgres-compatible); move attachment storage to object storage (R2 or platform equivalent);
+  MySQL/MariaDB (existing findings / audit / reviewers / encrypted-SMTP settings; schema is already
+  MySQL/MariaDB-compatible); move attachment storage to object storage (R2 or platform equivalent);
   configure all env vars on the PaaS (the encrypted-SMTP path's `SMTP_ENCRYPTION_KEY` + `SMTP_*`,
   plus `NEXTAUTH_SECRET` / `NEXTAUTH_URL`); configure Cloudflare Access on `/review/*` (item 5);
   write the cutover plan and a rollback strategy.
@@ -200,7 +200,7 @@ reasoning and tradeoffs live in [`DECISIONS.md`](./DECISIONS.md).
 
 1. **Domain** - launch at the existing subdomain `web.towardpcc.com` (no dedicated domain acquired).
 2. **Indexing** - search engines are welcomed (robots.txt allows, sitemap.xml aids).
-3. **Hosting architecture** - **PaaS host**: public site + reviewer system + Postgres + attachments
+3. **Hosting architecture** - **PaaS host**: public site + reviewer system + MySQL/MariaDB + attachments
    on one PaaS platform (Railway / Fly.io / Render / DO App Platform / Vercel, selection deferred). The
    audit's public/reviewer split was considered and rejected.
 4. **Analytics** - **Google Analytics** (over the recommended privacy-friendly alternatives), which

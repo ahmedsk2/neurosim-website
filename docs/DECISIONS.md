@@ -68,7 +68,7 @@ SQLite + NextAuth v4 stack (mirroring the NeuroSim project).
 better than a hosted DB for a few reviewers.
 
 **Tradeoff accepted:** The data layer lives on one machine (see the backup discipline in
-`OPERATIONS.md`). The schema is written Postgres-compatible so the datasource can flip if the
+`OPERATIONS.md`). The schema is written MySQL/MariaDB-compatible so the datasource can flip if the
 reviewer system ever needs real hosting.
 
 ## 2026-05 - Role split enforced at the data layer, not the UI (PR #29)
@@ -159,9 +159,9 @@ resource. Not indexing would defeat the educational reach.
 
 ## 2026-05 - Unified-host architecture (one managed host for everything)
 
-**Reworded (2026-05) as [PaaS hosting (one host for everything)](#2026-05---paas-hosting-one-host-for-everything) - the same one-host decision, restated with precise PaaS terminology (managed runtime + managed Postgres + zero OS-ops) and an expanded candidate list (adds DigitalOcean App Platform and Vercel). See that entry for the current form.**
+**Reworded (2026-05) as [PaaS hosting (one host for everything)](#2026-05---paas-hosting-one-host-for-everything) - the same one-host decision, restated with precise PaaS terminology (managed runtime + managed MySQL/MariaDB + zero OS-ops) and an expanded candidate list (adds DigitalOcean App Platform and Vercel). See that entry for the current form.**
 
-**What:** Public site + reviewer system + Postgres + attachments all on ONE managed application
+**What:** Public site + reviewer system + MySQL/MariaDB + attachments all on ONE managed application
 platform (Railway/Fly/Render-style; selection deferred). The audit's recommended split (public to
 CDN, reviewer on a separate host) was considered and rejected.
 
@@ -213,8 +213,8 @@ separates project contact from personal correspondence.
 
 ## 2026-05 - PaaS hosting (one host for everything)
 
-**What:** Public site + reviewer system + Postgres + attachments deploy to ONE PaaS host
-(Platform-as-a-Service: managed runtime + managed Postgres + zero OS-ops). Specific PaaS platform
+**What:** Public site + reviewer system + MySQL/MariaDB + attachments deploy to ONE PaaS host
+(Platform-as-a-Service: managed runtime + managed MySQL/MariaDB + zero OS-ops). Specific PaaS platform
 (Railway / Fly.io / Render / DO App Platform / Vercel) selected at migration time, not now. The
 Phase 4 audit's recommended split (public to static CDN + reviewer to a separate host) was
 considered and rejected.
@@ -226,6 +226,24 @@ the split's cost and performance advantages on the public side.
 (2) loss of free global edge caching on the public site; (3) loss of free CDN-grade DDoS protection
 on the public side (Cloudflare in front provides basic protection); (4) public-traffic spikes can
 affect the reviewer system because they share host capacity. Made knowingly with the costs surfaced.
+
+## 2026-05 - Database engine: MySQL/MariaDB (Infomaniak managed), not Postgres (item 8 Stage A)
+
+**What:** The hosted database is MySQL/MariaDB (the Infomaniak Managed Cloud Server provides managed
+MariaDB 10.11), not Postgres. Earlier entries above and the migration discovery's first draft assumed
+Postgres; this entry supersedes those references. The Prisma datasource provider is `mysql`, via the
+`@prisma/adapter-mariadb` driver adapter (the `mariadb` driver speaks the MySQL wire protocol and
+serves both MySQL and MariaDB). Schema shape is unchanged; long free-text columns carry `@db.Text`
+so MySQL does not truncate them at the VARCHAR(191) default.
+
+**Why:** Infomaniak (the chosen managed host) offers MySQL/MariaDB, not Postgres. Prisma supports
+MySQL as a first-class provider, so the migration shape is identical; only DB-specific details differ
+(driver adapter, port 3306, `@db.Text` annotations, `mysqldump` backups instead of `pg_dump`).
+
+**Tradeoffs accepted:** MySQL's default collation is case-insensitive (Postgres is case-sensitive);
+the app now normalizes email to lowercase on both store and login lookup so correctness does not
+depend on the collation. The one-time SQLite -> MySQL data copy uses a Prisma two-client script
+(`scripts/migrate-to-mysql.mjs`); `pgloader` (Postgres-only) does not apply.
 
 **Supersedes:** the earlier [Unified-host architecture](#2026-05---unified-host-architecture-one-managed-host-for-everything)
 entry - same decision, now stated with PaaS terminology.

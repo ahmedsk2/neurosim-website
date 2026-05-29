@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { setPasswordViaToken } from '@/lib/reviewerTokens';
 import { rateLimit, clientIp } from '@/lib/rateLimit';
 
-export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
+export const runtime = 'nodejs'; // prisma (mariadb driver) needs the Node runtime
 export const dynamic = 'force-dynamic';
 
 // POST /api/reviewers/reset-password - PUBLIC (no session): redeem a password-reset token and set

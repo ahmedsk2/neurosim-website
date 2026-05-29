@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth/apiAuth';
 
-export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
+export const runtime = 'nodejs'; // prisma (mariadb driver) needs the Node runtime
 export const dynamic = 'force-dynamic';
 
 // POST /api/findings/[id]/restore - admin-only un-delete of a soft-deleted finding. Clears

@@ -3,18 +3,19 @@
  * Create or update a Review Console reviewer (there is no public signup).
  *
  * Usage (password from env so it is not in shell history):
- *   REVIEWER_PASSWORD='...' node scripts/create-reviewer.mjs <email> <name> [role]
  *   REVIEWER_PASSWORD='...' npm run create-reviewer -- <email> <name> [role]
+ *   REVIEWER_PASSWORD='...' node --env-file=.env scripts/create-reviewer.mjs <email> <name> [role]
  *
  * role defaults to 'validator' (one of validator | admin | implementer | observer).
- * Requires a migrated prisma/dev.db (npm run db:migrate).
+ * Writes to MySQL/MariaDB via DATABASE_URL (Stage A, item 8). The email is normalized to
+ * lowercase so it matches the case-insensitive login lookup (src/lib/auth/options.ts).
  */
-import path from 'node:path';
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { mariadbAdapter } from './_dbAdapter.mjs';
 
-const [email, name, role = 'validator'] = process.argv.slice(2);
+const [rawEmail, name, role = 'validator'] = process.argv.slice(2);
+const email = (rawEmail ?? '').trim().toLowerCase();
 const password = process.env.REVIEWER_PASSWORD;
 
 if (!email || !name || !password) {
@@ -27,8 +28,7 @@ if (!ALLOWED.includes(role)) {
   process.exit(1);
 }
 
-const dbPath = path.join(process.cwd(), 'prisma', 'dev.db');
-const prisma = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: `file:${dbPath}` }) });
+const prisma = new PrismaClient({ adapter: mariadbAdapter() });
 
 const passwordHash = await bcrypt.hash(password, 12);
 const reviewer = await prisma.reviewer.upsert({

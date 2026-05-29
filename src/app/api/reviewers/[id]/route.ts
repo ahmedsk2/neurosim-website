@@ -5,7 +5,7 @@ import { requireAdmin } from '@/lib/auth/apiAuth';
 import { ReviewerRole } from '@/lib/enums';
 import { isSelfDeactivation, isAdminPromotion, removesActiveAdmin } from '@/lib/reviewerGuards';
 
-export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
+export const runtime = 'nodejs'; // prisma (mariadb driver) needs the Node runtime
 export const dynamic = 'force-dynamic';
 
 // PATCH /api/reviewers/[id] - admin-only: change a reviewer's role and/or active flag. Guards:
