@@ -288,3 +288,22 @@ WITHOUT turning GA on before the privacy policy is lawyer-cleared and published.
 **Tradeoff / dependency:** GA goes live in production ONLY when **both** (1) the lawyer-cleared
 privacy policy is published AND (2) `NEXT_PUBLIC_GA_ID` is set in the production environment.
 Until both, GA is dark.
+
+## 2026-05 - MySQL @db.Text annotations are load-bearing (do NOT simplify them away)
+
+**What:** The production database is **MySQL/MariaDB 10.11** (Infomaniak managed hosting), migrated
+from SQLite in Stage A of item 8 (PR #53, `fd4e687`). The Prisma datasource adapter is
+`@prisma/adapter-mariadb`. The `@db.Text` annotations on the long free-text and encrypted columns in
+`prisma/schema.prisma` are **REQUIRED, not cosmetic**.
+
+**Why this is recorded:** On MySQL an unannotated Prisma `String` defaults to `VARCHAR(191)`. Removing
+the `@db.Text` annotations would make MySQL **silently truncate** finding bodies (`Finding.detail`,
+`quotedText`, `suggestedFix`, `suggestedCitation`, `resolutionNote`, `sectionTextSnapshot`),
+`FindingComment.body`, `FindingAudit.detail` (JSON), `EmailTemplate.subject` / `body`, and - most
+dangerously - `SmtpSetting.pass`, the AES-256-GCM ciphertext: a truncated ciphertext is permanently
+**undecryptable** (silent SMTP breakage). Indexed / unique columns deliberately stay `VARCHAR(191)`
+(`Reviewer.email`, `InviteToken.tokenHash`, `EmailTemplate.key`, `Finding.severity` / `status`).
+
+**Guardrail:** do not drop the `@db.Text` annotations to "tidy" the schema, and do not move the
+datasource to another engine without re-checking every long / encrypted column for truncation.
+Verified live on MariaDB 10.11.16 (no-truncation + ciphertext round-trip proofs, PR #53).

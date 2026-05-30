@@ -115,19 +115,35 @@ and cutover is the **final** 4a step.
   `src/components/layout/Footer.tsx`, `.env.example` (kill-switch documentation),
   `DECISIONS.md` ("Privacy-respecting GA, consent-gated").
 
-### `[ ]` 8. Migrate to PaaS host  -  PR: ___
+### `[ ]` 8. Migrate to PaaS host  -  Stage A done (PR #53, `fd4e687`); Stages B-E open
 - **Why it matters:** The current single-PC + SQLite + personal-tunnel setup cannot back a published
   site; the PaaS-host decision is the production target. This is the **final** 4a step - the code
   and content items above can land on the current setup first, then cut over.
-- **Fix direction:** Select the PaaS platform (candidates: Railway / Fly.io / Render / DigitalOcean
-  App Platform / Vercel; final choice made at migration time, not now); migrate the data SQLite ->
-  MySQL/MariaDB (existing findings / audit / reviewers / encrypted-SMTP settings; schema is already
-  MySQL/MariaDB-compatible); move attachment storage to object storage (R2 or platform equivalent);
-  configure all env vars on the PaaS (the encrypted-SMTP path's `SMTP_ENCRYPTION_KEY` + `SMTP_*`,
-  plus `NEXTAUTH_SECRET` / `NEXTAUTH_URL`); configure Cloudflare Access on `/review/*` (item 5);
-  write the cutover plan and a rollback strategy.
-- **Refs:** audit C.2, D.1; DECISIONS.md (PaaS hosting); `src/lib/prisma.ts`,
-  `src/app/api/snapshot/route.ts:47-48`, `uploads/`.
+- **Stage A - datasource conversion (DONE, PR #53 `fd4e687`):** Prisma datasource converted SQLite ->
+  MySQL/MariaDB and verified live against a throwaway MariaDB 10.11.16 (matching production): the
+  `@db.Text` no-truncation proof, the `SmtpSetting` ciphertext round-trip, the data-copy row-count
+  match, the email-casing fix, and all gates (typecheck / lint / validate-content / unit 94 / build /
+  e2e 12) green. Adapter is `@prisma/adapter-mariadb`; the one-time copy script is
+  `scripts/migrate-to-mysql.mjs`.
+- **Stage B - server provisioning (OPEN, runbook):** Infomaniak Managed Cloud Server (Node 24,
+  MariaDB 10.11, Nginx, Playwright Chromium deps, systemd, TLS, firewall); set all env vars
+  (`DATABASE_URL`, `NEXTAUTH_SECRET` / `NEXTAUTH_URL`, `SMTP_ENCRYPTION_KEY` + `SMTP_*`) in the server
+  environment, never the repo. **Follow-up: the now-obsolete SQLite `scripts/backup-db.mjs` needs a
+  `mysqldump` replacement** (paired with a `uploads/` tar) - it no longer works against MySQL.
+- **Stage C - real data migration (OPEN):** run `scripts/migrate-to-mysql.mjs` against the real
+  `prisma/dev.db` into the production MySQL with the SAME `SMTP_ENCRYPTION_KEY` (so the encrypted SMTP
+  row stays decryptable); verify per-table row counts. **Accepted behavior:** the copy sets the three
+  `@updatedAt` columns to migration time; `createdAt` and the append-only `FindingAudit` history are
+  preserved verbatim, which is what matters for governance.
+- **Stage D - cutover (OPEN):** DNS to the server; smoke-test public + reviewer login + finding-create
+  + email; Cloudflare Access on `/review/*` (item 5); confirm the strict-CSP zone settings
+  (`OPERATIONS.md` section 7).
+- **Stage E - rollback / parallel-run (OPEN):** keep the PC + tunnel as a fast rollback target for
+  ~2 weeks before decommissioning.
+- **Item 8 overall stays `[ ]` until cutover (Stage D).**
+- **Refs:** PR #53 (`fd4e687`); `docs/_audit/PAAS_MIGRATION_DISCOVERY.md`; DECISIONS.md (PaaS hosting;
+  Database engine MySQL/MariaDB; @db.Text load-bearing); `scripts/migrate-to-mysql.mjs`,
+  `src/lib/prisma.ts`, `uploads/`.
 
 ---
 
