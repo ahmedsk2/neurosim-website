@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: { strategy: 'jwt' },
   // Cloudflare-Tunnel redirect callback (from NeuroSim): NEXTAUTH_URL bakes a single
-  // host, but the app is reached via the tunnel (web.towardpcc.com) AND localhost in
+  // host, but the app is reached via the tunnel (mnm.towardpcc.com) AND localhost in
   // dev. NextAuth v4 has no trustHost, so accept relative + same-origin URLs and fall
   // back to the request's own baseUrl (computed from the inbound Host header).
   callbacks: {

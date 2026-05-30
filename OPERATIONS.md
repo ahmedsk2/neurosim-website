@@ -5,7 +5,7 @@ Practical notes for whoever runs this on their PC. Short and to the point.
 ## 1. What this system is
 
 The MNM-Edu Review Console is a local-PC clinical-review platform. The app runs on
-this one machine and is published to the internet at https://web.towardpcc.com
+this one machine and is published to the internet at https://mnm.towardpcc.com
 through a Cloudflare Tunnel. Everything that matters lives on THIS machine: the
 review database, the encrypted SMTP credential, and the uploaded attachment files.
 There is no cloud database and no managed backup. If the PC dies and nothing was
@@ -99,7 +99,7 @@ npx next start -p 3041   # serve on http://localhost:3041
 
 - Use `-p 3041` (or set `PORT=3041`): a bare `npm run start` uses Next's default
   port, but the Cloudflare Tunnel expects 3041.
-- The public URL https://web.towardpcc.com works only while the Cloudflare Tunnel
+- The public URL https://mnm.towardpcc.com works only while the Cloudflare Tunnel
   is running and pointed at `localhost:3041`. The tunnel is already configured; if
   the public site is down, check that both the tunnel and the server (on 3041) are
   running.
@@ -117,7 +117,7 @@ dead, console full of "Refused to execute inline script" CSP errors. This cost a
 launch; it must be re-verified after every Cloudflare configuration change and whenever a new zone
 is set up.
 
-These Cloudflare features MUST stay OFF on the `web.towardpcc.com` zone:
+These Cloudflare features MUST stay OFF on the `mnm.towardpcc.com` zone:
 
 - **Rocket Loader** - this is the one that actually broke the launch. Rocket Loader replaces page
   scripts with a Cloudflare loader script (non-nonced) and defers them, blocking essentially every

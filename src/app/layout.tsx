@@ -17,7 +17,7 @@ import { THEME_BOOTSTRAP_SCRIPT } from '@/lib/theme';
 export const metadata: Metadata = {
   // Production origin (the locked launch domain; see docs/DECISIONS.md). metadataBase resolves the
   // relative OG / Twitter image URLs below to absolute URLs on this host.
-  metadataBase: new URL('https://web.towardpcc.com'),
+  metadataBase: new URL('https://mnm.towardpcc.com'),
   title: {
     default: 'MNM-Edu, Pediatric Multimodal Neuromonitoring',
     template: '%s | MNM-Edu',
