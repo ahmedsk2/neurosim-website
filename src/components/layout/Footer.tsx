@@ -48,6 +48,8 @@ export function Footer() {
             Legal
           </div>
           <ul className="space-y-1 text-[13px]">
+            <li><Link href="/privacy/" className="text-ink hover:text-brand-tealLight">Privacy policy</Link></li>
+            <li><Link href="/terms/" className="text-ink hover:text-brand-tealLight">Terms of use</Link></li>
             <li className="text-ink/80">Educational content under CC BY-SA 4.0</li>
             <li className="text-ink/80">Code under MIT</li>
             <li className="text-ink/80">No PHI · no clinical advice</li>
