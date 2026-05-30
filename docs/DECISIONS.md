@@ -307,3 +307,25 @@ dangerously - `SmtpSetting.pass`, the AES-256-GCM ciphertext: a truncated cipher
 **Guardrail:** do not drop the `@db.Text` annotations to "tidy" the schema, and do not move the
 datasource to another engine without re-checking every long / encrypted column for truncation.
 Verified live on MariaDB 10.11.16 (no-truncation + ciphertext round-trip proofs, PR #53).
+
+## 2026-05 - Privacy policy + Terms of use published (lawyer-approved)
+
+**What:** The Privacy Policy and Terms of Use pages were published live at `/privacy/` and
+`/terms/` on `mnm.towardpcc.com`, after Canadian privacy/tech lawyer review and approval (PR #58,
+`c7ba2d9`; supersedes the draft PR #50). Both pages are indexable (no `noindex`), linked from the
+footer (Legal column), present in `src/app/sitemap.ts` (sitemap now 69 entries), and carry
+self-referential canonical tags. Effective date: 2026-05-30.
+
+**Why:** A public clinical educational resource under a named author must disclose how it handles
+visitor data (cookies / Google Analytics / Cloudflare / SMTP / hosting) and state the terms under
+which it is used, including the medical disclaimer, license terms (CC BY-SA 4.0 for content + MIT
+for code), warranty / liability / indemnification posture, and governing law. The reviewer-side
+guidance markers (`[LEGAL REVIEW: ...]`) were stripped on the lawyer's sign-off; the placeholders
+were filled with the now-known facts (hosting = Infomaniak Switzerland / EEA; database =
+MySQL/MariaDB per item 8 Stage A; data-protection authorities listed explicitly: OPC Canada, CAI
+Québec, UK ICO, EU DPAs; consent-withdrawal mechanism = the footer "Cookie settings" link).
+
+**Tradeoff accepted:** Governing law and forum is **Ontario, Canada** (kept from the draft; the
+lawyer did not change it on review). Visitors outside Ontario / Canada are bound by that forum
+selection to the extent enforceable; international enforceability is the standard tradeoff for any
+single-jurisdiction terms.

@@ -92,8 +92,9 @@ and cutover is the **final** 4a step.
     `<a href="mailto:...">` so no Cloudflare Email Obfuscation is needed). **`[x]` Done: PR #48
     (`e11b235`).**
   - (b) **Privacy policy page**, expanded to disclose Google Analytics: what it collects, that data
-    flows to Google's ad business, retention, and opt-out instructions.
-  - (c) **Terms-of-use page.**
+    flows to Google's ad business, retention, and opt-out instructions. **`[x]` Done: PR #58
+    (`c7ba2d9`).**
+  - (c) **Terms-of-use page.** **`[x]` Done: PR #58 (`c7ba2d9`).**
   - (d) **Reinforce the medical disclaimer site-wide** so a reader landing on any single page sees it
     (it currently lives in the footer + About + home).
 - **Refs:** audit C.6, C.7, D.6; `src/app/about/page.tsx`, `src/components/layout/Footer.tsx:45-54`.
