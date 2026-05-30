@@ -31,8 +31,22 @@ function createPrismaClient() {
   });
 }
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+// Construct the client LAZILY, on first property access. Merely importing this module must not
+// require DATABASE_URL: `next build` imports the API route modules to collect page data with no
+// database available (and CI has no .env), and unit tests import code paths without a DB. The real
+// connection is created only when a query actually runs (at runtime, where DATABASE_URL is set).
+// The instance is cached on globalThis so dev HMR and repeated imports reuse a single client.
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+function getPrismaClient(): PrismaClient {
+  if (!globalForPrisma.prisma) globalForPrisma.prisma = createPrismaClient();
+  return globalForPrisma.prisma;
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getPrismaClient();
+    const value = Reflect.get(client, prop, client);
+    return typeof value === 'function' ? value.bind(client) : value;
+  },
+});
