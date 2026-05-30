@@ -35,3 +35,8 @@ public/search-index.json
 
 # Local dev.db backups (npm run backup -> ./backups/dev-*.db); never commit
 backups/
+
+# Data-only SQL exports for phpMyAdmin (scripts/export-for-phpmyadmin.mjs): contain REAL data
+# including reviewer emails + the encrypted SMTP secret. NEVER commit.
+mnm-data-export.sql
+*.data-export.sql
