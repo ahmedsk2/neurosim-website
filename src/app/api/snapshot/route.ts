@@ -32,6 +32,21 @@ function localBase(req: Request): string {
 }
 
 export async function POST(req: Request) {
+  // Feature gate: this host has no Chromium (e.g. Infomaniak Managed Cloud Server), so launching
+  // headless Chromium would crash. Set NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT=1 to re-enable on a
+  // Chromium-capable host. The same flag is read by FindingComposer at build time to hide the
+  // "Capture page" button, so this 503 is defense-in-depth (the UI normally never hits this path
+  // when the flag is unset).
+  if (
+    process.env.NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT !== '1' &&
+    process.env.NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT !== 'true'
+  ) {
+    return NextResponse.json(
+      { error: 'Server-side full-page snapshot is disabled on this host. Use "Capture my current view" instead.' },
+      { status: 503 },
+    );
+  }
+
   const auth = await requireReviewer();
   if (!auth.ok) return NextResponse.json(auth.body, { status: auth.status });
 
