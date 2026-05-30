@@ -8,7 +8,7 @@ update), so this file should always answer: "what would I do next if I sat down 
 **Scope reminder.** The architecture is now settled (see "Decisions locked" below and
 `DECISIONS.md`): the public read-only educational layer and the closed, invite-only reviewer system
 run together on **one PaaS host** (Platform-as-a-Service), fronted by Cloudflare. The public site is openly readable and
-search-indexed at **web.towardpcc.com**; the reviewer routes (`/review/*`) sit behind **Cloudflare
+search-indexed at **mnm.towardpcc.com**; the reviewer routes (`/review/*`) sit behind **Cloudflare
 Access** (email allow-list). The reviewer registration model is unchanged (admin-invite only).
 
 Companion docs: architectural decisions live in [`DECISIONS.md`](./DECISIONS.md); the detailed
@@ -31,9 +31,10 @@ and cutover is the **final** 4a step.
 ### `[x]` 1. Set the production domain in metadata  -  Done: PR #41 (`59a6ca0`)
 - **Why it matters:** `metadataBase` is the placeholder `https://mnm-edu.example`, so every absolute
   OG URL and the derived canonical point at a non-existent domain.
-- **Fix direction:** Set `metadataBase` in `src/app/layout.tsx:14` to `https://web.towardpcc.com`,
+- **Fix direction:** Set `metadataBase` in `src/app/layout.tsx:14` to `https://mnm.towardpcc.com`,
   and set `NEXTAUTH_URL` to match.
 - **Refs:** audit C.5, C.10, D.2; `src/app/layout.tsx:14`.
+- **Correction:** the production deploy went live at `mnm.towardpcc.com`, not the originally planned `web.towardpcc.com`. All `metadataBase` / canonical / sitemap / robots / `NEXTAUTH_URL` references corrected repo-wide; verified `canonical == sitemap == served-URL` consistency holds on the new domain.
 
 ### `[x]` 2. Add security headers  -  Done: PR #44 (`ab975d0`) - shipped as strict nonce-based CSP (Option B)
 - **Shipped as:** strict middleware-generated per-request nonces in `src/middleware.ts`
@@ -58,7 +59,7 @@ and cutover is the **final** 4a step.
   metadata / `generateMetadata`. This also closes the canonical-link gap that item 1 (metadataBase)
   surfaced - the site previously emitted no `<link rel="canonical">` at all.
 - **Consistency verified byte-identical:** canonical URL == sitemap entry == served URL form, all
-  `https://web.towardpcc.com/<path>/` with the trailing slash matching `trailingSlash: true`.
+  `https://mnm.towardpcc.com/<path>/` with the trailing slash matching `trailingSlash: true`.
   `/review/*` deliberately carries NO canonical and is disallowed in robots.
 - **Refs:** `src/app/robots.ts`, `src/app/sitemap.ts`; `alternates.canonical` added in each public
   page's metadata / `generateMetadata`.
@@ -214,7 +215,7 @@ Clearly deferrable; no launch impact. Pick up opportunistically.
 The launch-shaping decisions are settled. Each is one line here for at-a-glance state; the full
 reasoning and tradeoffs live in [`DECISIONS.md`](./DECISIONS.md).
 
-1. **Domain** - launch at the existing subdomain `web.towardpcc.com` (no dedicated domain acquired).
+1. **Domain** - launch at the existing subdomain `mnm.towardpcc.com` (no dedicated domain acquired).
 2. **Indexing** - search engines are welcomed (robots.txt allows, sitemap.xml aids).
 3. **Hosting architecture** - **PaaS host**: public site + reviewer system + MySQL/MariaDB + attachments
    on one PaaS platform (Railway / Fly.io / Render / DO App Platform / Vercel, selection deferred). The

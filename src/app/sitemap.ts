@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { listContent } from '@/lib/content';
 
-// All public URLs use https://web.towardpcc.com (matching `metadataBase` in src/app/layout.tsx)
+// All public URLs use https://mnm.towardpcc.com (matching `metadataBase` in src/app/layout.tsx)
 // and the trailing-slash form (matching `trailingSlash: true` in next.config.mjs and the
 // self-referential canonical tags emitted on each page). Reviewer (/review/*) and API (/api/*)
 // routes are deliberately excluded; robots.ts also disallows them.
-const ORIGIN = 'https://web.towardpcc.com';
+const ORIGIN = 'https://mnm.towardpcc.com';
 
 // Public utility / static-content pages. Kept in code (not derived from filesystem) so adding a
 // new top-level public page is a one-line, intentional addition rather than an accidental include.

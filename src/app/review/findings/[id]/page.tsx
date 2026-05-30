@@ -70,7 +70,7 @@ export default async function FindingDetail({ params }: { params: Promise<{ id: 
       })
     : [];
   // Build the {{link}} base from the CURRENT request host (x-forwarded-* behind the tunnel) so
-  // the reviewer link matches the domain the admin opened (e.g. web.towardpcc.com), not a fixed
+  // the reviewer link matches the domain the admin opened (e.g. mnm.towardpcc.com), not a fixed
   // NEXTAUTH_URL. Falls back to the Host header, then NEXTAUTH_URL.
   const hdrs = await headers();
   const proto = hdrs.get('x-forwarded-proto') ?? 'http';

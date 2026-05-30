@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/review/', '/api/'],
       },
     ],
-    sitemap: 'https://web.towardpcc.com/sitemap.xml',
-    host: 'https://web.towardpcc.com',
+    sitemap: 'https://mnm.towardpcc.com/sitemap.xml',
+    host: 'https://mnm.towardpcc.com',
   };
 }

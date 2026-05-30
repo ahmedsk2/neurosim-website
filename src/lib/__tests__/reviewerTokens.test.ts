@@ -38,8 +38,8 @@ describe('requestBaseUrl', () => {
   const reqWith = (headers: Record<string, string>) => ({ headers: new Headers(headers) }) as unknown as Request;
 
   it('prefers x-forwarded-proto/host (tunnel-aware)', () => {
-    expect(requestBaseUrl(reqWith({ 'x-forwarded-proto': 'https', 'x-forwarded-host': 'web.towardpcc.com' }))).toBe(
-      'https://web.towardpcc.com',
+    expect(requestBaseUrl(reqWith({ 'x-forwarded-proto': 'https', 'x-forwarded-host': 'mnm.towardpcc.com' }))).toBe(
+      'https://mnm.towardpcc.com',
     );
   });
   it('falls back to Host with default http', () => {

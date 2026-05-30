@@ -138,9 +138,9 @@ reviewer system on the PC preserves the zero-hosted-services posture for the dyn
 experiences are served from different origins (the reviewer overlay's client-side session check
 already tolerates this).
 
-## 2026-05 - Public launch domain: web.towardpcc.com
+## 2026-05 - Public launch domain: mnm.towardpcc.com
 
-**What:** Launching the public site at the existing subdomain web.towardpcc.com rather than
+**What:** Launching the public site at the existing subdomain mnm.towardpcc.com rather than
 acquiring a dedicated domain.
 
 **Why:** The user chose the existing URL knowingly for the launch.
