@@ -144,7 +144,26 @@ toggles. New zones default Rocket Loader OFF, but Email Obfuscation defaults ON 
 templates, and Web Analytics auto-injection varies. Treat this section as a checklist whenever the
 public origin moves.
 
-## 8. What this system is NOT
+## 8. Server-side snapshot disabled on this host (no Chromium)
+
+The reviewer overlay's "Capture page" button posts to `/api/snapshot`, which launches a
+headless Chromium via Playwright to render the full page. Infomaniak's Managed Cloud Server
+does not ship Chromium and it has not been installed here, so server-side snapshot is disabled.
+
+The `NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT` env flag controls this:
+
+- **Unset (default) or `0`:** the API returns a clean `503` instead of crashing; the UI hides
+  the "Capture page" button entirely so it is not shown-and-broken; only "Capture my current
+  view" (the browser's `getDisplayMedia`) is offered, and that path stays fully working.
+- **`1`:** the API and the UI re-enable the server-side path. Only set this on a host where
+  Chromium and the Playwright OS deps are installed
+  (`npx playwright install --with-deps chromium`).
+
+The feature has not been removed - it stays a single env flag flip away on a Chromium-capable
+host. The same `NEXT_PUBLIC_` flag is read by both the API route
+(`src/app/api/snapshot/route.ts`) and `src/components/review-overlay/FindingComposer.tsx`.
+
+## 9. What this system is NOT
 
 This is an educational review tool, NOT a HIPAA-compliant clinical record system
 and NOT a medical device. Do not put patient-identifiable information in it. It is

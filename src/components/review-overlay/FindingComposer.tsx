@@ -37,6 +37,15 @@ function readHeadings(): HeadingOpt[] {
 const fieldCls =
   'w-full rounded border border-[#1e293b] bg-[#0b1220] px-2 py-1.5 text-[#e2e8f0] outline-none focus:border-[#5eead4]';
 
+// Server-side full-page snapshot (POST /api/snapshot) uses headless Chromium via @playwright/test.
+// On hosts without Chromium (e.g. Infomaniak), NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT is unset (the
+// default), which (a) HIDES the "Capture page" button so it is not shown-and-broken, (b) leaves
+// the in-browser "Capture my current view" path as the sole capture option, and (c) the API
+// returns a clean 503 if hit directly. Set this to "1" only on a Chromium-capable host.
+const SERVER_SNAPSHOT_ENABLED =
+  process.env.NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT === '1' ||
+  process.env.NEXT_PUBLIC_ENABLE_SERVER_SNAPSHOT === 'true';
+
 export function FindingComposer({
   kind,
   slug,
@@ -324,14 +333,16 @@ export function FindingComposer({
           ) : (
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={capturePage}
-                  disabled={capturing}
-                  className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
-                >
-                  {capturing ? 'Capturing…' : shots.length ? 'Capture another page' : 'Capture page'}
-                </button>
+                {SERVER_SNAPSHOT_ENABLED && (
+                  <button
+                    type="button"
+                    onClick={capturePage}
+                    disabled={capturing}
+                    className="rounded border border-[#334155] px-3 py-1.5 hover:border-[#5eead4] disabled:opacity-50"
+                  >
+                    {capturing ? 'Capturing…' : shots.length ? 'Capture another page' : 'Capture page'}
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => setViewPrompt(true)}
@@ -342,8 +353,10 @@ export function FindingComposer({
                 </button>
               </div>
               <p className="text-[#64748b]">
-                Capture one or more screenshots; click a thumbnail to open it full-screen and annotate. "Capture page"
-                shoots the full page with widgets; "Capture my current view" grabs this tab as you see it.
+                Capture one or more screenshots; click a thumbnail to open it full-screen and annotate.{' '}
+                {SERVER_SNAPSHOT_ENABLED
+                  ? '"Capture page" shoots the full page with widgets; "Capture my current view" grabs this tab as you see it.'
+                  : '"Capture my current view" grabs this tab as you see it (pick "This Tab" when your browser asks).'}
               </p>
             </div>
           )}
