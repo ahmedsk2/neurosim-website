@@ -23,6 +23,8 @@ const STATIC_PATHS: string[] = [
   '/quick-card/',
   '/roadmap/',
   '/teach/fellow-lecture/',
+  '/privacy/',
+  '/terms/',
 ];
 
 function entry(path: string, lastReviewed?: string): MetadataRoute.Sitemap[number] {
