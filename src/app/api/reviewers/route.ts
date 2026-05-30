@@ -6,7 +6,7 @@ import { ReviewerRole } from '@/lib/enums';
 import { createInviteToken, inviteLink, requestBaseUrl } from '@/lib/reviewerTokens';
 import { sendSystemEmail } from '@/lib/email/system';
 
-export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
+export const runtime = 'nodejs'; // prisma (mariadb driver) needs the Node runtime
 export const dynamic = 'force-dynamic';
 
 // POST /api/reviewers - admin-only: create a reviewer with NO password (passwordHash=null) and

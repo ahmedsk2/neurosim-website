@@ -14,9 +14,8 @@
  * Placeholders ({{...}}) are resolved at compose time by src/lib/email/templates.ts:
  *   {{reviewerName}} {{ticketTitle}} {{page}} {{status}} {{link}}
  */
-import path from 'node:path';
 import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { mariadbAdapter } from './_dbAdapter.mjs';
 
 const SIGNOFF = 'The MNM-Edu review team';
 
@@ -163,8 +162,7 @@ ${SIGNOFF}`,
   },
 ];
 
-const dbPath = path.join(process.cwd(), 'prisma', 'dev.db');
-const prisma = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: `file:${dbPath}` }) });
+const prisma = new PrismaClient({ adapter: mariadbAdapter() });
 
 const force = process.env.SEED_FORCE === '1';
 let created = 0;

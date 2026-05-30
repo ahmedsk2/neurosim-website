@@ -4,7 +4,7 @@ import { requireAdmin } from '@/lib/auth/apiAuth';
 import { createInviteToken, inviteLink, requestBaseUrl } from '@/lib/reviewerTokens';
 import { sendSystemEmail } from '@/lib/email/system';
 
-export const runtime = 'nodejs'; // prisma (better-sqlite3) needs the Node runtime
+export const runtime = 'nodejs'; // prisma (mariadb driver) needs the Node runtime
 export const dynamic = 'force-dynamic';
 
 // POST /api/reviewers/[id]/reset-password - admin-only: email the reviewer a fresh one-time
