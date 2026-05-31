@@ -70,8 +70,8 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
-> A1 (data-table horizontal scroll), A2 (mermaid light theme and label fit), and A3 (>= 44px tap
-> targets) are DONE; see the Completed section below.
+> A1 (data-table horizontal scroll), A2 (mermaid light theme and label fit), A3 (>= 44px tap
+> targets), and A6 (consent-banner theming) are DONE; see the Completed section below.
 
 #### `[ ]` A4. Fix the recurring bold-runs-into-next-word spacing typos
 - **What:** correct the MDX bold-adjacency spacing defect, for example "Neurology 2011,pooled"
@@ -90,14 +90,6 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
   behind Cloudflare Access in production).
 - **Effort:** Quick win.
 - **Touches:** `/review/login/`; both themes; mobile to desktop.
-
-#### `[ ]` A6. Make the cookie consent banner use theme tokens
-- **What:** the banner is currently hardcoded dark (`#0b1220` and similar), so it stays dark in
-  light mode. Drive it from the design tokens so it adapts.
-- **Audit finding:** Noted (light-theme / token-consistency gap). Banner only renders in builds
-  where `NEXT_PUBLIC_GA_ID` is set, so assess live in production.
-- **Effort:** Quick win.
-- **Touches:** light theme specifically; verify in a GA-enabled build; all breakpoints.
 
 #### `[ ]` A7. Fix the /modalities/tcd/ mobile page overflow from the fixed ScrollProgress bar
 - **What:** on `/modalities/tcd/` at 375 px the page still scrolls horizontally, but the culprit is
@@ -193,6 +185,22 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 
 Items move here on merge, newest first, with PR number and merged SHA.
 
+#### `[x]` A6. Theme the cookie consent banner with design tokens  -  Done: PR #70 (`b06b8e7`)
+- **Shipped:** `CookieBanner.tsx` now uses the design tokens instead of hardcoded dark colors, so it
+  themes in both modes. In light it renders as a white bar (`bg-surface-card`, `text-ink`,
+  `border-line`) that blends with the page instead of a dark island; dark is unchanged. Accept and
+  Decline use the site's secondary-button tokens and are kept computed-identical (equal weight, no
+  dark pattern); the dismiss control uses `text-ink-muted`.
+- **Color/token swap only:** the consent logic is untouched (the diff is 6 className color swaps):
+  the `NEXT_PUBLIC_GA_ID` kill-switch, default-deny, `showBanner` derivation, accept/decline/dismiss
+  handlers, the no-first-visit-dismiss rule, and the privacy link are all unchanged.
+- **Verified:** built locally with a dummy `NEXT_PUBLIC_GA_ID` (build-command env only, never
+  committed) to render the banner; computed colors + screenshots in both themes; reverted (the dummy
+  id is in no tracked file; the gate build was re-run plain). Full gate green (typecheck, lint,
+  validate-content, vitest 94/94, build, e2e 12 passed).
+- **Prod note:** GA is live in production, so the themed banner can be eyeballed on the live site
+  after the next deploy.
+
 #### `[x]` A3. Enlarge interactive tap targets to >= 44px on touch  -  Done: PR #68 (`fdac4b4`)
 - **Shipped:** a `.tap-target` utility (`globals.css`) gated by `@media (pointer: coarse),
   (max-width: 1023px)` gives a >= 44px hit area on touch and narrow viewports ONLY. Applied to the
@@ -244,6 +252,11 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #70 (`b06b8e7`): A6 shipped. CookieBanner now uses design tokens instead of
+  hardcoded dark colors, so it themes correctly in both modes: light renders as a white bar blending
+  with the page instead of a dark island, dark unchanged. Accept/Decline kept computed-identical
+  (equal weight, no dark pattern); consent logic untouched (color/token swap only). Since GA is live
+  in prod, the themed banner can be eyeballed on the live site after the next deploy.
 - 2026-05-31, PR #68 (`fdac4b4`): A3 shipped. A `.tap-target` utility gated by
   `@media (pointer: coarse),(max-width:1023px)` gives >= 44px hit areas on touch/narrow only:
   header search/theme/hamburger, shared Button, homepage CTAs, PrintButton, cookie-banner buttons,
