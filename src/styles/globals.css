@@ -153,7 +153,12 @@ html, body {
   background: var(--bg-darker);
   color: var(--text);
   font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
+  /* Base font / rem root (design B4). 15px (was 14): the owner read 14px as slightly
+   * small, so this is a deliberate, conservative +1px bump, not a jump to 16px. NOTE:
+   * rem sizing is relative to this, so every rem-based Tailwind dimension scales by
+   * ~7%; literal [Npx] values (for example the .tap-target 44px) do not. See the
+   * "Engineering notes" in docs/DESIGN_IMPROVEMENT_PLAN.md. */
+  font-size: 15px;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -281,24 +286,25 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
   }
 }
 /* ----------------------------------------------------------
- * Content-page heading hierarchy (design B1)
+ * Content-page heading hierarchy (design B1, with B4 restore)
  * ----------------------------------------------------------
- * The audit found the type hierarchy read flat: h3 (17px) sat only 3px above the
- * 14px body, so a reader scanning a dense modality page could not find section
- * boundaries at a glance. This strengthens the CONTRAST BETWEEN LEVELS (size,
- * weight, tracking, line-height, and vertical rhythm) without touching the BASE
- * BODY SIZE, which stays 14px (changing the base is the separate, isolated B4
- * decision). Sizes are literal px (absolute, unaffected by the 14px root), and
- * step on a ~1.3 ratio: body 14 -> h3 18 -> h2 24 -> h1 31, so each level is
- * clearly larger than the one below it. Heading line-heights are tightened from
- * the inherited 1.6 (loose, for body) to 1.2-1.3 so multi-line headings read as
- * one cohesive block. The vertical rhythm encodes structure: a large gap above an
- * h2 (40px) signals a new top-level section (reinforced by a hairline section
- * rule in the teal heading color), a smaller gap above an h3 (28px) signals a
- * subsection, and paragraph spacing (12px) is tighter still. */
-.prose-mnm h1 { font-size: 31px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.2; margin: 0 0 18px; }
+ * The audit found the type hierarchy read flat: h3 sat only ~3px above body, so a
+ * reader scanning a dense modality page could not find section boundaries at a
+ * glance. This strengthens the CONTRAST BETWEEN LEVELS (size, weight, tracking,
+ * line-height, and vertical rhythm). Sizes are literal px and step on a ~1.3 ratio:
+ * body 15 -> h3 20 -> h2 26 -> h1 33, so each level is clearly larger than the one
+ * below it (h3/body ~1.33, h2/body ~1.73, h1/body ~2.2). NOTE: B1 originally used
+ * 14 -> 18 -> 24 -> 31; when B4 raised the base font to 15px the literal-px headings
+ * did not rescale and the ratios compressed (h3/body fell to 1.20), so the heading
+ * px were nudged up in the same B4 change to restore the B1 contrast at the 15px
+ * base. Heading line-heights are tightened from the inherited 1.6 (loose, for body)
+ * to 1.2-1.3 so multi-line headings read as one cohesive block. The vertical rhythm
+ * encodes structure: a large gap above an h2 (40px) signals a new top-level section
+ * (reinforced by a hairline section rule in the teal heading color), a smaller gap
+ * above an h3 (28px) signals a subsection, and paragraph spacing (12px) is tighter. */
+.prose-mnm h1 { font-size: 33px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.2; margin: 0 0 18px; }
 .prose-mnm h2 {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.3px;
   line-height: 1.25;
@@ -307,7 +313,7 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
   border-bottom: 1px solid var(--border);
   color: var(--teal-light);
 }
-.prose-mnm h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.1px; line-height: 1.3; margin: 28px 0 8px; color: var(--text); }
+.prose-mnm h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.1px; line-height: 1.3; margin: 28px 0 8px; color: var(--text); }
 .prose-mnm h4 { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 20px 0 6px; color: var(--muted); }
 .prose-mnm p { margin: 0 0 12px; color: var(--text); }
 .prose-mnm ul, .prose-mnm ol { margin: 0 0 14px 22px; }
