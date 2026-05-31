@@ -142,7 +142,7 @@ export default function MxCalculator() {
           </Button>
         </>
       }
-      footnote="Czosnyka 1996 (Mx) · Schmidt 2003,moving Pearson r between 30 paired 10-second MAP and TCD MFV averages."
+      footnote="Czosnyka 1996 (Mx) · Schmidt 2003, moving Pearson r between 30 paired 10-second MAP and TCD MFV averages."
     >
       <div className="grid gap-2.5 grid-cols-1 md:grid-cols-4 mb-2.5">
         <Readout label="MAP" value={last ? last.map.toFixed(0) : '-'} unit="mmHg" />

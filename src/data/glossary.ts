@@ -115,7 +115,7 @@ export const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'PVI',
-    definition: 'Pressure-volume index. The volume change required to raise ICP by a factor of 10,Marmarou\'s logarithmic compliance descriptor. ~20 mL adult.',
+    definition: 'Pressure-volume index. The volume change required to raise ICP by a factor of 10, Marmarou\'s logarithmic compliance descriptor. ~20 mL adult.',
   },
   {
     term: 'GCS',
