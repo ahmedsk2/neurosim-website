@@ -347,3 +347,25 @@ manage, no Bypass-rule precedence to reason about).
 reset-password because of the Cloudflare gate, switch to a Bypass Access policy matching those
 four paths. The token in the URL is the credential either way (sha256 stored, single-use, 7-day
 expiry, rate-limited at the app layer; PR #37).
+
+## 2026-05 - Medical disclaimer posture: footer line + About-page (no top-of-content reinforcement)
+
+**What:** The site-wide medical disclaimer posture is two-layer: (1) a concise educational
+disclaimer line - "For educational use; not a substitute for clinical judgement." - appears in
+the footer on every page (including deep-linked content pages); (2) the full detailed disclaimer
+(not clinical advice, verify against primary sources and local protocols, do not drive
+patient-care decisions, applied by the responsible team) lives on the About page and is restated
+in the Medical-disclaimer section of the Terms of Use. **No top-of-content-page reinforcement**
+is rendered above each article body.
+
+**Why:** The footer line is in every page, so every reader hitting any single content URL sees at
+least one disclaimer; the About-page detailed disclaimer is the canonical statement and is linked
+from the footer; the medical-disclaimer language in Terms of Use § 3 is also binding. Adding a
+top-of-content-page caveat block was considered and judged unnecessary - it would clutter the
+article view without adding new substance, and the audience (clinicians and trainees) does not
+need an in-line banner above each article to remember not to drive a patient-care decision from a
+single web page.
+
+**Tradeoff accepted:** Slight risk that a non-clinician reader skips the footer line and the
+About page. Acceptable given the audience, the footer disclaimer being on every page, and the
+explicit Medical-disclaimer and Acceptable-use sections in the Terms of Use.
