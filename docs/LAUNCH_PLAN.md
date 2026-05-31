@@ -14,31 +14,42 @@ Access** (email allow-list). The reviewer registration model is unchanged (admin
 Companion docs: architectural decisions live in [`DECISIONS.md`](./DECISIONS.md); the detailed
 findings (with full citations) live in [`_audit/PRE_LAUNCH_AUDIT.md`](./_audit/PRE_LAUNCH_AUDIT.md).
 
-## Current status (as of the latest merge)
+## Current status (Phase 4a launch COMPLETE)
 
 **The site is LIVE at `https://mnm.towardpcc.com`** on **Infomaniak managed Node.js hosting
-(Node 24)**, with the public educational layer **open to all visitors and search-indexed** and
-the reviewer system (`/review/*`) behind **Cloudflare Access** (email allow-list + One-time PIN).
-Data lives in **MariaDB 10.11**; the encrypted SMTP credential decrypts on the server and email
-send / receive is confirmed working in production. The strict nonce-based CSP runs unchanged
-behind the Infomaniak proxy + Cloudflare, with Rocket Loader / Email Obfuscation / Web Analytics
-auto-injection OFF on the zone. **Infomaniak's daily backups cover BOTH the MariaDB database
-AND the `uploads/` attachments directory** (confirmed).
+(Node 24)**. **All Phase 4a items (1-8) are closed.**
 
-**Lawyer-approved Privacy Policy and Terms of Use are published** at `/privacy/` and `/terms/`.
+- **Public educational layer** open to all visitors, search-indexed, fully interactive (every
+  widget renders under the strict nonce-based CSP).
+- **Reviewer system** at `/review/*` is behind **Cloudflare Access** (email allow-list +
+  One-time PIN); the two-step reviewer onboarding is documented in `OPERATIONS.md` section 8.
+- **Database** migrated to **MariaDB 10.11** on the Infomaniak managed host; **email send /
+  receive is confirmed working in production**, which proves the AES-256-GCM `SmtpSetting.pass`
+  ciphertext survived and decrypts with the server's `SMTP_ENCRYPTION_KEY`.
+- **Legal pages** (lawyer-approved Privacy Policy and Terms of Use) published at `/privacy/` and
+  `/terms/`, indexable, footer-linked.
+- **Google Analytics is LIVE** under the cookie consent banner with the privacy-respecting
+  config (`anonymize_ip` confirmed firing, `allow_google_signals: false`,
+  `allow_ad_personalization_signals: false`); default-deny consent mode.
+- **Daily Infomaniak backups confirmed** to cover BOTH the MariaDB database AND the `uploads/`
+  attachments directory on the server disk.
+- **Server-side `.env` confirmed to survive Infomaniak redeploys**, so the secret-management
+  posture (`.env` set via SSH on the host) is durable as-is - no migration to a separate secret
+  store is required.
 
-**What remains:**
+### Future / maintenance notes (NOT open launch items)
 
-- **GA enablement.** The cookie consent banner + GA loader machinery are shipped, but
-  `NEXT_PUBLIC_GA_ID` is intentionally still unset in production, so GA stays dark. Turn it on by
-  setting the env var on the server when ready (item 7's production dependency).
-- **Item 8 redeploy / `.env` durability check.** Server-side secrets currently live in a `.env`
-  set via SSH on the Infomaniak host. The one remaining open verification is to confirm an
-  Infomaniak redeploy does NOT wipe that file - and if it does, switch to whichever
-  secret-management mechanism Infomaniak provides (or move the secrets into a path the redeploy
-  preserves). Item 8 stays `[ ]` until this is verified.
-- **Item 6(d) site-wide medical disclaimer.** Small content task: reinforce the disclaimer
-  beyond the About page + footer + home so a reader landing on any single page sees it.
+Recorded so they are on the record, not as outstanding work:
+
+- **Next.js 16 deprecation.** `src/middleware.ts` uses the `middleware` convention; Next 16 has
+  begun migrating that name to `proxy`. Non-urgent. When undertaken, the change must be careful
+  because this file holds the security-critical strict nonce-based CSP and the six security
+  response headers.
+- **Cloudflare Access bypass for invite/reset paths.** Deliberately deferred (documented in
+  `OPERATIONS.md` section 8 and `DECISIONS.md`). Revisit only if a real reviewer ever hits
+  friction completing an accept-invite or reset-password flow because of the Cloudflare gate.
+- **Reviewer onboarding is two-step by design.** Add the email to the Cloudflare Access ALLOW
+  policy FIRST, then send the in-app invite (documented in `OPERATIONS.md` section 8).
 
 ## Status legend
 
@@ -114,7 +125,7 @@ and cutover is the **final** 4a step.
   DECISIONS.md ("Cloudflare Access in front of reviewer routes"; "Deferred: Cloudflare Access
   bypass for invite/reset paths").
 
-### `[ ]` 6. Legal pages + public accountability  -  PR: ___
+### `[x]` 6. Legal pages + public accountability  -  Done (all sub-items closed; see (a)-(d) below)
 - **Why it matters:** No privacy policy, no terms of use, no public contact, and the About page names
   no responsible author - a credibility and compliance gap for a public clinical educational resource
   (and Google Analytics raises the privacy-disclosure bar; see item 7).
@@ -129,8 +140,15 @@ and cutover is the **final** 4a step.
     flows to Google's ad business, retention, and opt-out instructions. **`[x]` Done: PR #58
     (`c7ba2d9`).**
   - (c) **Terms-of-use page.** **`[x]` Done: PR #58 (`c7ba2d9`).**
-  - (d) **Reinforce the medical disclaimer site-wide** so a reader landing on any single page sees it
-    (it currently lives in the footer + About + home).
+  - (d) **Reinforce the medical disclaimer site-wide.** **`[x]` Satisfied (editorial judgment).**
+    The existing posture is considered adequate: a concise educational disclaimer line - "For
+    educational use; not a substitute for clinical judgement." - appears site-wide in the footer
+    on every page (including deep-linked content pages), and the full detailed disclaimer (not
+    clinical advice, verify against primary sources and local protocols, do not drive
+    patient-care decisions, applied by the responsible team) is on the About page. A
+    top-of-content-page reinforcement was considered and deemed unnecessary given the existing
+    footer line. Recorded as a deliberate decision, not an oversight; see DECISIONS.md
+    ("Medical disclaimer posture").
 - **Refs:** audit C.6, C.7, D.6; `src/app/about/page.tsx`, `src/components/layout/Footer.tsx:45-54`.
 
 ### `[x]` 7. Cookie consent banner + GA with consent gating  -  Done: PR #51 (`edefabf`)
@@ -151,10 +169,9 @@ and cutover is the **final** 4a step.
   `src/components/layout/Footer.tsx`, `.env.example` (kill-switch documentation),
   `DECISIONS.md` ("Privacy-respecting GA, consent-gated").
 
-### `[ ]` 8. Migrate to PaaS host  -  Live on Infomaniak; one redeploy/.env durability check remains
+### `[x]` 8. Migrate to PaaS host  -  Done (live on Infomaniak; `.env` durability across redeploy confirmed)
 - **Why it matters:** The original single-PC + SQLite + personal-tunnel setup could not back a
-  published site. The migration moved everything onto a managed host. The site is now LIVE; this
-  item stays `[ ]` only until the operational verification at the bottom is confirmed.
+  published site. The migration moved everything onto a managed host. The site is now LIVE.
 - **Stage A - datasource conversion (DONE, PR #53 `fd4e687`):** Prisma datasource converted SQLite ->
   MySQL/MariaDB and verified live against a throwaway MariaDB 10.11.16 (matching production): the
   `@db.Text` no-truncation proof, the `SmtpSetting` ciphertext round-trip, the data-copy row-count
@@ -181,11 +198,9 @@ and cutover is the **final** 4a step.
 - **Backup posture (confirmed):** Infomaniak's daily backups cover **BOTH** the MariaDB database
   **AND** the `uploads/` attachments directory on the server disk. No `mysqldump` cron is required in
   production; the SQLite `scripts/backup-db.mjs` is dev-only now (see `OPERATIONS.md` section 3).
-- **Open verification (this is what keeps item 8 at `[ ]`):** confirm that an Infomaniak redeploy
-  does NOT wipe the server-side `.env`. Secrets currently live in a `.env` set via SSH; if a
-  redeploy overwrites the app directory, the `.env` strategy needs revisiting (move secrets into
-  Infomaniak's secret-management mechanism, or into a path the redeploy preserves). Until this is
-  verified, item 8 stays open.
+- **`.env` durability across redeploy (CONFIRMED):** an Infomaniak redeploy does NOT wipe the
+  server-side `.env`, so the secret-management posture (`.env` set via SSH on the host) is
+  durable as-is; no migration to a separate secret store is required.
 - **Refs:** PR #53 (`fd4e687`, datasource conversion); PR #56 (`a990d89`, domain correction);
   `scripts/export-for-phpmyadmin.mjs` (data-only SQL import used at cutover);
   `docs/_audit/PAAS_MIGRATION_DISCOVERY.md`; DECISIONS.md (PaaS hosting; Database engine
