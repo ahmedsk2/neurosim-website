@@ -212,6 +212,20 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
 }
 
 /* ---------------------------------------------------------- */
+/* Touch tap targets (design A3)                              */
+/* ----------------------------------------------------------
+ * On touch devices and narrow viewports, expand key interactive controls to a
+ * comfortable >= 44px hit area (WCAG 2.5.5, Apple HIG, Material), without enlarging
+ * them on desktop with a mouse. Controls carrying .tap-target are flex-centered, so the
+ * glyph or label stays centered as the box grows. */
+@media (pointer: coarse), (max-width: 1023px) {
+  .tap-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* ---------------------------------------------------------- */
 /* Skip-link                                                  */
 /* ---------------------------------------------------------- */
 .skip-link {

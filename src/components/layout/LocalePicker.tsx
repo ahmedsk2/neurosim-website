@@ -32,7 +32,7 @@ export function LocalePicker({ className }: { className?: string }) {
         onClick={() => setOpen((o) => !o)}
         aria-label="Language"
         suppressHydrationWarning
-        className="inline-flex items-center gap-1 rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card"
+        className="tap-target inline-flex items-center gap-1 rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card"
       >
         <Globe className="h-4 w-4" />
         <span className="text-[11px] font-bold uppercase tracking-[0.08em]">

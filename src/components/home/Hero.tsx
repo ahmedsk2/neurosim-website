@@ -45,13 +45,13 @@ export function Hero() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/foundations/"
-              className="inline-flex items-center gap-2 rounded-md bg-brand-teal px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-surface-darker hover:bg-brand-tealLight focus:outline-hidden focus:ring-2 focus:ring-brand-tealLight"
+              className="tap-target inline-flex items-center gap-2 rounded-md bg-brand-teal px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-surface-darker hover:bg-brand-tealLight focus:outline-hidden focus:ring-2 focus:ring-brand-tealLight"
             >
               Start with foundations <span aria-hidden>→</span>
             </Link>
             <Link
               href="/modalities/"
-              className="inline-flex items-center gap-2 rounded-md border border-brand-tealDark px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-brand-tealLight hover:bg-surface-deeper hover:border-brand-teal focus:outline-hidden focus:ring-2 focus:ring-brand-teal"
+              className="tap-target inline-flex items-center gap-2 rounded-md border border-brand-tealDark px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-brand-tealLight hover:bg-surface-deeper hover:border-brand-teal focus:outline-hidden focus:ring-2 focus:ring-brand-teal"
             >
               Browse 24 modalities <span aria-hidden>→</span>
             </Link>
