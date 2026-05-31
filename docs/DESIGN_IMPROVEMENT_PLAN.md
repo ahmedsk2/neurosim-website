@@ -83,19 +83,10 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
-> A1 (data-table horizontal scroll), A2 (mermaid light theme and label fit), A3 (>= 44px tap
-> targets), A5 (reviewer login polish), and A6 (consent-banner theming) are DONE, and A7 was
-> investigated and RESOLVED WITH NO FIX (a Preview-CDP emulation artifact, not a real bug); see the
-> Completed section below. Only A4 (content spacing typos) remains open in Track A.
-
-#### `[ ]` A4. Fix the recurring bold-runs-into-next-word spacing typos
-- **What:** correct the MDX bold-adjacency spacing defect, for example "Neurology 2011,pooled"
-  (homepage stat) and "public pagesuntil" / "Analytics(when enabled" (privacy policy). Grep the
-  whole content set for the same pattern.
-- **Audit finding:** Low, content polish (recurring).
-- **Effort:** Quick win.
-- **Touches:** content (MDX). NOTE: this touches CONTENT; verify each change carefully and confirm
-  no clinical meaning is altered. All themes/breakpoints unaffected (text only).
+> **Track A is COMPLETE.** A1 (data-table horizontal scroll), A2 (mermaid light theme and label
+> fit), A3 (>= 44px tap targets), A4 (content spacing typos), A5 (reviewer login polish), and A6
+> (consent-banner theming) are all DONE; A7 was investigated and RESOLVED WITH NO FIX (a Preview-CDP
+> emulation artifact, not a real bug). All seven items now live in the Completed section below.
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
@@ -178,6 +169,26 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 ## Completed
 
 Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` A4. Fix the recurring bold-runs-into-next-word spacing typos  -  Done: PR #75 (`568d17d`)
+- **Shipped:** 15 whitespace-only fixes (a single missing space after a comma) across user-facing
+  display strings: the homepage `StatStrip` ("Neurology 2011, pooled", "NEJM 1998, STOP"), six
+  widget footnotes/labels/titles (`MxCalculator`, `PRxCalculator`, `LindegaardCalculator`,
+  `MultimodalDiscordance`, `CMRO2TempSlider`, `ICPWaveformTrainer`), and one glossary definition
+  (`glossary.ts`, "factor of 10, Marmarou"). 9 files, 15 insertions / 15 deletions.
+- **Whitespace only, zero clinical meaning changed:** the edit inserts a space after a comma and
+  nothing else. No numbers, thresholds, drug names/doses, citation keys, units, or terminology were
+  touched. Before editing, the `ICPWaveformTrainer` `morphologyLabel()` strings were confirmed to be
+  used only as a display `hint` prop (not as a lookup key), so re-spacing them is display-only.
+- **Audit framing reconciled:** the audit called this "bold-adjacency" spacing, but the real defect
+  was missing space after a comma in plain display strings (the clinical MDX was already clean).
+  The privacy-policy "pagesuntil" / "Analytics(when" example was a screenshot MISREAD; that source
+  already has the correct spacing, so it needed no change.
+- **Verified:** `validate-content` 0 violations; the rendered homepage now shows "Neurology 2011,
+  pooled" and "NEJM 1998, STOP". Full gate green (typecheck, lint, validate-content, vitest 94/94,
+  build, e2e 12 passed). Text-only, so all themes/breakpoints unaffected.
+- **Deferred (out of scope):** the same comma-without-space pattern still exists in a few code/JSX
+  COMMENTS, which are never rendered. Left untouched here; could be a tiny separate code-cleanup PR.
 
 #### `[x]` A5. Polish the reviewer login page  -  Done: PR #73 (`56090fa`)
 - **Shipped:** the reviewer login (`/review/login/`) was rebuilt as a centered card using the site
@@ -286,6 +297,16 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #75 (`568d17d`): A4 shipped, **and Track A is now COMPLETE** (A1, A2, A3, A4, A5,
+  A6 all done; A7 resolved-no-fix). 15 whitespace-only fixes (single missing space after a comma) in
+  user-facing display strings across the homepage StatStrip, six widget footnotes/labels/titles, and
+  one glossary definition; 9 files, 15 insertions / 15 deletions. Zero clinical meaning changed (no
+  numbers, thresholds, drug names/doses, citation keys, units, or terminology touched); the
+  ICPWaveformTrainer morphologyLabel strings were confirmed display-only (a `hint` prop, not a key)
+  before editing. The clinical MDX was already clean; the audit's "bold-adjacency" framing was
+  actually comma-spacing, and the privacy-policy example was a screenshot misread (correct in
+  source). validate-content 0 violations; full gate green. Deferred out of scope: the same pattern in
+  a few code/JSX COMMENTS (never rendered) was left untouched as a possible tiny cleanup.
 - 2026-05-31, PR #73 (`56090fa`): A5 shipped. Reviewer login rebuilt as a centered card using site
   tokens + font-sans (replacing the monospace top-left form), with real <label> elements and correct
   input types/autocomplete/focus states, tap-targets applied; the review console sub-nav now renders
