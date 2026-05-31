@@ -342,6 +342,29 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
   text-transform: uppercase;
 }
 
+/* Horizontal-scroll wrapper for wide data tables (rendered by TableScroll.tsx, which
+ * maps the MDX `table` element). Keeps a wide table scrolling inside its own box instead
+ * of widening the whole page on small screens. The affordance is a thin, token-matched
+ * scrollbar that reads in both themes; no fade/gradient overlay is used, so values in the
+ * edge columns are never tinted. On desktop the table still fills the column at width:100%
+ * (the wrapper only scrolls when the table's min-content exceeds the available width). */
+.prose-mnm .prose-table-scroll {
+  margin: 14px 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.prose-mnm .prose-table-scroll > table { margin: 0; }
+.prose-mnm .prose-table-scroll::-webkit-scrollbar { height: 8px; }
+.prose-mnm .prose-table-scroll::-webkit-scrollbar-track { background: transparent; }
+.prose-mnm .prose-table-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.prose-mnm .prose-table-scroll::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
 /* KaTeX overrides for dark theme */
 .katex { color: var(--text); }
 .katex-display { margin: 14px 0 !important; overflow-x: auto; }

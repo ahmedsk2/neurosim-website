@@ -44,6 +44,7 @@ import {
 } from '@/components/content';
 import { Callout, EvidenceLevel, Panel, Card } from '@/components/ui';
 import { Mermaid, MermaidPre } from '@/components/content/Mermaid';
+import { TableScroll } from '@/components/content/TableScroll';
 
 export const mdxComponents: MDXComponents = {
   Cite,
@@ -93,6 +94,7 @@ export const mdxComponents: MDXComponents = {
   Card,
   Mermaid,
   pre: MermaidPre as MDXComponents['pre'],
+  table: TableScroll as MDXComponents['table'],
 };
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
