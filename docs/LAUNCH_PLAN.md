@@ -14,6 +14,32 @@ Access** (email allow-list). The reviewer registration model is unchanged (admin
 Companion docs: architectural decisions live in [`DECISIONS.md`](./DECISIONS.md); the detailed
 findings (with full citations) live in [`_audit/PRE_LAUNCH_AUDIT.md`](./_audit/PRE_LAUNCH_AUDIT.md).
 
+## Current status (as of the latest merge)
+
+**The site is LIVE at `https://mnm.towardpcc.com`** on **Infomaniak managed Node.js hosting
+(Node 24)**, with the public educational layer **open to all visitors and search-indexed** and
+the reviewer system (`/review/*`) behind **Cloudflare Access** (email allow-list + One-time PIN).
+Data lives in **MariaDB 10.11**; the encrypted SMTP credential decrypts on the server and email
+send / receive is confirmed working in production. The strict nonce-based CSP runs unchanged
+behind the Infomaniak proxy + Cloudflare, with Rocket Loader / Email Obfuscation / Web Analytics
+auto-injection OFF on the zone. **Infomaniak's daily backups cover BOTH the MariaDB database
+AND the `uploads/` attachments directory** (confirmed).
+
+**Lawyer-approved Privacy Policy and Terms of Use are published** at `/privacy/` and `/terms/`.
+
+**What remains:**
+
+- **GA enablement.** The cookie consent banner + GA loader machinery are shipped, but
+  `NEXT_PUBLIC_GA_ID` is intentionally still unset in production, so GA stays dark. Turn it on by
+  setting the env var on the server when ready (item 7's production dependency).
+- **Item 8 redeploy / `.env` durability check.** Server-side secrets currently live in a `.env`
+  set via SSH on the Infomaniak host. The one remaining open verification is to confirm an
+  Infomaniak redeploy does NOT wipe that file - and if it does, switch to whichever
+  secret-management mechanism Infomaniak provides (or move the secrets into a path the redeploy
+  preserves). Item 8 stays `[ ]` until this is verified.
+- **Item 6(d) site-wide medical disclaimer.** Small content task: reinforce the disclaimer
+  beyond the About page + footer + home so a reader landing on any single page sees it.
+
 ## Status legend
 
 - `[ ]` Not started
@@ -64,13 +90,16 @@ and cutover is the **final** 4a step.
 - **Refs:** `src/app/robots.ts`, `src/app/sitemap.ts`; `alternates.canonical` added in each public
   page's metadata / `generateMetadata`.
 
-### `[ ]` 4. Reviewer login hardening (access model)  -  PR: ___
+### `[x]` 4. Reviewer login hardening (access model)  -  Closed (subsumed by item 5)
 - **Why it matters:** On a public-facing host the reviewer login (`POST /api/auth/callback/credentials`)
   would otherwise be an open, unthrottled attack surface (password-spray / bot probing).
-- **Fix direction:** **Cloudflare Access in front of `/review/*` is the primary defense** (item 5);
-  the existing in-memory rate-limiter stays as application-level defense-in-depth. No additional
+- **Closed because:** Item 5 (Cloudflare Access in front of `/review/*`) is now the primary edge
+  defense - only allow-listed reviewer emails can even reach the login endpoint, so the
+  password-spray / bot-probing surface is closed at the edge. The application's in-memory
+  rate-limiter (`src/lib/rateLimit.ts`) remains in place as defense-in-depth. No additional
   app-level throttle is required for launch.
-- **Refs:** audit C.1, D.4; `src/lib/rateLimit.ts` (limiter exists), `src/lib/auth/options.ts`.
+- **Refs:** audit C.1, D.4; `src/lib/rateLimit.ts`, `src/lib/auth/options.ts`; item 5 (Cloudflare
+  Access).
 
 ### `[x]` 5. Configure Cloudflare Access on reviewer routes  -  Done: PR #60
 - **Shipped as:** Cloudflare Zero Trust Free plan, a self-hosted Access application over
@@ -122,35 +151,45 @@ and cutover is the **final** 4a step.
   `src/components/layout/Footer.tsx`, `.env.example` (kill-switch documentation),
   `DECISIONS.md` ("Privacy-respecting GA, consent-gated").
 
-### `[ ]` 8. Migrate to PaaS host  -  Stage A done (PR #53, `fd4e687`); Stages B-E open
-- **Why it matters:** The current single-PC + SQLite + personal-tunnel setup cannot back a published
-  site; the PaaS-host decision is the production target. This is the **final** 4a step - the code
-  and content items above can land on the current setup first, then cut over.
+### `[ ]` 8. Migrate to PaaS host  -  Live on Infomaniak; one redeploy/.env durability check remains
+- **Why it matters:** The original single-PC + SQLite + personal-tunnel setup could not back a
+  published site. The migration moved everything onto a managed host. The site is now LIVE; this
+  item stays `[ ]` only until the operational verification at the bottom is confirmed.
 - **Stage A - datasource conversion (DONE, PR #53 `fd4e687`):** Prisma datasource converted SQLite ->
   MySQL/MariaDB and verified live against a throwaway MariaDB 10.11.16 (matching production): the
   `@db.Text` no-truncation proof, the `SmtpSetting` ciphertext round-trip, the data-copy row-count
   match, the email-casing fix, and all gates (typecheck / lint / validate-content / unit 94 / build /
-  e2e 12) green. Adapter is `@prisma/adapter-mariadb`; the one-time copy script is
-  `scripts/migrate-to-mysql.mjs`.
-- **Stage B - server provisioning (OPEN, runbook):** Infomaniak Managed Cloud Server (Node 24,
-  MariaDB 10.11, Nginx, Playwright Chromium deps, systemd, TLS, firewall); set all env vars
-  (`DATABASE_URL`, `NEXTAUTH_SECRET` / `NEXTAUTH_URL`, `SMTP_ENCRYPTION_KEY` + `SMTP_*`) in the server
-  environment, never the repo. **Follow-up: the now-obsolete SQLite `scripts/backup-db.mjs` needs a
-  `mysqldump` replacement** (paired with a `uploads/` tar) - it no longer works against MySQL.
-- **Stage C - real data migration (OPEN):** run `scripts/migrate-to-mysql.mjs` against the real
-  `prisma/dev.db` into the production MySQL with the SAME `SMTP_ENCRYPTION_KEY` (so the encrypted SMTP
-  row stays decryptable); verify per-table row counts. **Accepted behavior:** the copy sets the three
-  `@updatedAt` columns to migration time; `createdAt` and the append-only `FindingAudit` history are
-  preserved verbatim, which is what matters for governance.
-- **Stage D - cutover (OPEN):** DNS to the server; smoke-test public + reviewer login + finding-create
-  + email; Cloudflare Access on `/review/*` (item 5); confirm the strict-CSP zone settings
-  (`OPERATIONS.md` section 7).
-- **Stage E - rollback / parallel-run (OPEN):** keep the PC + tunnel as a fast rollback target for
-  ~2 weeks before decommissioning.
-- **Item 8 overall stays `[ ]` until cutover (Stage D).**
-- **Refs:** PR #53 (`fd4e687`); `docs/_audit/PAAS_MIGRATION_DISCOVERY.md`; DECISIONS.md (PaaS hosting;
-  Database engine MySQL/MariaDB; @db.Text load-bearing); `scripts/migrate-to-mysql.mjs`,
-  `src/lib/prisma.ts`, `uploads/`.
+  e2e 12) green. Adapter is `@prisma/adapter-mariadb`.
+- **Stage B - server provisioning (DONE):** the app is deployed and running on **Infomaniak managed
+  Node.js hosting (Node 24)** at `mnm.towardpcc.com`, as its own Node app alongside the existing
+  site. Secrets (`DATABASE_URL`, `NEXTAUTH_SECRET` / `NEXTAUTH_URL`, `SMTP_ENCRYPTION_KEY` +
+  `SMTP_*`) are set in a server-side `.env` (via SSH), never in the repo.
+- **Stage C - data migration (DONE):** the real data was migrated into the production MariaDB 10.11
+  via a verified data-only SQL import (`scripts/export-for-phpmyadmin.mjs`, sandbox-verified
+  byte-faithful against a throwaway MariaDB 10.11.16 before the real import). Reviewers, findings,
+  comments, audit, attachments-metadata, email templates, and the encrypted `SmtpSetting` row all
+  carried over. **Email send / receive is confirmed working in production**, which proves the
+  AES-256-GCM SMTP ciphertext survived and decrypts with the server's `SMTP_ENCRYPTION_KEY`.
+- **Stage D - cutover (DONE):** `mnm.towardpcc.com` is live and serving from the Infomaniak server;
+  the production domain was corrected throughout the code (`web.towardpcc.com` -> `mnm.towardpcc.com`,
+  PR #56 `a990d89`); the strict nonce-based CSP is confirmed working behind the Infomaniak proxy +
+  Cloudflare with Rocket Loader / Email Obfuscation / Web Analytics auto-injection OFF on the zone
+  (see `OPERATIONS.md` section 7).
+- **Stage E - rollback / parallel-run (ongoing posture, not a code task):** keep the prior PC +
+  tunnel setup available as a fast rollback target for a couple of weeks before fully
+  decommissioning.
+- **Backup posture (confirmed):** Infomaniak's daily backups cover **BOTH** the MariaDB database
+  **AND** the `uploads/` attachments directory on the server disk. No `mysqldump` cron is required in
+  production; the SQLite `scripts/backup-db.mjs` is dev-only now (see `OPERATIONS.md` section 3).
+- **Open verification (this is what keeps item 8 at `[ ]`):** confirm that an Infomaniak redeploy
+  does NOT wipe the server-side `.env`. Secrets currently live in a `.env` set via SSH; if a
+  redeploy overwrites the app directory, the `.env` strategy needs revisiting (move secrets into
+  Infomaniak's secret-management mechanism, or into a path the redeploy preserves). Until this is
+  verified, item 8 stays open.
+- **Refs:** PR #53 (`fd4e687`, datasource conversion); PR #56 (`a990d89`, domain correction);
+  `scripts/export-for-phpmyadmin.mjs` (data-only SQL import used at cutover);
+  `docs/_audit/PAAS_MIGRATION_DISCOVERY.md`; DECISIONS.md (PaaS hosting; Database engine
+  MySQL/MariaDB; @db.Text load-bearing); `src/lib/prisma.ts`, `uploads/`.
 
 ---
 

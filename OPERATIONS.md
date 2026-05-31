@@ -35,7 +35,14 @@ failure. Only `.env`, `dev.db`, and `uploads/` are PC-only.
 
 ## 3. Backup workflow
 
-Run a backup:
+**Production (`mnm.towardpcc.com` on Infomaniak).** Backups are handled by Infomaniak's daily
+automated backup of the managed Node.js host; the daily backup covers **BOTH** the MariaDB
+database AND the `uploads/` attachments directory on the server disk (confirmed). No manual
+cadence is required in production. The SQLite `npm run backup` flow below is **dev-only** now
+(local PC + SQLite `dev.db`); the deprecated `scripts/backup-db.mjs` will not work against
+MySQL/MariaDB and is not used in production.
+
+Run a backup (local dev only):
 
 ```
 npm run backup
