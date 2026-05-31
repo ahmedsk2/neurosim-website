@@ -72,13 +72,18 @@ and cutover is the **final** 4a step.
   app-level throttle is required for launch.
 - **Refs:** audit C.1, D.4; `src/lib/rateLimit.ts` (limiter exists), `src/lib/auth/options.ts`.
 
-### `[ ]` 5. Configure Cloudflare Access on reviewer routes  -  PR: ___
-- **Why it matters:** It closes the reviewer attack surface at the edge: only allow-listed reviewer
-  emails can even reach the login page; everyone else gets a Cloudflare "not authorized" response.
-- **Fix direction:** Set up a Cloudflare Access application over `/review/*` and the reviewer-side
-  APIs with an email allow-list. Reviewers pass the Cloudflare Access challenge first, then the
-  existing NextAuth login (access-from-anywhere preserved). Gates the migration (item 8).
-- **Refs:** DECISIONS.md (Cloudflare Access in front of reviewer routes).
+### `[x]` 5. Configure Cloudflare Access on reviewer routes  -  Done: PR #60
+- **Shipped as:** Cloudflare Zero Trust Free plan, a self-hosted Access application over
+  `mnm.towardpcc.com/review` with an email ALLOW policy and **One-time PIN (email)** login. The
+  public site (everything NOT under `/review`) is ungated and stays open. Reviewer onboarding is a
+  **two-step** process (add the email to Cloudflare Access FIRST, then send the in-app invite) -
+  see `OPERATIONS.md` section 8. Invite / reset path exclusions
+  (`/review/accept-invite/*`, `/review/reset-password/*`, and their `/api/reviewers/...` POST
+  handlers) are deliberately **deferred** (covered by the gate too); re-evaluation trigger
+  documented.
+- **Refs:** `OPERATIONS.md` section 8 "Cloudflare Access on /review (Zero Trust gate)";
+  DECISIONS.md ("Cloudflare Access in front of reviewer routes"; "Deferred: Cloudflare Access
+  bypass for invite/reset paths").
 
 ### `[ ]` 6. Legal pages + public accountability  -  PR: ___
 - **Why it matters:** No privacy policy, no terms of use, no public contact, and the About page names
