@@ -329,3 +329,21 @@ Québec, UK ICO, EU DPAs; consent-withdrawal mechanism = the footer "Cookie sett
 lawyer did not change it on review). Visitors outside Ontario / Canada are bound by that forum
 selection to the extent enforceable; international enforceability is the standard tradeoff for any
 single-jurisdiction terms.
+
+## 2026-05 - Deferred: Cloudflare Access bypass for invite/reset paths (item 5)
+
+**What:** The Cloudflare Access ALLOW policy on `mnm.towardpcc.com/review` gates the token-only
+invite/reset paths (`/review/accept-invite/*`, `/review/reset-password/*` and their
+`/api/reviewers/...` POST handlers) along with the rest of `/review/*`. No Bypass policy carving
+these four paths out is configured.
+
+**Why:** The onboarding process (`OPERATIONS.md` section 8) adds the invitee's email to the
+Cloudflare allow-list BEFORE the in-app invite is sent, so the invitee passes the gate first and
+then reaches the acceptance page. Same reasoning for password reset (the reviewer is already
+allow-listed). The defer-by-default keeps the operational surface simpler (one allow-list to
+manage, no Bypass-rule precedence to reason about).
+
+**Re-evaluation trigger:** any time a real reviewer cannot complete accept-invite or
+reset-password because of the Cloudflare gate, switch to a Bypass Access policy matching those
+four paths. The token in the URL is the credential either way (sha256 stored, single-use, 7-day
+expiry, rate-limited at the app layer; PR #37).

@@ -144,7 +144,55 @@ toggles. New zones default Rocket Loader OFF, but Email Obfuscation defaults ON 
 templates, and Web Analytics auto-injection varies. Treat this section as a checklist whenever the
 public origin moves.
 
-## 8. Server-side snapshot disabled on this host (no Chromium)
+## 8. Cloudflare Access on /review (Zero Trust gate)
+
+The reviewer system (`mnm.towardpcc.com/review`) sits behind a **Cloudflare Access (Zero Trust,
+Free plan) self-hosted application**. Only emails on the application's ALLOW policy can reach the
+login page; everyone else gets the Cloudflare "not authorized" challenge. **The public site
+(everything that is NOT under `/review`) is ungated and stays open to all visitors.**
+
+Login method on the Access app: **One-time PIN (email)**. The visitor enters their email,
+Cloudflare emails a code, they paste it in. No third-party IdP, no SSO setup. After passing the
+gate, the visitor still has to log in to the app's own NextAuth credentials form (the two layers
+stack).
+
+### Onboarding a new reviewer (TWO steps, IN THIS ORDER)
+
+Order matters: if the email is not allow-listed in Cloudflare first, the invitee is blocked by the
+gate before they can reach the in-app invite-acceptance page.
+
+1. **Allow-list the email in Cloudflare Access first.**
+   Cloudflare dashboard: **Zero Trust > Access > Applications > `mnm.towardpcc.com` >** the
+   "Allow emails" policy > add the new reviewer's email > Save.
+2. **Then send the app's reviewer invite.** Open `/review/reviewers` as an admin, invite the new
+   reviewer in the app, and the system emails them the one-time invite link. They pass the
+   Cloudflare gate (One-time PIN to the same email), then accept the invite + set their password
+   in the app.
+
+### Offboarding a reviewer (TWO steps)
+
+Remove from BOTH layers:
+
+1. Remove the email from the Cloudflare Access ALLOW policy (same dashboard path as above).
+2. Deactivate (or remove) the reviewer account in `/review/reviewers` so the in-app session and
+   future logins are blocked.
+
+### Deferred: invite/reset path exclusions (known, deliberate)
+
+The token-only entry paths - `/review/accept-invite/*`, `/review/reset-password/*`,
+`POST /api/reviewers/accept-invite`, `POST /api/reviewers/reset-password` - are currently **NOT**
+bypassed in the Cloudflare Access policy. They sit behind the gate like the rest of `/review/*`.
+
+This is **acceptable** because the onboarding above adds the email to Cloudflare BEFORE the invite
+is sent, so the invitee passes the gate first and then reaches the acceptance page. Same reasoning
+for password reset (the reviewer is already allow-listed).
+
+**Re-evaluation trigger:** if a real reviewer ever cannot complete an accept-invite or
+reset-password flow because of the Cloudflare gate, add a **Bypass** Access policy that matches
+those four paths and run them gate-free. The token in the URL is still the credential (sha256
+stored, single-use, 7-day expiry, rate-limited at the app layer; PR #37).
+
+## 9. Server-side snapshot disabled on this host (no Chromium)
 
 The reviewer overlay's "Capture page" button posts to `/api/snapshot`, which launches a
 headless Chromium via Playwright to render the full page. Infomaniak's Managed Cloud Server
@@ -163,7 +211,7 @@ The feature has not been removed - it stays a single env flag flip away on a Chr
 host. The same `NEXT_PUBLIC_` flag is read by both the API route
 (`src/app/api/snapshot/route.ts`) and `src/components/review-overlay/FindingComposer.tsx`.
 
-## 9. What this system is NOT
+## 10. What this system is NOT
 
 This is an educational review tool, NOT a HIPAA-compliant clinical record system
 and NOT a medical device. Do not put patient-identifiable information in it. It is
