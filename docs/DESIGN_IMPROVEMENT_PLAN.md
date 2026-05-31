@@ -90,13 +90,9 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
-#### `[ ]` B1. Strengthen the type hierarchy on content pages
-- **What:** widen the visual gap between headings and body so dense clinical pages are scannable
-  (for example raise content-page body size and strengthen h3 size/weight).
-- **Audit finding:** High, readability. h3 (17 px) sits too close to body (14 px); pages read flat
-  on first scan.
-- **Effort:** Moderate (do it once on the content template; it propagates).
-- **Touches:** all content pages; both themes; all breakpoints.
+> B1 (type hierarchy) and B3 (mobile mermaid legibility) are DONE; see the Completed section
+> below. B2 (5-minute-summary format) and B4 (base font size and gutter) remain, and both are
+> flagged for OWNER DECISION before they propagate site-wide.
 
 #### `[ ]` B2. Rework the "5-minute summary" into a bedside-scannable format
 - **What:** convert the dense 14 px single-paragraph summary into a scannable format (bulleted key
@@ -106,14 +102,6 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 - **Touches:** content presentation on modality and foundation pages; both themes; all breakpoints.
   NOTE: this changes how clinical content is PRESENTED; the clinical owner should sign off on the
   format before it propagates site-wide.
-
-#### `[ ]` B3. Improve mobile mermaid legibility
-- **What:** a 997 px-tall flowchart scaled to about 324 px wide on a phone makes labels illegible.
-  Provide a usable mobile path (zoom/pan, a full-scale horizontal-scroll container, or a
-  mobile-specific rendering) instead of shrinking to fit.
-- **Audit finding:** Moderate, mobile.
-- **Effort:** Moderate.
-- **Touches:** mobile primarily; integration pages; both themes. Coordinate with A2.
 
 #### `[ ]` B4. Reconsider the base 14 px font size and the wide empty-right gutter
 - **What:** two related judgment calls: (a) whether 14 px is the right base for dense clinical
@@ -169,6 +157,42 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 ## Completed
 
 Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` B1. Strengthen the type hierarchy on content pages  -  Done: PR #77 (`bcb26c9`)
+- **Shipped:** the `.prose-mnm` content-page headings now step on a clearer ~1.3 ratio with a
+  400->700 weight jump: body 14 -> h3 **18** (was 17, the flat level the audit flagged) -> h2 **24**
+  (was 22) -> h1 **31** (was 28). Heading line-heights are tightened (h1 1.2, h2 1.25, h3 1.3) from
+  the inherited 1.6, a structural top-margin rhythm encodes nesting (h2 40 > h3 28 > p 12), and each
+  h2 carries a subtle 1px token-border hairline section rule in the teal heading color, reusing the
+  existing table/blockquote border vocabulary.
+- **Base body size deliberately UNCHANGED:** body `p` stays 14px; this is purely about the contrast
+  BETWEEN levels. Changing the base font is the separate, isolated B4 decision.
+- **Scoped:** the rules live in one labeled block in `globals.css` under `.prose-mnm`, so only
+  content pages are affected (widgets, homepage, and chrome are untouched).
+- **Verified:** computed styles on `/modalities/icp/` in BOTH themes (h1 31/700, h2 24/700, h3
+  18/700, body 14/400; root = body = .prose-mnm = 14px; h2 color + hairline remap by token), plus
+  desktop screenshots in dark and light (the hierarchy reads clean and editorial across a dense
+  multi-h2 page; the hairline is a subtle divider, not busy). Full gate green.
+
+#### `[x]` B3. Improve mobile mermaid legibility  -  Done: PR #77 (`bcb26c9`)
+- **Shipped:** set `flowchart.useMaxWidth:false` so mermaid emits the SVG at its intrinsic pixel
+  size; a dedicated `.mermaid-scroll` block then keeps the desktop/tablet fit-to-column behavior but
+  lets phones (< 768px) render the diagram at full size and scroll horizontally at a readable scale.
+  On `/integration/cppopt-targeting/` (intrinsic 1249px) labels now render at **13px** at 375px,
+  versus ~3.6px when the whole diagram was crushed to fit ~345px.
+- **A11y:** the container becomes a focusable, labelled scroll region only when it overflows
+  (ResizeObserver, mirroring the A1 `TableScroll` pattern), so there are no dead tab stops where the
+  diagram already fits.
+- **No regression:** A2's theming and label-fit (theme variables, `wrappingWidth`) are untouched;
+  desktop is unchanged (the diagram still scales to fit the column, no scroll).
+- **Verified (prod build):** at 375px in BOTH themes the SVG renders at scale 1.0 (intrinsic 1249px,
+  not shrunk), labels 13px, the box scrolls (1270 vs 345), and a fresh load shows `role="region"` +
+  `tabindex="0"` + a scroll aria-label; light keeps white node fill + navy text. Desktop fits the
+  column with no scroll (screenshot + measurement). Full gate green (e2e 12/12, no new a11y
+  violations).
+- **Note:** on a LIVE desktop->mobile resize under Preview's CDP emulation the scroll-region attrs
+  did not re-detect (the CDP metric override does not fire the container's ResizeObserver); the
+  real-device path (a fresh load at phone width) detects correctly, matching the TableScroll pattern.
 
 #### `[x]` A4. Fix the recurring bold-runs-into-next-word spacing typos  -  Done: PR #75 (`568d17d`)
 - **Shipped:** 15 whitespace-only fixes (a single missing space after a comma) across user-facing
@@ -297,6 +321,17 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #77 (`bcb26c9`): B1 shipped. Content-page type hierarchy strengthened: `.prose-mnm`
+  headings now step 14 -> 18 -> 24 -> 31 with a 400 -> 700 weight jump, tightened heading
+  line-heights, a structural top-margin rhythm, and a subtle token-border hairline under each h2
+  reusing the existing 1px table/blockquote vocabulary; the base body font 14px is deliberately
+  UNCHANGED (that is B4). Verified in both themes by computed styles + screenshots.
+- 2026-05-31, PR #77 (`bcb26c9`): B3 shipped. Mobile mermaid legibility fixed: flowchart
+  useMaxWidth:false so the SVG renders at intrinsic size; desktop/tablet still fit-to-column, phones
+  (< 768px) render full-size and scroll horizontally at readable scale (labels now 13px vs ~3.6px
+  crushed); the container becomes a focusable scroll-region only when overflowing (mirrors the A1
+  TableScroll pattern); A2 theming/label-fit intact; desktop unchanged. Verified in both themes at
+  375 by measurement (+ desktop screenshot).
 - 2026-05-31, PR #75 (`568d17d`): A4 shipped, **and Track A is now COMPLETE** (A1, A2, A3, A4, A5,
   A6 all done; A7 resolved-no-fix). 15 whitespace-only fixes (single missing space after a comma) in
   user-facing display strings across the homepage StatStrip, six widget footnotes/labels/titles, and
