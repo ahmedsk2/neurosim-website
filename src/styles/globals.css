@@ -153,7 +153,12 @@ html, body {
   background: var(--bg-darker);
   color: var(--text);
   font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
+  /* Base font / rem root (design B4). 15px (was 14): the owner read 14px as slightly
+   * small, so this is a deliberate, conservative +1px bump, not a jump to 16px. NOTE:
+   * rem sizing is relative to this, so every rem-based Tailwind dimension scales by
+   * ~7%; literal [Npx] values (for example the .tap-target 44px) do not. See the
+   * "Engineering notes" in docs/DESIGN_IMPROVEMENT_PLAN.md. */
+  font-size: 15px;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
