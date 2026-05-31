@@ -22,6 +22,17 @@ Companion docs: the full design findings (per-surface, with measured values) liv
 - When an item merges, move it to the **Completed** section with its PR number and merged SHA, and
   add a one-line changelog entry.
 
+## Engineering notes (read before any sizing or typography work)
+
+- **The root font-size is 14px, not 16px** (`html { font-size: 14px }` in
+  `src/styles/globals.css`). Tailwind spacing and size utilities are rem-based, so they all render
+  at **0.875x** their nominal pixel value. For example `h-11` / `min-h-11` (nominally 44px) actually
+  render at **38.5px**. Any control that must hit an EXACT pixel value (a 44px tap target, a precise
+  icon box) must use a literal arbitrary value like `min-h-[44px]`, or a px-valued CSS rule (the
+  `.tap-target` utility uses literal `44px`), NOT a rem-based Tailwind class. This bit A3: `BackToTop`
+  and the mobile nav rows were silently 38.5px. **Cross-reference B4:** changing the base font size
+  will rescale every rem-based size site-wide, so B4 must audit that knock-on effect.
+
 ## Status legend
 
 - `[ ]` Not started
@@ -59,16 +70,8 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
-> A1 (wrap data tables in a horizontal-scroll container) and A2 (theme mermaid diagrams for light
-> mode and fix clipped labels) are DONE; see the Completed section below.
-
-#### `[ ]` A3. Enlarge tap targets toward the comfortable 44 px
-- **What:** raise header icon controls (search, theme, menu) and primary buttons toward 44 px on
-  touch.
-- **Audit finding:** Moderate, accessibility and touch. Today header icons measure about 25 to
-  28 px and buttons about 37 px tall (above the 24 px floor, below comfortable).
-- **Effort:** Quick win.
-- **Touches:** mobile and tablet primarily; both themes; verify desktop layout unchanged.
+> A1 (data-table horizontal scroll), A2 (mermaid light theme and label fit), and A3 (>= 44px tap
+> targets) are DONE; see the Completed section below.
 
 #### `[ ]` A4. Fix the recurring bold-runs-into-next-word spacing typos
 - **What:** correct the MDX bold-adjacency spacing defect, for example "Neurology 2011,pooled"
@@ -143,7 +146,10 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 - **Effort:** Moderate to large depending on scope.
 - **Touches:** site-wide typography and content-page layout; both themes; all breakpoints.
   NOTE: this is a judgment call with broad reach; flag for OWNER decision before acting. The 85ch
-  reading cap is itself a strength and should be kept.
+  reading cap is itself a strength and should be kept. IMPORTANT cross-reference: the root font-size
+  is 14px and Tailwind sizing is rem-based (see "Engineering notes" at the top), so changing the
+  base font will rescale every rem-based size (spacing, icon boxes, heights) site-wide. Audit that
+  knock-on effect as part of B4.
 
 ### Track C: The figures (highest impact, largest effort, own track)
 
@@ -187,6 +193,24 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 
 Items move here on merge, newest first, with PR number and merged SHA.
 
+#### `[x]` A3. Enlarge interactive tap targets to >= 44px on touch  -  Done: PR #68 (`fdac4b4`)
+- **Shipped:** a `.tap-target` utility (`globals.css`) gated by `@media (pointer: coarse),
+  (max-width: 1023px)` gives a >= 44px hit area on touch and narrow viewports ONLY. Applied to the
+  header search / theme / hamburger controls, the shared `Button`, the homepage Hero CTAs,
+  `PrintButton`, the cookie-banner buttons, and `LocalePicker` (the latter is not currently mounted,
+  so that one is a defensive fix). Mobile nav rows and the `BackToTop` FAB were switched to explicit
+  `[44px]` (they used rem-based `min-h-11` / `h-11`, which rendered at 38.5px under the 14px root,
+  see "Engineering notes" above). `aria-expanded` was added to the hamburger toggle.
+- **Verified:** at 375px, search/theme/hamburger 44x44, CTAs 44 tall, mobile nav rows 44, BackToTop
+  44x44; `aria-expanded` toggles false to true. Desktop (1600px, fine pointer) completely unchanged
+  in both themes (the media query does not apply; search/theme 24x24, CTA 245x37, no wrap). Full
+  gate green (typecheck, lint, validate-content, vitest 94/94, build, e2e 12 passed).
+- **Left intentionally:** inline citation chips and filter chips, which meet the 24px AA floor
+  (WCAG 2.5.8 inline exception) and would be bloated by a 44px minimum.
+- **Prod note:** the cookie-banner buttons got the fix but were unverified locally (the banner only
+  renders when `NEXT_PUBLIC_GA_ID` is set). GA is live in production, so the fix applies there and
+  can be eyeballed on the live site.
+
 #### `[x]` A2. Theme the mermaid diagrams for light mode (and fix clipped labels)  -  Done: PR #66 (`f0ec55d`)
 - **Shipped:** the `Mermaid` component reads the active theme via `useTheme()` and re-initializes
   mermaid with token-mapped theme variables before each render, re-rendering when the theme toggles
@@ -220,6 +244,13 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #68 (`fdac4b4`): A3 shipped. A `.tap-target` utility gated by
+  `@media (pointer: coarse),(max-width:1023px)` gives >= 44px hit areas on touch/narrow only:
+  header search/theme/hamburger, shared Button, homepage CTAs, PrintButton, cookie-banner buttons,
+  LocalePicker; mobile nav rows and BackToTop switched to explicit [44px]; aria-expanded added to
+  the hamburger; desktop completely unchanged in both themes; inline citation chips and filter chips
+  left per WCAG 2.5.8 inline exception. (Engineering note recorded: the 14px root font-size rescales
+  all rem-based Tailwind sizes by 0.875x, so use literal [Npx] for exact targets; cross-ref B4.)
 - 2026-05-31, PR #66 (`f0ec55d`): A2 shipped. Mermaid diagrams now read the active theme via
   useTheme() and re-render on theme toggle with token-mapped variables; dark is unchanged, light
   maps to white nodes / navy text / teal borders so diagrams no longer render as a dark island on
