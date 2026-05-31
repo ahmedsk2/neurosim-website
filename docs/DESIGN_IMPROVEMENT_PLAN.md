@@ -101,10 +101,11 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
-> B1 (type hierarchy) and B3 (mobile mermaid legibility) are DONE; see the Completed section below.
-> B2 is reframed as a LOWER-PRIORITY, optional learning-aid polish that MAY BE SKIPPED entirely
-> (owner decision), and B4 is OPEN but deliberately PARKED (owner decision; highest-ripple item).
-> Both are owner-decision items; neither is queued work.
+> **Track B's executable work is COMPLETE.** B1 (type hierarchy), B3 (mobile mermaid legibility), and
+> B4 (base font 14px -> 15px, with a heading-size restore) are all DONE; see the Completed section
+> below. B2 remains, reframed as a LOWER-PRIORITY, optional learning-aid polish that MAY BE SKIPPED
+> entirely (owner decision); it is not queued work. With Track A complete and Track B's executable
+> items done, Track C (the figures) is the remaining major program.
 
 #### `[ ]` B2. (Optional) improve the "5-minute summary" structure as a learning aid
 - **What:** the audit framed this as "make the dense single-paragraph summary bedside-scannable."
@@ -119,24 +120,6 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 - **Touches:** content presentation on modality and foundation pages; both themes. NOTE: this would
   change how clinical content is PRESENTED, so the clinical owner signs off before anything
   propagates site-wide.
-
-#### `[ ]` B4. Reconsider the base 14 px font size and the wide empty-right gutter
-- **What:** two related judgment calls: (a) whether 14 px is the right base for dense clinical
-  text, and (b) the large empty band to the right of prose on wide screens (text caps at about
-  85ch). A natural fill for the gutter is an "on this page" / reading-progress rail on long pages.
-- **Audit finding:** Noted (readability vs balance; judgment call).
-- **Effort:** Moderate to large depending on scope.
-- **Touches:** site-wide typography and content-page layout; both themes; all breakpoints.
-  NOTE: this is a judgment call with broad reach; flag for OWNER decision before acting. The 85ch
-  reading cap is itself a strength and should be kept. IMPORTANT cross-reference: the root font-size
-  is 14px and Tailwind sizing is rem-based (see "Engineering notes" at the top), so changing the
-  base font will rescale every rem-based size (spacing, icon boxes, heights) site-wide. Audit that
-  knock-on effect as part of B4.
-- **Priority:** OPEN, owner-decision-pending, and deliberately **PARKED**. This is the
-  highest-ripple item in the plan: per the Engineering notes, the 14px root font-size plus rem-based
-  Tailwind sizing means changing the base font rescales every rem-based size site-wide. Undertake
-  ONLY on an explicit owner decision that 14px is too small, with a whole-site re-verification
-  planned as part of the work. No action until then.
 
 ### Track C: The figures (highest impact, largest effort, own track)
 
@@ -195,6 +178,26 @@ real scope.
 ## Completed
 
 Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` B4. Increase the base font 14px -> 15px (with a heading-size restore)  -  Done: PR #80 (`d0fb0db`)
+- **Shipped:** the base font / rem root (`html, body` in `globals.css`) went **14px -> 15px**. The
+  owner read 14px as slightly small; this is a deliberate, conservative +1px bump, not a jump to 16px
+  (which would overcorrect for dense clinical content). Body text now reads more comfortably.
+- **Ripple handled in the same PR (heading-size restore):** because Tailwind sizing is rem-based, the
+  bump rescaled every rem-based dimension by ~7%, while literal `[Npx]` values did not. That left the
+  B1 headings (literal px) unscaled and compressed the hierarchy ratios (h3/body 1.29 -> 1.20), so the
+  heading px were nudged up to restore B1's contrast at the new base: **h1 31 -> 33, h2 24 -> 26, h3
+  18 -> 20** (a clean 15 -> 20 -> 26 -> 33 scale). Restored ratios h3/body 1.33, h2/body 1.73, h1/body
+  2.20 (B1 originals 1.29/1.71/2.21).
+- **Verified (prod build, both themes, all breakpoints):** base is 15px (root + body + content body
+  paragraphs); **no overflow / bloat / regression site-wide** at 375/768/desktop. Real-overflow signal
+  (non-fixed elements wider than the layout viewport) = 0 on homepage, modalities, foundations,
+  integration, evidence, glossary, search, login, same as the 14px baseline (login's raw scrollWidth is
+  the A7 ScrollProgress fixed-element artifact, 0 real overflow). A1 tables still scroll internally;
+  A3 literal-`[44px]` tap targets correctly UNAFFECTED (still 44x44); B3 mermaid still themes/scrolls.
+  Confirmed by computed styles + content-page and homepage screenshots in both themes.
+- **Note:** B4 was the plan's highest-ripple item; it is now resolved. The base-font/rem-scaling
+  caveat in the "Engineering notes" is now a SHIPPED reality (the rem root is 15px).
 
 #### `[x]` B1. Strengthen the type hierarchy on content pages  -  Done: PR #77 (`bcb26c9`)
 - **Shipped:** the `.prose-mnm` content-page headings now step on a clearer ~1.3 ratio with a
@@ -359,6 +362,17 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #80 (`d0fb0db`): B4 shipped (unparked). Base font increased 14px -> 15px (owner read
+  14px as slightly small; conservative bump, not 16px, to avoid overcorrecting dense clinical content).
+  Because Tailwind sizing is rem-based the bump rescaled all rem-based dimensions ~7% (verified no
+  overflow / bloat / regression site-wide in both themes at all breakpoints; A1/A3/B3 confirmed intact;
+  literal-[44px] tap targets correctly unaffected). A heading-size restore was folded into the same PR
+  (h1 31->33, h2 24->26, h3 18->20, clean 15->20->26->33 scale) to compensate for B4's ripple and
+  preserve B1's hierarchy contrast (ratios restored to ~B1 originals: h3/body 1.33, h2/body 1.73,
+  h1/body 2.20). Verified by computed styles + screenshots in both themes. This resolves the last of
+  Track B's executable items (B1, B3, B4 done; B2 remains reframed as optional/skippable,
+  owner-decision). Track A complete and Track B executable work complete; Track C (figures) is the
+  remaining major program.
 - 2026-05-31, PR #77 (`bcb26c9`): B1 shipped. Content-page type hierarchy strengthened: `.prose-mnm`
   headings now step 14 -> 18 -> 24 -> 31 with a 400 -> 700 weight jump, tightened heading
   line-heights, a structural top-margin rhythm, and a subtle token-border hairline under each h2
