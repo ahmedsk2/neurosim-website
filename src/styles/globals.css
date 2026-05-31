@@ -280,10 +280,35 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
     max-width: 100ch;
   }
 }
-.prose-mnm h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; margin: 0 0 16px; }
-.prose-mnm h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.2px; margin: 32px 0 12px; color: var(--teal-light); }
-.prose-mnm h3 { font-size: 17px; font-weight: 700; margin: 22px 0 8px; color: var(--text); }
-.prose-mnm h4 { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 16px 0 6px; color: var(--muted); }
+/* ----------------------------------------------------------
+ * Content-page heading hierarchy (design B1)
+ * ----------------------------------------------------------
+ * The audit found the type hierarchy read flat: h3 (17px) sat only 3px above the
+ * 14px body, so a reader scanning a dense modality page could not find section
+ * boundaries at a glance. This strengthens the CONTRAST BETWEEN LEVELS (size,
+ * weight, tracking, line-height, and vertical rhythm) without touching the BASE
+ * BODY SIZE, which stays 14px (changing the base is the separate, isolated B4
+ * decision). Sizes are literal px (absolute, unaffected by the 14px root), and
+ * step on a ~1.3 ratio: body 14 -> h3 18 -> h2 24 -> h1 31, so each level is
+ * clearly larger than the one below it. Heading line-heights are tightened from
+ * the inherited 1.6 (loose, for body) to 1.2-1.3 so multi-line headings read as
+ * one cohesive block. The vertical rhythm encodes structure: a large gap above an
+ * h2 (40px) signals a new top-level section (reinforced by a hairline section
+ * rule in the teal heading color), a smaller gap above an h3 (28px) signals a
+ * subsection, and paragraph spacing (12px) is tighter still. */
+.prose-mnm h1 { font-size: 31px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.2; margin: 0 0 18px; }
+.prose-mnm h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+  margin: 40px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--teal-light);
+}
+.prose-mnm h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.1px; line-height: 1.3; margin: 28px 0 8px; color: var(--text); }
+.prose-mnm h4 { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 20px 0 6px; color: var(--muted); }
 .prose-mnm p { margin: 0 0 12px; color: var(--text); }
 .prose-mnm ul, .prose-mnm ol { margin: 0 0 14px 22px; }
 .prose-mnm li { margin: 4px 0; color: var(--text); }
@@ -378,6 +403,46 @@ html[lang='ar'] [data-lang-block='fr'] { display: none; }
   border-radius: 4px;
 }
 .prose-mnm .prose-table-scroll::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ----------------------------------------------------------
+ * Mermaid diagram scroll container (design B3)
+ * ----------------------------------------------------------
+ * On a phone a tall flowchart was scaled down to the ~324px content width, shrinking
+ * every node label to illegibility. With mermaid now emitting the SVG at its intrinsic
+ * pixel size (flowchart.useMaxWidth:false in Mermaid.tsx), these rules keep the
+ * desktop/tablet behavior (scale the diagram DOWN to fit the wide column) but let phones
+ * render it at full, legible size and scroll horizontally inside its own box. The
+ * affordance is the same thin, token-matched scrollbar used by the data tables. The box
+ * becomes a focusable, labelled scroll region only when it actually overflows (handled in
+ * Mermaid.tsx via ResizeObserver), so there are no dead tab stops where the diagram fits.
+ * This is independent of A2's theming/label-fit (theme variables and wrappingWidth are
+ * unchanged). */
+.mermaid-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+/* Default (desktop and tablet): cap width at the column and keep the aspect ratio, so a
+ * wide diagram scales down to fit exactly as it did before B3; a diagram narrower than the
+ * column renders at its intrinsic size. */
+.mermaid-scroll svg {
+  max-width: 100%;
+  height: auto;
+}
+/* Phones: do NOT shrink to fit. Let the SVG keep its intrinsic (legible) width; the
+ * container scrolls horizontally for whatever does not fit. */
+@media (max-width: 767px) {
+  .mermaid-scroll svg { max-width: none; }
+}
+.mermaid-scroll::-webkit-scrollbar { height: 8px; }
+.mermaid-scroll::-webkit-scrollbar-track { background: transparent; }
+.mermaid-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.mermaid-scroll::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
 
 /* KaTeX overrides for dark theme */
 .katex { color: var(--text); }
