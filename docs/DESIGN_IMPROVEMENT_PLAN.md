@@ -84,8 +84,9 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
 > A1 (data-table horizontal scroll), A2 (mermaid light theme and label fit), A3 (>= 44px tap
-> targets), and A6 (consent-banner theming) are DONE, and A7 was investigated and RESOLVED WITH NO
-> FIX (a Preview-CDP emulation artifact, not a real bug); see the Completed section below.
+> targets), A5 (reviewer login polish), and A6 (consent-banner theming) are DONE, and A7 was
+> investigated and RESOLVED WITH NO FIX (a Preview-CDP emulation artifact, not a real bug); see the
+> Completed section below. Only A4 (content spacing typos) remains open in Track A.
 
 #### `[ ]` A4. Fix the recurring bold-runs-into-next-word spacing typos
 - **What:** correct the MDX bold-adjacency spacing defect, for example "Neurology 2011,pooled"
@@ -95,15 +96,6 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 - **Effort:** Quick win.
 - **Touches:** content (MDX). NOTE: this touches CONTENT; verify each change carefully and confirm
   no clinical meaning is altered. All themes/breakpoints unaffected (text only).
-
-#### `[ ]` A5. Polish the reviewer login page
-- **What:** center the form in a card, add real field labels (not placeholder-only), add
-  `aria-expanded` to the menu toggle, and reconcile the review sub-nav and "Sign out" showing when
-  logged out, so the page matches the site's quality.
-- **Audit finding:** Low to moderate, polish and trust. It is technically public-facing (and gated
-  behind Cloudflare Access in production).
-- **Effort:** Quick win.
-- **Touches:** `/review/login/`; both themes; mobile to desktop.
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
@@ -186,6 +178,27 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 ## Completed
 
 Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` A5. Polish the reviewer login page  -  Done: PR #73 (`56090fa`)
+- **Shipped:** the reviewer login (`/review/login/`) was rebuilt as a centered card using the site
+  design tokens and `font-sans` (replacing the utilitarian monospace top-left form), with real
+  `<label>` elements (associated via `htmlFor` + `useId`), correct input `type` + `autocomplete`,
+  preserved focus states, and tap-targets (>= 44px touch) on the inputs and the shared `Button`.
+  Themes in dark and light.
+- **Conditional nav:** the review console sub-nav (Pages/Findings/Sign out and admin links) now
+  renders only when authenticated (`{session && <nav>}`), so it no longer shows on the logged-out
+  login, accept-invite, or reset-password pages.
+- **Auth untouched:** render-only change. The `signIn('credentials')` submission, callbackUrl
+  sanitization, error mapping, and redirect are byte-identical; the layout never enforced auth and
+  each page still gates itself.
+- **Verified:** both themes (desktop screenshots; the h1 font is now `-apple-system`, not
+  monospace), real labels + types/autocomplete confirmed in the DOM, logged-out nav hidden
+  (`hasConsoleNav: false`), card centered and fits at 375 with 44px inputs/button. Full gate green
+  (typecheck, lint, validate-content, vitest 94/94, build, e2e 12 passed).
+- **Post-deploy verification:** the AUTHENTICATED-state nav (that the sub-nav still renders for a
+  logged-in reviewer) was confirmed by code logic but NOT live-tested locally (no DB creds locally).
+  Eyeball it on the live site after deploy: log into `/review/` and confirm the
+  Pages/Findings/Sign-out nav shows for the authed state.
 
 #### `[x]` A7. /modalities/tcd/ mobile overflow from the fixed ScrollProgress bar  -  RESOLVED, NO FIX (Preview-CDP emulation artifact)
 - **Finding:** investigated and found NOT to be a real bug. It is a Preview-CDP emulation artifact,
@@ -273,6 +286,13 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #73 (`56090fa`): A5 shipped. Reviewer login rebuilt as a centered card using site
+  tokens + font-sans (replacing the monospace top-left form), with real <label> elements and correct
+  input types/autocomplete/focus states, tap-targets applied; the review console sub-nav now renders
+  only when authenticated ({session && nav}) so it no longer shows on the logged-out
+  login/accept-invite/reset-password pages; auth logic byte-identical (render-only change); verified
+  both themes and at 375/768. POST-DEPLOY: the authenticated-state nav was confirmed by code logic,
+  not live-tested locally (no DB creds), so eyeball it on the live site after deploy.
 - 2026-05-31: A7 RESOLVED, NO FIX. Investigated the reported `/modalities/tcd/` mobile overflow and
   found it is a Preview-CDP emulation artifact, not a real bug: the emulator's visual viewport
   (`window.innerWidth` 1500, used by `position:fixed`) is decoupled from the layout viewport
