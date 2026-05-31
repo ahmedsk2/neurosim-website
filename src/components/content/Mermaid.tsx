@@ -79,7 +79,13 @@ function configureMermaid(mermaid: MermaidApi, theme: Theme) {
       htmlLabels: true,
       wrappingWidth: 400,
       curve: 'basis',
-      useMaxWidth: true,
+      // useMaxWidth:false (design B3) makes mermaid emit the SVG at its intrinsic
+      // pixel width/height (instead of width:100% + a max-width style that shrinks
+      // it to the container). Combined with the .mermaid-scroll rules in
+      // globals.css, the diagram still fits the column on desktop/tablet, but on a
+      // phone it renders at full legible size and scrolls horizontally inside its
+      // box rather than shrinking every label to fit a ~324px width.
+      useMaxWidth: false,
     },
     securityLevel: 'loose',
   });
@@ -92,6 +98,7 @@ export function Mermaid({ chart, className }: { chart: string; className?: strin
   const ref = useRef<HTMLDivElement | null>(null);
   const [svg, setSvg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [scrollable, setScrollable] = useState(false);
 
   // Re-runs on theme change (toggle) as well as chart change, so a diagram on screen
   // re-renders into the new theme instead of leaving a stale dark/light diagram behind.
@@ -119,6 +126,22 @@ export function Mermaid({ chart, className }: { chart: string; className?: strin
     };
   }, [chart, theme]);
 
+  // design B3: make the container a focusable, labelled scroll region ONLY when the
+  // rendered diagram is wider than its box (which happens on phones, where the SVG now
+  // keeps its intrinsic legible width instead of shrinking to fit). This mirrors the
+  // TableScroll pattern: keyboard users can scroll it and AT announces it, with no dead
+  // tab stops on desktop/tablet where the diagram fits. Re-measures when the SVG changes
+  // (render, theme toggle) and on resize.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setScrollable(el.scrollWidth - el.clientWidth > 1);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [svg, theme]);
+
   if (err) {
     return (
       <div className="my-3 rounded-md border border-status-danger/40 bg-status-danger/10 p-3 text-[12px] text-status-dangerText">
@@ -127,22 +150,34 @@ export function Mermaid({ chart, className }: { chart: string; className?: strin
       </div>
     );
   }
+  // Scroll + SVG sizing live in the .mermaid-scroll block in globals.css (design B3):
+  // fit-to-column on desktop/tablet, intrinsic-width-and-scroll on phones.
   const containerClass = cn(
-    'my-4 overflow-x-auto rounded-md border border-line bg-surface-deeper p-3 [&_svg]:max-w-full [&_svg]:h-auto',
+    'mermaid-scroll my-4 rounded-md border border-line bg-surface-deeper p-3',
     className,
   );
+  // When the diagram overflows (phones), expose the box as a labelled scroll region;
+  // otherwise just label it, with no extra tab stop. Mirrors TableScroll.
+  const regionProps = scrollable
+    ? {
+        role: 'region' as const,
+        'aria-label': 'Diagram, scroll sideways to see all of it',
+        tabIndex: 0,
+        'data-scrollable': true,
+      }
+    : { 'aria-label': 'Diagram' };
   if (svg) {
     return (
       <div
         ref={ref}
         className={containerClass}
-        aria-label="Diagram"
+        {...regionProps}
         dangerouslySetInnerHTML={{ __html: svg }}
       />
     );
   }
   return (
-    <div ref={ref} className={containerClass} aria-label="Diagram">
+    <div ref={ref} className={containerClass} {...regionProps}>
       <pre className="m-0 overflow-x-auto whitespace-pre text-[11px] text-ink-dim font-mono">
         {chart}
       </pre>
