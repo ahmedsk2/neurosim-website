@@ -32,6 +32,19 @@ Companion docs: the full design findings (per-surface, with measured values) liv
   `.tap-target` utility uses literal `44px`), NOT a rem-based Tailwind class. This bit A3: `BackToTop`
   and the mobile nav rows were silently 38.5px. **Cross-reference B4:** changing the base font size
   will rescale every rem-based size site-wide, so B4 must audit that knock-on effect.
+- **Preview CDP emulation decouples the visual viewport from the layout viewport.** In this
+  environment the Preview connector's mobile emulation sets the LAYOUT viewport (which drives
+  `documentElement.clientWidth`, media queries, and normal layout) to the target width (e.g. 375),
+  but leaves `window.innerWidth` (the VISUAL viewport, the initial containing block for
+  `position: fixed`) at the host-window width (e.g. 1500). CONSEQUENCE: a fixed full-width element
+  (`left:0 right:0` or `width:100%`) appears ~1500px wide and seems to force horizontal overflow
+  under Preview emulation, but does NOT on a real device (where `innerWidth === clientWidth`). When
+  diagnosing mobile overflow, distinguish REAL min-content overflow (genuine, layout-viewport-based,
+  like the A1 tables) from fixed-element PSEUDO-overflow (emulation artifact) by checking
+  `window.innerWidth` vs `documentElement.clientWidth` and whether the element's `offsetParent` /
+  containing block is actually constrained. Do NOT "fix" an emulation artifact with `width: 100vw`
+  (regresses desktop by ~1 scrollbar width) or a root `overflow-x: clip` (masks real overflow bugs).
+  This was the finding of A7 (see Completed).
 
 ## Status legend
 
@@ -71,7 +84,8 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
 > A1 (data-table horizontal scroll), A2 (mermaid light theme and label fit), A3 (>= 44px tap
-> targets), and A6 (consent-banner theming) are DONE; see the Completed section below.
+> targets), and A6 (consent-banner theming) are DONE, and A7 was investigated and RESOLVED WITH NO
+> FIX (a Preview-CDP emulation artifact, not a real bug); see the Completed section below.
 
 #### `[ ]` A4. Fix the recurring bold-runs-into-next-word spacing typos
 - **What:** correct the MDX bold-adjacency spacing defect, for example "Neurology 2011,pooled"
@@ -90,18 +104,6 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
   behind Cloudflare Access in production).
 - **Effort:** Quick win.
 - **Touches:** `/review/login/`; both themes; mobile to desktop.
-
-#### `[ ]` A7. Fix the /modalities/tcd/ mobile page overflow from the fixed ScrollProgress bar
-- **What:** on `/modalities/tcd/` at 375 px the page still scrolls horizontally, but the culprit is
-  the fixed `ScrollProgress` reading bar computing to the 1500 px container width (its inner fill is
-  0%), NOT a table. Constrain `ScrollProgress` to the viewport width.
-- **Audit finding:** Audit-adjacent; found during A1 verification. This is a distinct, non-table
-  bug: A1's table wrapper cannot affect a layout-root fixed element, so it was never part of A1, and
-  no `.prose-mnm` content element exceeds the viewport on that page.
-- **Effort:** Quick win.
-- **Touches:** a layout component (`src/components/layout/ScrollProgress.tsx`), so it affects ALL
-  pages; verify in both themes and at mobile/tablet/desktop, and confirm the reading-progress bar
-  still fills correctly on desktop (no regression to the progress indicator).
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
@@ -185,6 +187,25 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 
 Items move here on merge, newest first, with PR number and merged SHA.
 
+#### `[x]` A7. /modalities/tcd/ mobile overflow from the fixed ScrollProgress bar  -  RESOLVED, NO FIX (Preview-CDP emulation artifact)
+- **Finding:** investigated and found NOT to be a real bug. It is a Preview-CDP emulation artifact,
+  not a real overflow. No code change made.
+- **Evidence:** under Preview CDP mobile emulation the VISUAL viewport (used by `position:fixed`)
+  stays at the host-window width (`window.innerWidth` 1500) while the LAYOUT viewport
+  (`documentElement.clientWidth`) is the emulated 375, so any fixed `left:0 right:0` element
+  mis-measures to 1500. A freshly-injected fixed `left:0 right:0` test div reproduced the 1500 width;
+  `ScrollProgress` has `offsetParent` null and no containing-block ancestor (its only ancestors, body
+  and html, are 375px with no transform/filter/contain); and removing `ScrollProgress` did not change
+  `scrollWidth`. `ScrollProgress` is viewport-correct on real devices, where
+  `innerWidth === clientWidth`.
+- **Why no code change:** a `width: 100vw` change would have introduced a real ~15px horizontal
+  scroll on desktop (100vw includes the scrollbar gutter) to "fix" a non-bug. See the "Preview CDP
+  emulation" Engineering note above.
+- **Re-confirms A1:** the A1 table overflow was real and the A1 fix was correct and complete; the
+  residual TCD overflow that A1 attributed to ScrollProgress was this same emulation artifact, so A1
+  missed nothing.
+- **Pending:** one optional real-device eyeball of `/modalities/tcd/` to confirm empirically.
+
 #### `[x]` A6. Theme the cookie consent banner with design tokens  -  Done: PR #70 (`b06b8e7`)
 - **Shipped:** `CookieBanner.tsx` now uses the design tokens instead of hardcoded dark colors, so it
   themes in both modes. In light it renders as a white bar (`bg-surface-card`, `text-ink`,
@@ -252,6 +273,15 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31: A7 RESOLVED, NO FIX. Investigated the reported `/modalities/tcd/` mobile overflow and
+  found it is a Preview-CDP emulation artifact, not a real bug: the emulator's visual viewport
+  (`window.innerWidth` 1500, used by `position:fixed`) is decoupled from the layout viewport
+  (`clientWidth` 375), so any fixed full-width element mis-measures; a fresh injected fixed div
+  reproduced it; `ScrollProgress` `offsetParent` is null with no containing-block ancestor; and
+  removing it did not change `scrollWidth`. ScrollProgress is viewport-correct on real devices, so no
+  code change was made (a 100vw change would have regressed desktop). Methodology recorded in the
+  Engineering notes; re-confirms A1 was complete (its table fix was real; the residual TCD overflow
+  was this artifact).
 - 2026-05-31, PR #70 (`b06b8e7`): A6 shipped. CookieBanner now uses design tokens instead of
   hardcoded dark colors, so it themes correctly in both modes: light renders as a white bar blending
   with the page instead of a dark island, dark unchanged. Accept/Decline kept computed-identical
