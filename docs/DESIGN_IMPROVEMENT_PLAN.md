@@ -9,6 +9,17 @@ Companion docs: the full design findings (per-surface, with measured values) liv
 [`LAUNCH_PLAN.md`](./LAUNCH_PLAN.md); load-bearing decisions live in
 [`DECISIONS.md`](./DECISIONS.md).
 
+## What this resource is (read before interpreting any "bedside" finding)
+
+MNM-Edu is an **educational / learning resource** for studying pediatric multimodal neuromonitoring;
+it is **not** a time-pressured bedside quick-reference tool. Several audit findings use
+"bedside-scannable" framing (the audit was written partly from a bedside-usability lens). Read that
+framing in light of the resource's actual purpose: for a learning resource, content that is **dense
+and thorough** is frequently appropriate, and is a feature rather than a defect. A finding that says
+"make X bedside-scannable" should therefore be weighed against whether brevity actually serves a
+learner, and may not apply at all. (A genuinely bedside-oriented companion is captured separately
+under "Future directions" below, kept distinct from this learning material.)
+
 ## How this document is maintained
 
 - Every backlog item carries a status checkbox. Status is updated **on PR merge** (at the same
@@ -90,18 +101,24 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
-> B1 (type hierarchy) and B3 (mobile mermaid legibility) are DONE; see the Completed section
-> below. B2 (5-minute-summary format) and B4 (base font size and gutter) remain, and both are
-> flagged for OWNER DECISION before they propagate site-wide.
+> B1 (type hierarchy) and B3 (mobile mermaid legibility) are DONE; see the Completed section below.
+> B2 is reframed as a LOWER-PRIORITY, optional learning-aid polish that MAY BE SKIPPED entirely
+> (owner decision), and B4 is OPEN but deliberately PARKED (owner decision; highest-ripple item).
+> Both are owner-decision items; neither is queued work.
 
-#### `[ ]` B2. Rework the "5-minute summary" into a bedside-scannable format
-- **What:** convert the dense 14 px single-paragraph summary into a scannable format (bulleted key
-  points or bolded lead-ins).
-- **Audit finding:** High, readability.
-- **Effort:** Moderate.
-- **Touches:** content presentation on modality and foundation pages; both themes; all breakpoints.
-  NOTE: this changes how clinical content is PRESENTED; the clinical owner should sign off on the
-  format before it propagates site-wide.
+#### `[ ]` B2. (Optional) improve the "5-minute summary" structure as a learning aid
+- **What:** the audit framed this as "make the dense single-paragraph summary bedside-scannable."
+  That goal does not fully fit a LEARNING resource (see "What this resource is" near the top).
+  Reframed: if desired, OPTIONALLY improve the visual structure of the summary (for example light
+  bolded lead-ins or a little grouping) so a LEARNER can navigate it, WITHOUT stripping the depth
+  that is appropriate for studying. Brevity is explicitly NOT the goal here.
+- **Audit finding:** originally "High, readability (bedside lens)"; downgraded here to a minor,
+  optional polish given the resource's actual purpose.
+- **Priority:** LOWER PRIORITY, owner-decision. **May be SKIPPED as unnecessary** - doing nothing is
+  a valid outcome; the owner decides whether any change is wanted at all.
+- **Touches:** content presentation on modality and foundation pages; both themes. NOTE: this would
+  change how clinical content is PRESENTED, so the clinical owner signs off before anything
+  propagates site-wide.
 
 #### `[ ]` B4. Reconsider the base 14 px font size and the wide empty-right gutter
 - **What:** two related judgment calls: (a) whether 14 px is the right base for dense clinical
@@ -115,6 +132,11 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
   is 14px and Tailwind sizing is rem-based (see "Engineering notes" at the top), so changing the
   base font will rescale every rem-based size (spacing, icon boxes, heights) site-wide. Audit that
   knock-on effect as part of B4.
+- **Priority:** OPEN, owner-decision-pending, and deliberately **PARKED**. This is the
+  highest-ripple item in the plan: per the Engineering notes, the 14px root font-size plus rem-based
+  Tailwind sizing means changing the base font rescales every rem-based size site-wide. Undertake
+  ONLY on an explicit owner decision that 14px is too small, with a whole-site re-verification
+  planned as part of the work. No action until then.
 
 ### Track C: The figures (highest impact, largest effort, own track)
 
@@ -142,8 +164,8 @@ This is a recommendation; the OWNER sets the real priority.
 
 1. **Track A first.** Quick, low-risk wins that ship visible improvement and build momentum.
    A1 (table overflow) and A2 (mermaid light theme) remove the two most noticeable defects.
-2. **Track B next**, with owner input on the judgment-call items (B2 summary format, B4 base font
-   and gutter) before they propagate site-wide.
+2. **Track B is essentially resolved:** B1 and B3 shipped; B2 is now optional and may be skipped,
+   and B4 is parked, both pending an owner decision (see Track B). No queued Track B work remains.
 3. **Track C in parallel**, as a longer-running program. Because it is content/illustration
    production rather than code, it does not block A or B and can proceed on its own cadence, one
    page at a time, sequenced by traffic (homepage-linked core modalities and key foundations
@@ -151,6 +173,22 @@ This is a recommendation; the OWNER sets the real priority.
 
 Rationale: A is safe and fast, B needs a few decisions, and C is the biggest quality lever but the
 slowest, so starting it early in parallel lets it run while the faster tracks land.
+
+---
+
+## Future directions (captured, not current scope, not yet planned)
+
+Forward-looking ideas recorded so they are not lost. These are **distinct from the Track A/B/C
+improvement backlog above** and are **not planned work**; the owner decides if and when any becomes
+real scope.
+
+- **A bedside-reference companion.** A possible separate version (or a distinct mode/section) of the
+  content oriented toward quick **at-the-bedside reference** of key numbers, thresholds, and decision
+  aids, kept distinct from the educational learning material (which stays deliberately dense and
+  thorough). This is the natural home for the "bedside-scannable" lens that several audit findings
+  used, rather than reshaping the learning content to fit it. SEED: the owner has previously created
+  bedside-oriented reference tables (vasospasm, TBI, cerebral edema) in earlier work that could seed
+  this. Status: FUTURE idea only, not current scope, not yet planned, just captured here.
 
 ---
 
