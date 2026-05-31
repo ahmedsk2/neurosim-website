@@ -59,17 +59,8 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
-> A1 (wrap data tables in a horizontal-scroll container) is DONE; see the Completed section below.
-
-#### `[ ]` A2. Theme the mermaid diagrams for light mode (and fix node sizing)
-- **What:** mermaid nodes currently stay dark navy on the light page (a dark island). Make mermaid
-  theme-aware (re-render or re-color on theme change) and size node boxes to their labels so text
-  is not clipped.
-- **Audit finding:** High, light theme. Measured: light page `#F8FAFC` but node fill stays
-  `#13243A`. Also the clipped "Allow modest MAP variability to bu..." node.
-- **Effort:** Quick to moderate.
-- **Touches:** light theme specifically (verify dark unchanged); all breakpoints; every integration
-  page that uses mermaid.
+> A1 (wrap data tables in a horizontal-scroll container) and A2 (theme mermaid diagrams for light
+> mode and fix clipped labels) are DONE; see the Completed section below.
 
 #### `[ ]` A3. Enlarge tap targets toward the comfortable 44 px
 - **What:** raise header icon controls (search, theme, menu) and primary buttons toward 44 px on
@@ -196,6 +187,23 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 
 Items move here on merge, newest first, with PR number and merged SHA.
 
+#### `[x]` A2. Theme the mermaid diagrams for light mode (and fix clipped labels)  -  Done: PR #66 (`f0ec55d`)
+- **Shipped:** the `Mermaid` component reads the active theme via `useTheme()` and re-initializes
+  mermaid with token-mapped theme variables before each render, re-rendering when the theme toggles
+  (effect keyed on the theme). Dark keeps its exact previous colors; light maps to white node fill,
+  navy text, and teal borders/lines, so diagrams no longer render as a dark island on light-mode
+  pages.
+- **Label fit:** `flowchart.wrappingWidth` raised to 400 so node boxes size to their full label and
+  the long "...build buffer" label is no longer clipped; `htmlLabels` stays `true` so HTML entities
+  in labels (`&ge;`, `&lt;`) still decode.
+- **Verified:** light node fill `#13243A` to `#FFFFFF` (stroke `#0D9488`, text `#0F172A`); dark
+  unchanged; both toggle directions re-render with no stale diagram; labels not clipped; fits at
+  375/768/desktop; full gate green (typecheck, lint, validate-content, vitest 94/94, build, e2e 12
+  passed).
+- **Maintenance note:** with `wrappingWidth: 400`, mermaid node labels stay single-line up to 400px
+  before wrapping. All current labels are well under that; a future label longer than ~400px would
+  wrap (by design).
+
 #### `[x]` A1. Wrap data tables in a horizontal-scroll container  -  Done: PR #64 (`4bdf253`)
 - **Shipped:** a `TableScroll` client component registered as the MDX `table` override (alongside
   the Mermaid `pre` override), so every content-page table (modalities, foundations, integration) is
@@ -212,6 +220,13 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #66 (`f0ec55d`): A2 shipped. Mermaid diagrams now read the active theme via
+  useTheme() and re-render on theme toggle with token-mapped variables; dark is unchanged, light
+  maps to white nodes / navy text / teal borders so diagrams no longer render as a dark island on
+  light-mode pages; the long-label clip is fixed via wrappingWidth: 400 with htmlLabels kept true so
+  HTML entities still decode; verified both themes, both toggle directions, and at 375/768/desktop.
+  (Maintenance note: with wrappingWidth: 400, mermaid node labels stay single-line up to 400px
+  before wrapping; all current labels are well under that.)
 - 2026-05-31, PR #64 (`4bdf253`): A1 shipped. Added a `TableScroll` wrapper as the MDX `table`
   override; wide content-page tables now scroll within their own box instead of forcing page-level
   horizontal scroll on mobile; the a11y scroll-region is applied only when a table overflows;
