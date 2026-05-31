@@ -46,7 +46,7 @@ const CASES: Record<CaseId, { label: string; subtitle: string; frames: Snapshot[
       rso2: 65,
       tcdMfv: 90 + i * 1.5,
       pbto2: 22 - i * 0.1,
-      note: i === 35 ? 'Lindegaard ratio crosses 5,symptomatic vasospasm' : undefined,
+      note: i === 35 ? 'Lindegaard ratio crosses 5, symptomatic vasospasm' : undefined,
     })),
   },
   'pbto2-cpp': {

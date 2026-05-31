@@ -219,14 +219,14 @@ function PeakAnatomy({ compliance }: { compliance: Compliance }) {
     <div className="text-[12.5px] text-ink/85 leading-[1.6]">
       <ul className="list-none p-0 space-y-2">
         <li className="rounded-md border-l-[3px] border-l-brand-tealLight bg-surface-deeper px-3 py-2">
-          <strong>P1,percussion wave.</strong> Pulse from the intracranial arterial system. Roughly constant across ICP.
+          <strong>P1, percussion wave.</strong> Pulse from the intracranial arterial system. Roughly constant across ICP.
         </li>
         <li className="rounded-md border-l-[3px] border-l-brand-amber bg-surface-deeper px-3 py-2">
-          <strong>P2,tidal wave.</strong> Reflects intracranial compliance. Grows as compliance falls. Currently:{' '}
+          <strong>P2, tidal wave.</strong> Reflects intracranial compliance. Grows as compliance falls. Currently:{' '}
           <span className="font-bold text-brand-amber">{compliance}</span>.
         </li>
         <li className="rounded-md border-l-[3px] border-l-brand-purple bg-surface-deeper px-3 py-2">
-          <strong>P3,dicrotic wave.</strong> Venous component. Smaller and relatively stable.
+          <strong>P3, dicrotic wave.</strong> Venous component. Smaller and relatively stable.
         </li>
       </ul>
       <p className="mt-3 text-[11.5px] text-ink-muted">

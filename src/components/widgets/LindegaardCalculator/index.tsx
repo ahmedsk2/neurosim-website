@@ -13,8 +13,8 @@ interface Preset {
 
 const PRESETS: Preset[] = [
   { label: 'Hyperemic post-cardiac', mca: 130, ica: 60, desc: 'High velocity, low ratio, flow not vasospasm' },
-  { label: 'Mild SAH vasospasm', mca: 150, ica: 40, desc: 'Ratio 3.75,mild' },
-  { label: 'Severe SAH vasospasm', mca: 220, ica: 22, desc: 'Ratio 10,severe' },
+  { label: 'Mild SAH vasospasm', mca: 150, ica: 40, desc: 'Ratio 3.75, mild' },
+  { label: 'Severe SAH vasospasm', mca: 220, ica: 22, desc: 'Ratio 10, severe' },
 ];
 
 function classify(ratio: number): { label: string; status: 'good' | 'warn' | 'danger' } {

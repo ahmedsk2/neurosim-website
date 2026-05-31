@@ -56,7 +56,7 @@ export function pulseAmplitude(c: Compliance): number {
 }
 
 export function morphologyLabel(c: Compliance): string {
-  if (c === 'normal') return 'P1 > P2 > P3,normal';
-  if (c === 'low') return 'P2 ≈ P1,low compliance';
-  return 'P2 > P1,exhausted reserve';
+  if (c === 'normal') return 'P1 > P2 > P3, normal';
+  if (c === 'low') return 'P2 ≈ P1, low compliance';
+  return 'P2 > P1, exhausted reserve';
 }

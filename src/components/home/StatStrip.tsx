@@ -17,14 +17,14 @@ const stats: Stat[] = [
     suffix: '%',
     colorClass: 'text-brand-amber',
     headline: 'of children in PICU coma have seizures invisible to bedside exam.',
-    cite: 'Abend NS et al., Neurology 2011,pooled critically ill pediatric cohorts.',
+    cite: 'Abend NS et al., Neurology 2011, pooled critically ill pediatric cohorts.',
   },
   {
     number: 90,
     suffix: '%',
     colorClass: 'text-brand-tealLight',
     headline: 'reduction in first stroke with annual TCD screening in sickle cell anemia.',
-    cite: 'Adams RJ et al., NEJM 1998,STOP randomized trial.',
+    cite: 'Adams RJ et al., NEJM 1998, STOP randomized trial.',
   },
   {
     number: 24,

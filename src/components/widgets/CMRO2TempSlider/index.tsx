@@ -17,7 +17,7 @@ export default function CMRO2TempSlider() {
   return (
     <WidgetShell
       eyebrow="Foundation · cerebral metabolism"
-      title="Q10,CMRO₂ vs brain temperature"
+      title="Q10, CMRO₂ vs brain temperature"
       footnote="Polderman 2009. Q10 = 1.07 → ~7% per °C."
     >
       <div className="grid gap-2.5 grid-cols-1 md:grid-cols-3 mb-2.5">
