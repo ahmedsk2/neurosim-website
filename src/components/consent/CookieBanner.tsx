@@ -37,14 +37,14 @@ export function CookieBanner() {
           <button
             type="button"
             onClick={decline}
-            className="rounded border border-[#334155] bg-[#0b1220] px-4 py-2 text-[13px] font-bold text-[#e2e8f0] hover:border-[#5eead4]"
+            className="tap-target inline-flex items-center justify-center rounded border border-[#334155] bg-[#0b1220] px-4 py-2 text-[13px] font-bold text-[#e2e8f0] hover:border-[#5eead4]"
           >
             Decline
           </button>
           <button
             type="button"
             onClick={accept}
-            className="rounded border border-[#334155] bg-[#0b1220] px-4 py-2 text-[13px] font-bold text-[#e2e8f0] hover:border-[#5eead4]"
+            className="tap-target inline-flex items-center justify-center rounded border border-[#334155] bg-[#0b1220] px-4 py-2 text-[13px] font-bold text-[#e2e8f0] hover:border-[#5eead4]"
           >
             Accept
           </button>
@@ -55,7 +55,7 @@ export function CookieBanner() {
               type="button"
               onClick={dismissBanner}
               aria-label="Close cookie settings"
-              className="rounded border border-transparent px-2 py-2 text-[#94a3b8] hover:text-[#e2e8f0]"
+              className="tap-target inline-flex items-center justify-center rounded border border-transparent px-2 py-2 text-[#94a3b8] hover:text-[#e2e8f0]"
             >
               ×
             </button>

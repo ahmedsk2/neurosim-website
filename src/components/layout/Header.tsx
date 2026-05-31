@@ -70,7 +70,7 @@ export function Header() {
           <Link
             href="/search/"
             aria-label="Search"
-            className="rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card"
+            className="tap-target inline-flex items-center justify-center rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -79,7 +79,8 @@ export function Header() {
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
-            className="lg:hidden rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card"
+            aria-expanded={open}
+            className="tap-target inline-flex items-center justify-center lg:hidden rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -95,7 +96,7 @@ export function Header() {
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  'rounded-md px-3 py-2 text-[14px] font-semibold text-ink-muted',
+                  'flex min-h-[44px] items-center rounded-md px-3 py-2 text-[14px] font-semibold text-ink-muted',
                   'hover:text-brand-tealLight hover:bg-surface-card',
                 )}
               >

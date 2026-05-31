@@ -25,7 +25,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       onClick={() => setT(toggleTheme())}
       suppressHydrationWarning
       className={cn(
-        'rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card',
+        'tap-target inline-flex items-center justify-center rounded-md p-1.5 text-ink-muted hover:text-brand-tealLight hover:bg-surface-card',
         className,
       )}
     >
