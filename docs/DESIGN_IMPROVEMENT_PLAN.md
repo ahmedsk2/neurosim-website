@@ -59,13 +59,7 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
 
 ### Track A: Quick safe wins (small, low-risk, high-value)
 
-#### `[ ]` A1. Wrap data tables in a horizontal-scroll container
-- **What:** wide tables (the age-band and threshold tables) should scroll within themselves
-  instead of forcing the whole page to scroll sideways on phones.
-- **Audit finding:** High, mobile. `/modalities/icp/` overflows to 402 px at a 375 px viewport;
-  `.prose-mnm` is `overflow-x: visible`, so tables are not wrapped.
-- **Effort:** Quick win (CSS-level).
-- **Touches:** mobile and tablet primarily; verify desktop unchanged; both themes.
+> A1 (wrap data tables in a horizontal-scroll container) is DONE; see the Completed section below.
 
 #### `[ ]` A2. Theme the mermaid diagrams for light mode (and fix node sizing)
 - **What:** mermaid nodes currently stay dark navy on the light page (a dark island). Make mermaid
@@ -110,6 +104,18 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
   where `NEXT_PUBLIC_GA_ID` is set, so assess live in production.
 - **Effort:** Quick win.
 - **Touches:** light theme specifically; verify in a GA-enabled build; all breakpoints.
+
+#### `[ ]` A7. Fix the /modalities/tcd/ mobile page overflow from the fixed ScrollProgress bar
+- **What:** on `/modalities/tcd/` at 375 px the page still scrolls horizontally, but the culprit is
+  the fixed `ScrollProgress` reading bar computing to the 1500 px container width (its inner fill is
+  0%), NOT a table. Constrain `ScrollProgress` to the viewport width.
+- **Audit finding:** Audit-adjacent; found during A1 verification. This is a distinct, non-table
+  bug: A1's table wrapper cannot affect a layout-root fixed element, so it was never part of A1, and
+  no `.prose-mnm` content element exceeds the viewport on that page.
+- **Effort:** Quick win.
+- **Touches:** a layout component (`src/components/layout/ScrollProgress.tsx`), so it affects ALL
+  pages; verify in both themes and at mobile/tablet/desktop, and confirm the reading-progress bar
+  still fills correctly on desktop (no regression to the progress indicator).
 
 ### Track B: Deeper design and readability work (moderate, more judgment)
 
@@ -188,8 +194,25 @@ slowest, so starting it early in parallel lets it run while the faster tracks la
 
 ## Completed
 
-Nothing yet. Items move here on merge, newest first, with PR number and merged SHA.
+Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` A1. Wrap data tables in a horizontal-scroll container  -  Done: PR #64 (`4bdf253`)
+- **Shipped:** a `TableScroll` client component registered as the MDX `table` override (alongside
+  the Mermaid `pre` override), so every content-page table (modalities, foundations, integration) is
+  wrapped in an `overflow-x: auto` box. Wide tables now scroll within their own box instead of
+  forcing page-level horizontal scroll on mobile.
+- **Behavior:** the wrapper becomes a focusable, labelled scroll region (`role="region"`,
+  `aria-label`, `tabindex=0`) ONLY when a table actually overflows (ResizeObserver), so tables that
+  fit get no dead tab stops. The affordance is a thin, token-matched scrollbar; no fade overlay (it
+  would tint the values in edge columns). Desktop is unchanged in both themes (tables still fill the
+  column at `width:100%`).
+- **Verified:** ICP `/modalities/icp/` 375 px page overflow resolved (scrollWidth 402 to 375; the
+  388 px table scrolls internally); 768 px and desktop no overflow; dark and light; full gate green
+  (typecheck, lint, validate-content, vitest 94/94, build, e2e 12 passed).
 
 ### Changelog
 
-- (none yet)
+- 2026-05-31, PR #64 (`4bdf253`): A1 shipped. Added a `TableScroll` wrapper as the MDX `table`
+  override; wide content-page tables now scroll within their own box instead of forcing page-level
+  horizontal scroll on mobile; the a11y scroll-region is applied only when a table overflows;
+  token-matched scrollbar; desktop unchanged in both themes.
