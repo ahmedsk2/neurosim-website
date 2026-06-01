@@ -138,6 +138,13 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
   text, evidence-graded captions and attributions). The gap is purely the finished art, so each
   replacement is a drop-in. Highest impact item on this plan; also the largest and most involved,
   so sequence it as a parallel, longer-running program (see sequencing below).
+- **Tranche 0 (cleanup) DONE** (PR #82, `8fecc9b`): 11 orphaned placeholder SVGs removed (each
+  superseded by a rendered hand-built component). The figure survey
+  [`_audit/FIGURE_PROGRAM_PLAN.md`](./_audit/FIGURE_PROGRAM_PLAN.md) was corrected to a four-class
+  model (components / finished PNGs / placeholders / TCD) after render verification found 5 finished
+  PNG anatomical figures the first pass missed (so several React components are redundant/unused). C1
+  (finished-figure PRODUCTION) remains the open program, now concentrated in data-viz / flowcharts
+  because the anatomical figures are already covered by a component or a PNG.
 
 ---
 
@@ -178,6 +185,23 @@ real scope.
 ## Completed
 
 Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` Track C Tranche 0. Cleanup: delete orphaned placeholder figures  -  Done: PR #82 (`8fecc9b`)
+- **Shipped:** 11 auto-generated placeholder SVGs deleted, each unreferenced in any MDX because the
+  page already renders the equivalent hand-built React component (icp/p1p2p3-anatomy, eeg montage,
+  mx-vs-prx-arch, onsd-anatomy, pbto2 licox-probe, astrup-thresholds, lassen-curves-overlay,
+  bbb-anatomy, pv-curve-annotated, eeg-tcd pair-up, mnm-newborn hie-bundle). Proven unreferenced by a
+  set-difference (all placeholder files vs every `/images` reference in `src/`) plus a per-slug grep
+  with no matches; build + validate-content + a render spot-check confirmed nothing broke.
+- **Scope corrections from verification** (recorded in `_audit/FIGURE_PROGRAM_PLAN.md`): the sjvo2
+  `JugularBulbCatheter` wiring was DECLINED because sjvo2 already has a finished
+  `jugular-bulb-catheter.png` and the component would have duplicated it (so `jugular-anatomy.svg` is a
+  USED stack figure, not an orphan). A fourth asset class was found, 5 finished PNG anatomical figures,
+  making several React components redundant/unused. 8 further orphans were left for owner decision, and
+  the `gen-placeholders.mjs` manifest still lists the 11 deleted (a manual re-run would recreate them;
+  pruning is a flagged tiny follow-up).
+- **Net:** C1 finished-figure production is now concentrated in data-viz / flowcharts, since the
+  anatomy is already covered by a component or a PNG.
 
 #### `[x]` B4. Increase the base font 14px -> 15px (with a heading-size restore)  -  Done: PR #80 (`d0fb0db`)
 - **Shipped:** the base font / rem root (`html, body` in `globals.css`) went **14px -> 15px**. The
@@ -362,6 +386,15 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-05-31, PR #82 (`8fecc9b`): Track C Tranche 0 (cleanup). Deleted 11 orphaned placeholder SVGs,
+  each superseded by a rendered hand-built component and proven unreferenced (set-difference +
+  per-slug grep, no matches; build + validate-content + render spot-check clean). The sjvo2
+  component-wiring was DECLINED (it would have duplicated an existing finished PNG; jugular-anatomy.svg
+  is a used stack figure, not an orphan). The figure survey was corrected to a four-class model after
+  finding 5 finished PNG anatomical figures the first pass missed (several React components are
+  therefore redundant/unused). 8 further orphans + a gen-placeholders.mjs manifest prune left as
+  flagged follow-ups. C1 finished-figure production remains the open program, now concentrated in
+  data-viz / flowcharts.
 - 2026-05-31, PR #80 (`d0fb0db`): B4 shipped (unparked). Base font increased 14px -> 15px (owner read
   14px as slightly small; conservative bump, not 16px, to avoid overcorrecting dense clinical content).
   Because Tailwind sizing is rem-based the bump rescaled all rem-based dimensions ~7% (verified no
