@@ -49,7 +49,7 @@ export function PrxCppUCurve() {
       role="img"
       aria-label="PRx-versus-CPP U-curve with the parabola vertex at CPPopt 70 mmHg, the lower and upper limits of autoregulation where PRx crosses +0.25, and a shaded CPPopt plus or minus 5 mmHg target band"
     >
-      <rect width={W} height={H} fill="#081224" />
+      <rect width={W} height={H} fill="#0F1A2E" />
 
       <text x={W / 2} y={28} textAnchor="middle" fontFamily="Segoe UI, sans-serif" fontSize="14" fontWeight="700" fill="#5EEAD4" letterSpacing="2">
         PRx vs CPP · THE CPPopt U-CURVE
@@ -117,7 +117,7 @@ export function PrxCppUCurve() {
         { cpp: 85, label: 'ULA 85' },
       ].map((m) => (
         <g key={m.label}>
-          <circle cx={xScale(m.cpp)} cy={yScale(0.25)} r="3.5" fill="#EF4444" stroke="#081224" strokeWidth="1" />
+          <circle cx={xScale(m.cpp)} cy={yScale(0.25)} r="3.5" fill="#EF4444" stroke="#0F1A2E" strokeWidth="1" />
           <line x1={xScale(m.cpp)} y1={yScale(0.25)} x2={xScale(m.cpp)} y2={margin.top + plotH} stroke="#EF4444" strokeWidth="0.6" strokeDasharray="2 3" opacity="0.6" />
           <text x={xScale(m.cpp)} y={yScale(0.25) - 8} textAnchor="middle" fontFamily="Consolas, monospace" fontSize="9" fontWeight="700" fill="#EF4444">
             {m.label}
@@ -126,7 +126,7 @@ export function PrxCppUCurve() {
       ))}
 
       {/* CPPopt vertex */}
-      <circle cx={xScale(CPPOPT)} cy={yScale(PRX_MIN)} r="4.5" fill="#10B981" stroke="#081224" strokeWidth="1.4" />
+      <circle cx={xScale(CPPOPT)} cy={yScale(PRX_MIN)} r="4.5" fill="#10B981" stroke="#0F1A2E" strokeWidth="1.4" />
       <line x1={xScale(CPPOPT)} y1={yScale(PRX_MIN)} x2={xScale(CPPOPT)} y2={margin.top + plotH} stroke="#10B981" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7" />
       <text x={xScale(CPPOPT)} y={yScale(PRX_MIN) + 18} textAnchor="middle" fontFamily="Consolas, monospace" fontSize="10" fontWeight="700" fill="#10B981">
         CPPopt 70

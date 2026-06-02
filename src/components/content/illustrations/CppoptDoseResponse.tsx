@@ -52,7 +52,7 @@ export function CppoptDoseResponse() {
         </marker>
       </defs>
 
-      <rect width={W} height={H} fill="#081224" />
+      <rect width={W} height={H} fill="#0F1A2E" />
 
       <text x={W / 2} y={26} textAnchor="middle" fontFamily="Segoe UI, sans-serif" fontSize="14" fontWeight="700" fill="#5EEAD4" letterSpacing="2">
         OUTCOME vs DEVIATION FROM CPPopt
@@ -104,7 +104,7 @@ export function CppoptDoseResponse() {
       <polyline points={curve.join(' ')} fill="none" stroke="#5EEAD4" strokeWidth="3.2" />
 
       {/* peak marker */}
-      <circle cx={xScale(PEAK_X)} cy={yScale(PEAK_Y)} r="4" fill="#10B981" stroke="#081224" strokeWidth="1.2" />
+      <circle cx={xScale(PEAK_X)} cy={yScale(PEAK_Y)} r="4" fill="#10B981" stroke="#0F1A2E" strokeWidth="1.2" />
 
       {/* left arm: rising mortality */}
       <line x1={xScale(-6)} y1={yScale(fav(-6)) + 10} x2={xScale(-12.5)} y2={yScale(fav(-12.5)) + 10} stroke="#FFFFFF" strokeWidth="1.6" markerEnd="url(#drArrow)" />

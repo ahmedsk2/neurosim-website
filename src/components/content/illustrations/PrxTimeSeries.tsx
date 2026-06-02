@@ -128,7 +128,7 @@ export function PrxTimeSeries() {
       role="img"
       aria-label="Four-panel PRx pattern library: intact (near zero), impaired (sustained above 0.25), oscillating, and artefactual traces, each over a 4-hour window, with the +0.25 impairment threshold marked"
     >
-      <rect width={W} height={H} fill="#081224" />
+      <rect width={W} height={H} fill="#0F1A2E" />
 
       <text x={W / 2} y={28} textAnchor="middle" fontFamily="Segoe UI, sans-serif" fontSize="14" fontWeight="700" fill="#5EEAD4" letterSpacing="2">
         PRx PATTERN LIBRARY · FOUR CANONICAL TRACES

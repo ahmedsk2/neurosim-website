@@ -86,7 +86,7 @@ export function PrxMxOrx() {
       role="img"
       aria-label="Six small U-curve panels comparing PRx, Mx and ORx for one patient. Top row concordant: all three share CPPopt near 70. Bottom row discordant: PRx 70, Mx 60, ORx 82. The indices sample different vascular beds."
     >
-      <rect width={W} height={H} fill="#081224" />
+      <rect width={W} height={H} fill="#0F1A2E" />
 
       <text x={W / 2} y={26} textAnchor="middle" fontFamily="Segoe UI, sans-serif" fontSize="14" fontWeight="700" fill="#5EEAD4" letterSpacing="2">
         PRx vs Mx vs ORx · ONE PATIENT, THREE INDICES

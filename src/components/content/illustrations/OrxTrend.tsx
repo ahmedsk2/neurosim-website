@@ -80,7 +80,7 @@ export function OrxTrend() {
       role="img"
       aria-label="Cerebral oximetry index COx in a preterm infant, three panels: rSO2 falling toward the 55 percent hypoxic line and MAP drifting below optimum; COx sustained at plus 0.4 to 0.5 above the 0.3 impaired threshold; and a shallow COx-versus-MAP U-curve with the nadir MAPopt near 38 mmHg."
     >
-      <rect width={W} height={H} fill="#081224" />
+      <rect width={W} height={H} fill="#0F1A2E" />
 
       <text x={W / 2} y={26} textAnchor="middle" fontFamily="Segoe UI, sans-serif" fontSize="14" fontWeight="700" fill="#5EEAD4" letterSpacing="2">
         CEREBRAL OXIMETRY INDEX (COx) · PRETERM INFANT
@@ -110,11 +110,11 @@ export function OrxTrend() {
       {/* impaired shade above 0.3 */}
       <rect x={plotL} y={ySc(0.8)} width={plotR - plotL} height={ySc(0.3) - ySc(0.8)} fill="#EF4444" opacity="0.07" />
       <line x1={plotL} y1={ySc(0.3)} x2={plotR} y2={ySc(0.3)} stroke="#EF4444" strokeWidth="0.9" strokeDasharray="4 3" opacity="0.9" />
-      <text x={plotR} y={ySc(0.3) - 3} textAnchor="end" fontFamily="Consolas, monospace" fontSize="8" fontWeight="700" fill="#EF4444">impaired &gt; 0.3</text>
+      <text x={plotR} y={ySc(0.3) + 11} textAnchor="end" fontFamily="Consolas, monospace" fontSize="8" fontWeight="700" fill="#EF4444">impaired &gt; 0.3</text>
       <line x1={plotL} y1={ySc(0)} x2={plotR} y2={ySc(0)} stroke="#334155" strokeWidth="0.6" strokeDasharray="2 2" />
       <text x={plotL - 4} y={ySc(0) + 3} textAnchor="end" fontFamily="Consolas, monospace" fontSize="8" fill="#64748B">0</text>
+      <text x={plotR} y={p2.y + 16} textAnchor="end" fontFamily="Consolas, monospace" fontSize="8.5" fill="#F97316">COx approx +0.4 to +0.5</text>
       <polyline points={coxPts.join(' ')} fill="none" stroke="#F97316" strokeWidth="1.9" />
-      <text x={plotR} y={ySc(0.5) + 3} textAnchor="end" fontFamily="Consolas, monospace" fontSize="8.5" fill="#F97316">COx approx +0.4 to +0.5</text>
 
       {/* ---------- Panel 3 ---------- */}
       <rect x={p3.x} y={p3.y} width={p3.w} height={p3.h} rx="6" fill="#0B1B33" stroke="#23344f" strokeWidth="1" />
