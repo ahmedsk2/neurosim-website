@@ -138,13 +138,22 @@ The audit found these are genuinely good. Every design PR must avoid regressing 
   text, evidence-graded captions and attributions). The gap is purely the finished art, so each
   replacement is a drop-in. Highest impact item on this plan; also the largest and most involved,
   so sequence it as a parallel, longer-running program (see sequencing below).
-- **Tranche 0 (cleanup) DONE** (PR #82, `8fecc9b`): 11 orphaned placeholder SVGs removed (each
-  superseded by a rendered hand-built component). The figure survey
+- **Tranche 0 (cleanup) COMPLETE** (PR #82, `8fecc9b` + follow-up PR #84, `1c84822`): cleanup ran in
+  two steps. PR #82 removed 11 orphaned placeholder SVGs (each superseded by a rendered hand-built
+  component); follow-up PR #84 removed 3 more orphaned placeholders whose subject is covered by a
+  deployed PNG on the same page (owner confirmed the PNGs are good enough), and pruned the
+  `gen-placeholders.mjs` manifest of all 14 now-deleted entries (the 11 from Tranche 0 + these 3), so a
+  manual generator re-run will not recreate any deleted file (55 manifest entries remain; 60 placeholder
+  SVGs left on disk, verified). The figure survey
   [`_audit/FIGURE_PROGRAM_PLAN.md`](./_audit/FIGURE_PROGRAM_PLAN.md) was corrected to a four-class
   model (components / finished PNGs / placeholders / TCD) after render verification found 5 finished
-  PNG anatomical figures the first pass missed (so several React components are redundant/unused). C1
-  (finished-figure PRODUCTION) remains the open program, now concentrated in data-viz / flowcharts
-  because the anatomical figures are already covered by a component or a PNG.
+  PNG anatomical figures the first pass missed (so several React components are redundant/unused). Of
+  the 8 orphans flagged during Tranche 0, 3 are now deleted; the remaining 5 are NOT cleanup but C1
+  production / owner decisions (2 subject-uncovered data-viz placeholders, `microdialysis/lpr-grid` and
+  `pupillometry/npi-vs-clinical`, plus the 3 TCD files `tcd/waveform-anatomy`, `tcd/peds-mfv-age-curve`,
+  `tcd/spectra-side-by-side`). With cleanup done, what remains in Track C is **C1, the finished-figure
+  PRODUCTION** (concentrated in data-viz / flowcharts because the anatomical figures are already covered
+  by a component or a PNG), which has not yet begun.
 
 ---
 
@@ -185,6 +194,26 @@ real scope.
 ## Completed
 
 Items move here on merge, newest first, with PR number and merged SHA.
+
+#### `[x]` Track C cleanup follow-up. Delete 3 PNG-superseded orphans + prune manifest  -  Done: PR #84 (`1c84822`)
+- **Shipped:** the 3 remaining orphaned placeholders whose subject is covered by a deployed PNG on the
+  same page were deleted (owner confirmed the PNGs are good enough for those subjects):
+  `icp/evd-vs-ipm-placement.svg` (covered by `icp-probe-placement.png`), `nirs/nirs-optode-pair.svg`
+  (covered by `nirs-optode-placement.png`), and `foundations/monro-kellie/compartments-shift.svg`
+  (covered by `monro-kellie-sagittal.png`). Each was proven unreferenced (per-slug grep across `src/`,
+  no matches) and the superseding PNG confirmed present and referenced, so every subject stays covered.
+- **Manifest pruned:** all 14 now-deleted placeholders were removed from the `gen-placeholders.mjs`
+  FIGURES array (the 11 from Tranche 0 PR #82, which that PR had left in place, plus these 3), so a
+  manual re-run of the one-shot generator no longer recreates any deleted file. Script still parses
+  (`node --check`); 55 entries remain (was 69). 0 additions / 193 deletions; gate green (typecheck,
+  lint, validate-content 0, vitest 94/94, build, e2e 12/12).
+- **Orphan accounting:** of the 8 orphans flagged during Tranche 0, 3 are now deleted; the remaining 5
+  are NOT cleanup but C1 production / owner decisions (the 2 subject-uncovered data-viz placeholders
+  `microdialysis/lpr-grid` and `pupillometry/npi-vs-clinical`, plus the 3 TCD files
+  `tcd/waveform-anatomy`, `tcd/peds-mfv-age-curve`, `tcd/spectra-side-by-side`).
+- **Net:** Track C CLEANUP is now complete. What remains in Track C is C1, the finished-figure
+  PRODUCTION (concentrated in data-viz / flowcharts; the anatomical class is covered by components or
+  PNGs), which has not yet begun.
 
 #### `[x]` Track C Tranche 0. Cleanup: delete orphaned placeholder figures  -  Done: PR #82 (`8fecc9b`)
 - **Shipped:** 11 auto-generated placeholder SVGs deleted, each unreferenced in any MDX because the
@@ -386,6 +415,17 @@ Items move here on merge, newest first, with PR number and merged SHA.
 
 ### Changelog
 
+- 2026-06-01, PR #84 (`1c84822`): Track C cleanup FOLLOW-UP, and Track C cleanup is now COMPLETE.
+  Deleted the 3 remaining PNG-superseded orphaned placeholders (`icp/evd-vs-ipm-placement`,
+  `nirs/nirs-optode-pair`, `foundations/monro-kellie/compartments-shift`), each proven unreferenced and
+  covered by a deployed PNG on the same page (owner confirmed the PNGs suffice). Pruned the
+  `gen-placeholders.mjs` manifest of all 14 now-deleted entries (the 11 from Tranche 0 PR #82 + these
+  3), so a manual generator re-run will not recreate deleted files (55 entries remain; script parses).
+  0 additions / 193 deletions; gate green. Orphan accounting: of the 8 flagged in Tranche 0, 3 deleted;
+  5 remain as C1 production / owner decisions, not cleanup (the 2 subject-uncovered data-viz
+  placeholders microdialysis/lpr-grid + pupillometry/npi-vs-clinical, and the 3 TCD files
+  tcd/waveform-anatomy + peds-mfv-age-curve + spectra-side-by-side). What remains in Track C is C1, the
+  finished-figure PRODUCTION (data-viz / flowcharts), not yet begun.
 - 2026-05-31, PR #82 (`8fecc9b`): Track C Tranche 0 (cleanup). Deleted 11 orphaned placeholder SVGs,
   each superseded by a rendered hand-built component and proven unreferenced (set-difference +
   per-slug grep, no matches; build + validate-content + render spot-check clean). The sjvo2
