@@ -27,9 +27,6 @@ const IMG_ROOT = join(ROOT, 'public', 'images');
  */
 const FIGURES = [
   // ─── Foundations ─────────────────────────────────────────────────
-  ['foundations/autoregulation/lassen-curves-overlay.svg',
-    'Three Lassen curves overlaid',
-    'Healthy adult, neonate (narrower / lower plateau), severe TBI (passive). X-axis MAP 0-200; Y-axis CBF (relative).', 'curve'],
   ['foundations/autoregulation/myogenic-metabolic-neurogenic.svg',
     'Autoregulation mechanisms by timescale',
     'Three rows: myogenic (5-15 s), metabolic (~30 s), neurogenic (minutes). Schematic vessels constricting / dilating per row.', 'diagram'],
@@ -45,43 +42,21 @@ const FIGURES = [
     'CMRO2 vs brain temperature',
     '6-7% reduction per degree. Therapeutic window highlighted at 33-34 C.', 'curve'],
 
-  ['foundations/monro-kellie/compartments-shift.svg',
-    'Three-compartment shift after mass lesion',
-    'Brain, blood, CSF at baseline and after a mass lesion; buffer exhaustion.', 'diagram'],
-
-  ['foundations/marmarou-pv-curve/pv-curve-annotated.svg',
-    'Annotated pressure-volume curve',
-    'Compensated and decompensated phases; elastance / compliance markers.', 'curve'],
-
-  ['foundations/astrup-cascade/astrup-thresholds.svg',
-    'Astrup CBF thresholds',
-    'Oligemia (~20), electrical failure (~15), membrane failure (~10), infarction (~6) mL/100g/min.', 'bars'],
-
   ['foundations/spreading-depolarizations/sd-propagation.svg',
     'ECoG spreading depolarisation',
     'Large negative DC shift, high-frequency suppression, 2-5 mm/min propagation.', 'curve'],
-
-  ['foundations/blood-brain-barrier/bbb-anatomy.svg',
-    'Blood-brain barrier anatomy',
-    'Endothelial tight junctions, astrocyte end-feet, pericyte, transport arrows.', 'diagram'],
 
   ['foundations/pediatric-physiology/peds-mfv-and-icp-age.svg',
     'Pediatric MFV and ICP across age',
     'Two-panel: MFV vs age (peak 4-6 y); ICP thresholds across age bands.', 'bars'],
 
   // ─── Tier 1 modalities (Group A) ─────────────────────────────────
-  ['icp/p1p2p3-anatomy.svg',
-    'ICP pulse waveform anatomy',
-    'P1 (percussion), P2 (tidal), P3 (dicrotic). Normal P2 < P1; pathological P2 > P1.', 'curve'],
   ['icp/lundberg-waves.svg',
     'Lundberg A, B, C waves',
     'A-waves (plateau >20 mmHg, >5 min); B-waves (rhythmic 0.5-2/min); C-waves (4-8/min, low-amplitude).', 'curve'],
   ['icp/age-band-icp-thresholds.svg',
     'ICP treatment thresholds by age',
     'Neonate 10 mmHg, infant 15, child 20, adolescent / adult 22 mmHg.', 'bars'],
-  ['icp/evd-vs-ipm-placement.svg',
-    'EVD vs intraparenchymal monitor',
-    'Placement schematic with pros / cons callouts for each.', 'diagram'],
 
   ['prx/prx-time-series.svg',
     'PRx, MAP, ICP time series',
@@ -100,9 +75,6 @@ const FIGURES = [
     'CPPopt dose-response (Aries 2012 style)',
     'Time below CPPopt vs neurological outcome.', 'curve'],
 
-  ['nirs/nirs-optode-pair.svg',
-    'NIRS optode pair geometry',
-    'Source / detector with banana-shaped photon path; 2-3 cm depth; three layers (skin, skull, brain).', 'diagram'],
   ['nirs/rso2-trend-shock.svg',
     'rSO2 in septic shock',
     'Falling rSO2 with fluid bolus recovery; MAP overlay.', 'curve'],
@@ -110,9 +82,6 @@ const FIGURES = [
     'ORx vs PRx discordance',
     'Side-by-side trends; mechanisms (sepsis, anaemia, microvascular shunting).', 'panels'],
 
-  ['eeg/montage-bipolar-vs-referential.svg',
-    'Pediatric EEG montages',
-    'Bipolar (chains) vs referential (Cz / average).', 'diagram'],
   ['eeg/pattern-library.svg',
     'EEG pattern library (8 panels)',
     'Normal background, burst suppression, GPDs, LPDs, NCSE, isoelectric, alpha coma, theta coma.', 'panels'],
@@ -120,9 +89,6 @@ const FIGURES = [
     'Alpha-delta ratio trend pre-DCI',
     'aDR falling 30% over 6 h before clinical DCI signs in SAH.', 'curve'],
 
-  ['pbto2/licox-probe.svg',
-    'Licox / Clark electrode tip',
-    'Diffusion zone (~17 mm²); tissue interface; placement depth.', 'diagram'],
   ['pbto2/pbto2-cpp-titration.svg',
     'PbtO2 bedside titration tree',
     'Low PbtO2 → check MAP, FiO2, Hb, CPP, temperature, sedation, sepsis.', 'diagram'],
@@ -130,9 +96,6 @@ const FIGURES = [
     'PbtO2 12-hour trend with events',
     'Annotated events: suction, CPP drop, fever, recovery.', 'curve'],
 
-  ['onsd/onsd-anatomy.svg',
-    'ONSD ultrasound anatomy',
-    'Probe orientation, 3 mm posterior to globe, measurement axes.', 'diagram'],
   ['onsd/onsd-by-age.svg',
     'ONSD cutoffs by age',
     '<1 y ~4.0 mm; 1-15 y ~4.5 mm; adult 5.0-5.7 mm.', 'bars'],
@@ -147,9 +110,6 @@ const FIGURES = [
   ['cpp/triangle-equation.svg',
     'CPP triangle: MAP, ICP, CPP',
     'CPP = MAP − ICP visualised as a triangle; same CPP reachable from many MAP/ICP pairs.', 'diagram'],
-  ['mx/mx-vs-prx-arch.svg',
-    'Mx vs PRx architecture',
-    'Mx uses TCD MFV; PRx uses ICP; both correlate slow waves with MAP.', 'diagram'],
   ['orx/orx-trend.svg',
     'ORx U-curve trend, septic neonate',
     'Impaired autoregulation; ORx > 0.3.', 'ucurve'],
@@ -215,9 +175,6 @@ const FIGURES = [
   ['integration/brain-death-mnm/ancillary-tree.svg',
     'Brain-death ancillary testing tree',
     'When TCD vs CTA vs EEG vs SSEP are needed; jurisdictional differences.', 'diagram'],
-  ['integration/mnm-in-the-newborn/hie-monitoring-bundle.svg',
-    'Neonatal HIE monitoring bundle',
-    'aEEG, NIRS, TCD, MRI timing.', 'diagram'],
   ['integration/dka-cerebral-edema/timeline.svg',
     'DKA cerebral oedema timeline',
     'Rehydration start, PI rise, pupillary asymmetry, herniation risk window.', 'curve'],
@@ -230,9 +187,6 @@ const FIGURES = [
   ['integration/refractory-status-epilepticus/treatment-ladder.svg',
     'RSE treatment ladder',
     'Benzo → second-line → continuous infusion (midaz, pentobarb, ketamine); aEEG / cEEG endpoints.', 'diagram'],
-  ['integration/eeg-tcd-non-convulsive/pair-up.svg',
-    'aEEG narrowing + TCD systolic peaks',
-    'Sedated TBI; paired pattern; mechanism diagram.', 'curve'],
   ['integration/inborn-errors-encephalopathy/leigh-mri.svg',
     'Leigh syndrome MRI schematic',
     'Bilateral basal ganglia and brainstem T2 hyperintensities.', 'diagram'],
