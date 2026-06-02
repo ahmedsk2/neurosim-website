@@ -134,7 +134,7 @@ export function PrxCppUCurve() {
 
       {/* Right legend / interpretation panel */}
       <g transform={`translate(${W - margin.right + 14}, ${margin.top - 6})`}>
-        <rect x="0" y="0" width="186" height="252" rx="6" fill="#152238" stroke="#2a3a55" />
+        <rect x="0" y="0" width="186" height="290" rx="6" fill="#152238" stroke="#2a3a55" />
         <text x="93" y="20" textAnchor="middle" fontFamily="Segoe UI, sans-serif" fontSize="11" fontWeight="700" fill="#5EEAD4" letterSpacing="2">
           READING IT
         </text>
@@ -169,6 +169,9 @@ export function PrxCppUCurve() {
         <text x="12" y="208" fontFamily="Segoe UI, sans-serif" fontSize="9.5" fill="#FFFFFF">not fittable; revert to</text>
         <text x="12" y="222" fontFamily="Segoe UI, sans-serif" fontSize="9.5" fill="#FFFFFF">the age-based CPP target.</text>
         <text x="12" y="240" fontFamily="Consolas, monospace" fontSize="8.5" fontStyle="italic" fill="#94A3B8">Some authors use +0.30.</text>
+        <line x1="12" y1="250" x2="174" y2="250" stroke="#2a3a55" strokeWidth="1" />
+        <text x="12" y="264" fontFamily="Consolas, monospace" fontSize="8.5" fontStyle="italic" fill="#FCD34D">paediatric CPPopt is lower</text>
+        <text x="12" y="277" fontFamily="Consolas, monospace" fontSize="8.5" fontStyle="italic" fill="#FCD34D">and age-dependent</text>
       </g>
 
       <text x={W / 2} y={H - 2} textAnchor="middle" fontFamily="Consolas, monospace" fontSize="9" fill="#64748B">
