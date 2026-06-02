@@ -40,6 +40,11 @@ import {
   PostArrestProgPathway,
   MxAutoregContrast,
   MxVsPrxArchitecture,
+  PrxTimeSeries,
+  PrxCppUCurve,
+  PrxMxOrx,
+  CppoptDoseResponse,
+  OrxTrend,
   WidgetEmbed,
 } from '@/components/content';
 import { Callout, EvidenceLevel, Panel, Card } from '@/components/ui';
@@ -87,6 +92,11 @@ export const mdxComponents: MDXComponents = {
   PostArrestProgPathway,
   MxAutoregContrast,
   MxVsPrxArchitecture,
+  PrxTimeSeries,
+  PrxCppUCurve,
+  PrxMxOrx,
+  CppoptDoseResponse,
+  OrxTrend,
   WidgetEmbed,
   Callout,
   EvidenceLevel,
