@@ -20,3 +20,8 @@ export { NCSEPathway } from './NCSEPathway';
 export { PostArrestProgPathway } from './PostArrestProgPathway';
 export { MxAutoregContrast } from './MxAutoregContrast';
 export { MxVsPrxArchitecture } from './MxVsPrxArchitecture';
+export { PrxTimeSeries } from './PrxTimeSeries';
+export { PrxCppUCurve } from './PrxCppUCurve';
+export { PrxMxOrx } from './PrxMxOrx';
+export { CppoptDoseResponse } from './CppoptDoseResponse';
+export { OrxTrend } from './OrxTrend';

@@ -144,12 +144,12 @@ The +0.25 threshold comes from a large body of outcome-association work, origina
 ## 5. The PRx trace and pattern library
 
 <Figure
-  src="/images/prx/prx-time-series.svg"
-  alt="Four PRx time series side by side: intact (flat near 0), impaired (sustained above 0.3), oscillating, artefactual"
-  caption="Four canonical PRx patterns over a 4-hour window. (a) Intact: PRx oscillating near zero or slightly negative, signal quality good. (b) Impaired: PRx sustained above 0.25 for hours, often paired with a flat or shallow CPPopt curve. (c) Oscillating: PRx swinging between 0 and 0.4 every 20–40 minutes, often reflecting fluctuating autoregulation threshold or transient sedation changes. (d) Artefactual: PRx jumping to extreme values then back, classic for movement, suctioning, transducer flush; should be rejected from the CPPopt fit."
-  attribution="MNM-Edu, original schematic. SVG placeholder."
+  caption="Four canonical PRx patterns over a 4-hour window. (a) Intact: PRx oscillating near zero or slightly negative, signal quality good. (b) Impaired: PRx sustained above 0.25 for hours, often paired with a flat or shallow CPPopt curve. (c) Oscillating: PRx swinging between 0 and 0.4 every 20-40 minutes, often reflecting fluctuating autoregulation threshold or transient sedation changes. (d) Artefactual: PRx jumping to extreme values then back, classic for movement, suctioning, transducer flush; should be rejected from the CPPopt fit."
+  attribution="MNM-Edu, original schematic."
   label="Fig. 1"
-/>
+>
+  <PrxTimeSeries />
+</Figure>
 
 | Pattern | Bedside meaning | What to do |
 |---|---|---|
@@ -182,12 +182,12 @@ The +0.25 threshold comes from a large body of outcome-association work, origina
 The clinical payoff of PRx is **CPPopt**, the CPP at which PRx is minimised.
 
 <Figure
-  src="/images/prx/prx-vs-cpp-ucurve.svg"
-  alt="PRx-versus-CPP U-curve with CPPopt at the vertex, LLA and ULA marked, shaded ±5 mmHg target band"
   caption="PRx (vertical axis) plotted against CPP (horizontal axis) over the past 4 hours. Each point is a 5-minute window. The parabola fit shows a clear vertex at CPPopt, the CPP at which autoregulation is most efficient (PRx most negative). The lower limit of autoregulation (LLA) is where PRx crosses +0.25 on the descending limb; the upper limit (ULA) is where it crosses +0.25 on the ascending limb. The shaded green band is the recommended target range: ±5 mmHg of CPPopt. A flat curve or unclear vertex means CPPopt is non-fittable in that window; revert to default age-based CPP target."
-  attribution="MNM-Edu, schematic adapted from Aries 2012 and Beqiri 2024. SVG placeholder."
+  attribution="MNM-Edu, schematic adapted from Aries 2012 and Beqiri 2024."
   label="Fig. 2"
-/>
+>
+  <PrxCppUCurve />
+</Figure>
 
 ### 7.1 The five-step workflow
 
@@ -262,12 +262,12 @@ Individualised BP targeting using PRx (where ICP is invasive) or ORx (when ICP c
 ## 9. Multimodal integration: PRx alongside Mx, ORx, and others
 
 <Figure
-  src="/images/prx/prx-vs-mx-vs-orx.svg"
-  alt="Side-by-side comparison of PRx, Mx, and ORx signals, each plotted against CPP, showing concordant and discordant cases"
   caption="PRx, Mx (TCD-based), and ORx (NIRS-based) on the same patient. In concordant intact autoregulation all three are near zero. In concordant impaired all three are positive and the CPPopt curves agree. In discordant cases, the indices give different CPPopt values, often because they sample different vascular beds (PRx whole-brain ICP, Mx large-vessel MFV, ORx regional cortex). Discordance is not noise; it carries information about where the autoregulatory failure lies."
-  attribution="MNM-Edu, original schematic. SVG placeholder."
+  attribution="MNM-Edu, original schematic."
   label="Fig. 3"
-/>
+>
+  <PrxMxOrx />
+</Figure>
 
 | Pair with… | What you gain | Worked scenario |
 |---|---|---|
